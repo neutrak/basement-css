@@ -1,0 +1,264 @@
+/* ---------------------------------------------------------------------------
+BEGIN global settings
+----------------------------------------------------------------------------*/
+
+body {
+	--glbl-padding:1.5rem;
+	--glbl-font-vbold:900;
+	--glbl-menu-arrow-height:0.75rem;
+	--glbl-transition-time:0.4s; /* debug */
+	--glbl-scrollbar-offset:12px;
+	
+	--hdr-height:3rem;
+	--hdr-dropdown-menu-link-vert-padding:1rem;
+	--hdr-dropdown-menu-link-horiz-padding:0.5rem;
+	--hdr-dropdown-border-radius:0.5rem;
+	
+	--clr-hover-title-bg:var(--clr-hdr-dropdown-toggle-hover-bg);
+	--clr-hover-title-shadow:var(--clr-hdr-dropdown-shadow);
+}
+
+
+/* ---------------------------------------------------------------------------
+END global settings
+----------------------------------------------------------------------------*/
+
+
+/* ---------------------------------------------------------------------------
+BEGIN global component styles
+NOTE: this are IN ADDITION TO the base component styles in base-components.css
+----------------------------------------------------------------------------*/
+
+/*
+NOTE: the setting of body colors above effectively overrides
+the color settings in base-components.css without needing additional css
+*/
+
+body {
+	font-family:'Quicksand',sans-serif;
+	transition:all var(--glbl-transition-time) ease;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-family:'Quicksand',sans-serif;
+	font-weight:600;
+}
+
+/* ---------------------------------------------------------------------------
+END global component styles
+----------------------------------------------------------------------------*/
+
+/* ---------------------------------------------------------------------------
+BEGIN module styles
+----------------------------------------------------------------------------*/
+
+.hdr-nav-cont {
+	position:fixed;
+	top:0vh;
+	left:0vw;
+	right:0vw;
+	width:100vw;
+	display:block;
+	height:var(--hdr-height);
+	box-shadow:0rem 0.5rem 0.5rem var(--clr-hdr-shadow);
+	background-color:var(--clr-hdr-bg);
+	transition:all var(--glbl-transition-time) ease;
+}
+
+.hdr-nav-submenu {
+	height:100%;
+	position:relative;
+}
+
+.hdr-dropdown-toggle-label {
+	height:100%;
+	padding:0rem var(--glbl-padding);
+	font-weight:var(--glbl-font-vbold);
+	height:var(--hdr-height);
+	display:block;
+	position:relative;
+	background-color:var(--clr-hdr-dropdown-toggle-bg);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	cursor:pointer;
+	border-left:1px solid var(--clr-hdr-dropdown-toggle-border);
+	border-right:1px solid var(--clr-hdr-dropdown-toggle-border);
+	transition:all var(--glbl-transition-time) ease;
+}
+.hdr-dropdown-toggle-label:hover,
+.hdr-dropdown-toggle-label:focus,
+.hdr-dropdown-toggle-label:active {
+	background-color:var(--clr-hdr-dropdown-toggle-hover-bg);
+}
+
+input[type=checkbox].hdr-dropdown-toggle {
+	display:none;
+}
+input[type=checkbox].hdr-dropdown-toggle ~ .hdr-dropdown-menu-cont {
+	opacity:0;
+	pointer-events:none;
+	transition:all var(--glbl-transition-time) ease;
+	transform:translateY(var(--glbl-hover-title-slidein-offset));
+}
+input[type=checkbox].hdr-dropdown-toggle:checked ~ .hdr-dropdown-menu-cont {
+	opacity:1;
+	pointer-events:auto;
+	transform:none;
+}
+
+.hdr-dropdown-menu-cont {
+	z-index:0;
+	position:absolute;
+	top:calc(100% + var(--glbl-menu-arrow-height));
+	box-shadow:0rem 0.5rem 0.5rem var(--clr-hdr-dropdown-shadow);
+	border-radius:var(--hdr-dropdown-border-radius);
+	border:1px solid var(--clr-hdr-dropdown-toggle-border);
+	width:10rem;
+}
+
+.hdr-dropdown-menu-cont::after {
+	content:' ';
+	z-index:1;
+	position:absolute;
+	top:calc(0rem - var(--glbl-menu-arrow-height));
+	left:var(--glbl-padding);
+	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-hdr-dropdown-bg);
+	border-left:var(--glbl-menu-arrow-height) solid transparent;
+	border-right:var(--glbl-menu-arrow-height) solid transparent;
+	transition:all var(--glbl-transition-time) ease;
+}
+.hdr-dropdown-menu-cont::before {
+	content:' ';
+	z-index:1;
+	position:absolute;
+	top:calc(-1px - var(--glbl-menu-arrow-height));
+	left:calc(-1px + var(--glbl-padding));
+	border-bottom:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-hdr-dropdown-toggle-border);
+	border-left:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
+	border-right:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
+	transition:all var(--glbl-transition-time) ease;
+}
+.hdr-dropdown-menu {
+	background-color:var(--clr-hdr-dropdown-bg);
+	list-style-type:none;
+	padding:0rem;
+	border-radius:var(--hdr-dropdown-border-radius);
+}
+.hdr-dropdown-menu > li {
+	padding:0rem;
+}
+.hdr-dropdown-menu > li > a,
+.hdr-dropdown-menu > li > * {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	text-decoration:none;
+	transition:all var(--glbl-transition-time) ease;
+	background-color:var(--clr-hdr-dropdown-link-bg);
+	color:var(--clr-body-font);
+	padding:var(--hdr-dropdown-menu-link-vert-padding) var(--hdr-dropdown-menu-link-horiz-padding);
+	border-bottom:1px solid var(--clr-hdr-dropdown-toggle-border);
+	margin-top:0px;
+	margin-bottom:0px;
+}
+.hdr-dropdown-menu > li > a:hover,
+.hdr-dropdown-menu > li > a:focus,
+.hdr-dropdown-menu > li > a:active {
+	background-color:var(--clr-hdr-dropdown-link-hover-bg);
+	text-decoration:underline;
+}
+
+.hdr-dropdown-menu > li:first-child > a,
+.hdr-dropdown-menu > li:first-child > * {
+	border-radius:var(--hdr-dropdown-border-radius) var(--hdr-dropdown-border-radius) 0rem 0rem;
+}
+.hdr-dropdown-menu > li:last-child > a,
+.hdr-dropdown-menu > li:last-child > * {
+	border-radius:0rem 0rem var(--hdr-dropdown-border-radius) var(--hdr-dropdown-border-radius);
+	border-bottom:0px solid transparent;
+}
+
+.hdr-nav-cont .cell.hdr-options-cell {
+	height:var(--hdr-height);
+	display:flex;
+	align-items:center;
+	justify-content:flex-end;
+}
+.hdr-nav-cont.bottom-aligned {
+	top:unset;
+	bottom:0px;
+	box-shadow:0rem -0.5rem 0.5rem var(--clr-hdr-shadow);
+}
+.hdr-nav-cont.bottom-aligned .hdr-dropdown-menu-cont {
+	top:unset;
+	bottom:calc(100% + var(--glbl-menu-arrow-height));
+	box-shadow:0rem -0.5rem 0.5rem var(--clr-hdr-dropdown-shadow);
+}
+.hdr-nav-cont.bottom-aligned .hdr-dropdown-menu-cont::before,
+.hdr-nav-cont.bottom-aligned .hdr-dropdown-menu-cont::after {
+	top:unset;
+}
+.hdr-nav-cont.bottom-aligned .hdr-dropdown-menu-cont::before {
+	border-bottom:none;
+	border-top:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-hdr-dropdown-toggle-border);
+	bottom:calc(-1px - var(--glbl-menu-arrow-height));
+}
+.hdr-nav-cont.bottom-aligned .hdr-dropdown-menu-cont::after {
+	border-bottom:none;
+	border-top:var(--glbl-menu-arrow-height) solid var(--clr-hdr-dropdown-bg);
+	bottom:calc(0px - var(--glbl-menu-arrow-height));
+}
+.hdr-nav-cont.bottom-aligned input[type=checkbox].hdr-dropdown-toggle ~ .hdr-dropdown-menu-cont {
+	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
+}
+.hdr-nav-cont.bottom-aligned input[type=checkbox].hdr-dropdown-toggle:checked ~ .hdr-dropdown-menu-cont {
+	transform:none;
+}
+.bottombar {
+	background-color:var(--clr-hdr-bg);
+}
+
+footer {
+	text-align:center;
+}
+
+/* ---------------------------------------------------------------------------
+END module styles
+----------------------------------------------------------------------------*/
+
+/* ---------------------------------------------------------------------------
+BEGIN medium and large display adjustments (mobile is default)
+----------------------------------------------------------------------------*/
+@media all and (min-width:768px) { /* $screen-size-medium */
+
+	/* ---------------------------------------------------------------------------
+	BEGIN global settings
+	----------------------------------------------------------------------------*/
+
+	body {
+		--hdr-height:2rem;
+	}
+
+	/* ---------------------------------------------------------------------------
+	END global settings
+	----------------------------------------------------------------------------*/
+
+	/* ---------------------------------------------------------------------------
+	BEGIN module styles
+	----------------------------------------------------------------------------*/
+	body {
+		min-height:101vh; /* ensure the scrollbar is ALWAYS shown */
+	}
+	.hdr-nav-cont > .grid-container {
+		max-width:calc(var(--glbl-max-width) + var(--glbl-scrollbar-offset));
+	}
+	.hdr-nav-cont .cell.hdr-options-cell {
+		padding-right:12px; /* correct for header width being larger to accomodate scroll offset */
+	}
+
+	/* ---------------------------------------------------------------------------
+	END module styles
+	----------------------------------------------------------------------------*/
+}
+
+

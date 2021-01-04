@@ -1,0 +1,317 @@
+/* ---------------------------------------------------------------------------
+BEGIN default settings
+NOTE: code which uses this stylesheet can override these settings later
+----------------------------------------------------------------------------*/
+
+body {
+	--glbl-menu-arrow-height:0.75rem;
+	--glbl-hover-title-border-radius:0.5rem;
+	--glbl-hover-title-vert-padding:0.75rem;
+	--glbl-hover-title-horiz-padding:0.5rem;
+	--glbl-hover-title-slidein-offset:15px;
+	--glbl-transition-time:0.5s;
+	
+	--clr-body-bg:#eeeeee;
+	--clr-body-font:#0a0a0a;
+	--clr-link-font:var(--clr-body-font);
+	--clr-link-font-hover:#2a2a7a;
+	--clr-hdg-font:var(--clr-body-font);
+	--clr-toggle-label-bg:rgba(0,0,0,0.25);
+	--clr-toggle-label-switch-unchecked:rgba(16,16,190,0.5);
+	--clr-toggle-label-switch-checked:rgba(16,16,190,1);
+	--clr-hover-title-bg:#cecece;
+	--clr-hover-title-shadow:#808080;
+	--clr-hover-title-border:transparent;
+}
+
+
+/* ---------------------------------------------------------------------------
+END default settings
+----------------------------------------------------------------------------*/
+
+
+/* ---------------------------------------------------------------------------
+BEGIN global component styles
+----------------------------------------------------------------------------*/
+
+* {
+	box-sizing:border-box;
+}
+
+html,body {
+	margin:0rem;
+	padding:0rem;
+}
+
+.no-js {
+	display:inline-block;
+}
+.yes-js {
+	display:none;
+}
+
+body {
+/*	min-height:100vh; */
+	background-color:var(--clr-body-bg);
+	color:var(--clr-body-font);
+	padding-top:var(--hdr-height);
+	padding-bottom:var(--glbl-padding);
+}
+
+h1, h2, h3, h4, h5 {
+	color:var(--clr-hdg-font);
+	transition:color var(--glbl-transition-time) ease;
+}
+
+a {
+	display:inline-block;
+	transition:all 0.5s ease;
+	color:var(--clr-link-font);
+	transition:color var(--glbl-transition-time) ease;
+}
+a:hover, a:focus, a:active {
+	color:var(--clr-link-font-hover);
+}
+
+ul, ol {
+	margin:0rem;
+}
+
+ul.horizontal-list, ol.horizontal-list {
+	display:flex;
+	flex-direction:row;
+	justify-content:flex-start;
+	align-items:stretch;
+	list-style-type:none;
+	padding:0rem;
+}
+ul.horizontal-list > li, ol.horizontal-list > li {
+	display:inline-block;
+	height:100%;
+}
+
+.toggle-slider {
+	display:inline-block;
+}
+.toggle-slider > input[type=checkbox] {
+	display:none;
+}
+.toggle-slider > label.toggle-label {
+	display:inline-block;
+	position:relative;
+	border-radius:8px;
+	height:16px;
+	width:32px;
+	background-color:var(--clr-toggle-label-bg);
+}
+.toggle-slider > label.toggle-label::before {
+	content:' ';
+	display:block;
+	position:absolute;
+	left:0px;
+	top:0px;
+	bottom:0px;
+
+	border-radius:8px;
+	width:16px;
+	height:16px;
+	transition:all 0.5s ease;
+	background-color:var(--clr-toggle-label-switch-unchecked);
+}
+.toggle-slider > input[type=checkbox]:checked ~ label.toggle-label::before {
+/*
+	left:unset;
+	right:0px;
+*/
+	background-color:var(--clr-toggle-label-switch-checked);
+	left:100%;
+	transform:translateX(-100%);
+}
+
+.hover-title-cont {
+	z-index:0;
+	position:relative;
+	transition:all var(--glbl-transition-time) ease;
+}
+.hover-title-cont:hover .hover-title {
+	opacity:1;
+	pointer-events:auto;
+	transform:none;
+}
+
+.hover-title {
+	z-index:1;
+	position:absolute;
+	background-color:var(--clr-hover-title-bg);
+	box-shadow:0rem 0.5rem 0.5rem var(--clr-hover-title-shadow);
+	border-radius:var(--glbl-hover-title-border-radius);
+	padding:var(--glbl-hover-title-vert-padding) var(--glbl-hover-title-horiz-padding);
+	border:1px solid var(--clr-hover-title-border);
+	opacity:0;
+	pointer-events:none;
+	min-width:150px;
+	max-width:unset;
+	text-align:center;
+	transition:all var(--glbl-transition-time) ease;
+}
+
+.hover-title.above {
+	bottom:calc(100% + var(--glbl-menu-arrow-height));
+	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
+	box-shadow:0rem -0.5rem 0.5rem var(--clr-hover-title-shadow);
+}
+.hover-title.below {
+	top:calc(100% + var(--glbl-menu-arrow-height));
+	transform:translateY(var(--glbl-hover-title-slidein-offset));
+}
+.hover-title.lalign {
+	left:0px;
+}
+
+.hover-title.ralign {
+	right:0px;
+}
+
+.hover-title::after {
+	content:' ';
+	z-index:1;
+	position:absolute;
+	left:var(--glbl-padding);
+	border-left:var(--glbl-menu-arrow-height) solid transparent;
+	border-right:var(--glbl-menu-arrow-height) solid transparent;
+	transition:all var(--glbl-transition-time) ease;
+}
+.hover-title::before {
+	content:' ';
+	z-index:1;
+	position:absolute;
+	left:calc(-1px + var(--glbl-padding));
+	border-left:var(--glbl-menu-arrow-height) solid transparent;
+	border-right:var(--glbl-menu-arrow-height) solid transparent;
+	transition:all var(--glbl-transition-time) ease;
+}
+
+.hover-title.ralign::before {
+	left:unset;
+	right:calc(-1px + var(--glbl-padding));
+}
+.hover-title.ralign::after {
+	left:unset;
+	right:calc(-1px + var(--glbl-padding));
+}
+.hover-title.lalign::before {
+	left:calc(-1px + var(--glbl-padding));
+	right:unset;
+}
+.hover-title.lalign::after {
+	left:calc(-1px + var(--glbl-padding));
+	right:unset;
+}
+
+.hover-title.above::after {
+	bottom:calc(0px - var(--glbl-menu-arrow-height));
+	border-top:var(--glbl-menu-arrow-height) solid var(--clr-hover-title-bg);
+}
+.hover-title.above::before {
+	bottom:calc(-1px - var(--glbl-menu-arrow-height));
+	border-top:var(--glbl-menu-arrow-height) solid var(--clr-hover-title-border);
+}
+.hover-title.below::after {
+	top:calc(0px - var(--glbl-menu-arrow-height));
+	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-hover-title-bg);
+}
+.hover-title.below::before {
+	top:calc(-1px - var(--glbl-menu-arrow-height));
+	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-hover-title-border);
+}
+
+.hover-title.lalign.arrow-nopadding::after,
+.hover-title.lalign.arrow-nopadding::before {
+	right:unset;
+	left:var(--glbl-hover-title-border-radius);
+}
+.hover-title.ralign.arrow-nopadding::after,
+.hover-title.ralign.arrow-nopadding::before {
+	left:unset;
+	right:var(--glbl-hover-title-border-radius);
+}
+
+aside.iconbar {
+	position:fixed;
+	background-color:rgba(255,255,255,0.70);
+	border-radius:16px;
+}
+aside.iconbar > ul.icons {
+	list-style-type:none;
+	width:100%;
+	padding:8px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+aside.iconbar > ul.icons img {
+	display:block;
+	width:100%;
+}
+aside.iconbar > ul.icons > li {
+	display:block;
+}
+aside.iconbar > ul.icons > li > * {
+	transition:all 0.5s ease;
+	display:inline-block;
+	width:100%;
+	position:relative;
+}
+aside.iconbar > ul.icons > li > *:hover,
+aside.iconbar > ul.icons > li > *:focus,
+aside.iconbar > ul.icons > li > *:active {
+	width:90px;
+}
+
+aside.iconbar.left-center {
+	left:0px;
+	top:50%;
+	transform:translateY(-50%);
+	width:50px;
+}
+aside.iconbar.left-center ul.icons {
+	flex-direction:column;
+	align-items:flex-start;
+}
+
+/* TODO: fix right icon bar animations */
+/*
+aside.iconbar.right-center {
+	right:0px;
+	top:50%;
+	transform:translateY(-50%);
+	width:50px;
+}
+aside.iconbar.right-center ul.icons {
+	flex-direction:column;
+	align-items:flex-end;
+}
+*/
+
+/* ---------------------------------------------------------------------------
+END global component styles
+----------------------------------------------------------------------------*/
+
+
+/* ---------------------------------------------------------------------------
+BEGIN medium and large display adjustments (mobile is default)
+----------------------------------------------------------------------------*/
+@media all and (min-width:768px) { /* $screen-size-medium */
+
+	/* ---------------------------------------------------------------------------
+	BEGIN global component styles
+	----------------------------------------------------------------------------*/
+
+
+	/* ---------------------------------------------------------------------------
+	END global component styles
+	----------------------------------------------------------------------------*/
+
+}
+
+

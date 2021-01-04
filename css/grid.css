@@ -1,0 +1,148 @@
+/* default settings */
+body {
+	--glbl-max-width:1200px;
+	--glbl-padding:1.5rem;
+}
+html {
+/*	scrollbar-width:thin; */ /* prevent scrollbar left-content-shift issue */
+}
+
+/* ---------------------------------------------------------------------------
+BEGIN grid definition styles
+----------------------------------------------------------------------------*/
+.grid-container {
+	display:block;
+	margin:auto;
+	width:auto;
+	max-width:var(--glbl-max-width);
+	padding:0rem var(--glbl-padding) 0rem var(--glbl-padding);
+}
+.grid {
+	display:inline-flex;
+	flex-direction:row;
+	justify-content:space-between;
+	align-items:stretch;
+	flex-wrap:wrap;
+	width:100%;
+}
+.grid > .cell {
+	display:block;
+	height:100%;
+	width:100%;
+}
+.grid.grid-padding {
+	margin:0rem calc(0rem - var(--glbl-padding)) calc(0rem - var(--glbl-padding)) 0rem;
+	width:calc(100% + var(--glbl-padding));
+}
+.grid.grid-padding > .cell {
+	padding:0rem var(--glbl-padding) var(--glbl-padding) 0rem;
+}
+.grid > .cell.small-1 {
+	width:8.3333%;
+}
+.grid > .cell.small-2 {
+	width:16.6666%;
+}
+.grid > .cell.small-3 {
+	width:25%;
+}
+.grid > .cell.small-4 {
+	width:33.3333%;
+}
+.grid > .cell.small-5 {
+	width:41.6666%;
+}
+.grid > .cell.small-6 {
+	width:50%;
+}
+.grid > .cell.small-7 {
+	width:58.3333%;
+}
+.grid > .cell.small-8 {
+	width:66.6666%;
+}
+.grid > .cell.small-9 {
+	width:75%;
+}
+.grid > .cell.small-10 {
+	width:83.3333%;
+}
+.grid > .cell.small-11 {
+	width:91.6666%;
+}
+.grid > .cell.small-12 {
+	width:100%;
+}
+/* ---------------------------------------------------------------------------
+END grid definition styles
+----------------------------------------------------------------------------*/
+
+
+/* ---------------------------------------------------------------------------
+BEGIN medium and large display adjustments (mobile is default)
+----------------------------------------------------------------------------*/
+@media all and (min-width:768px) { /* $screen-size-medium */
+	
+	/* ---------------------------------------------------------------------------
+	BEGIN grid definition styles
+	----------------------------------------------------------------------------*/
+	.grid > .cell.medium-1 {
+		width:8.3333%;
+	}
+	.grid > .cell.medium-2 {
+		width:16.6666%;
+	}
+	.grid > .cell.medium-3 {
+		width:25%;
+	}
+	.grid > .cell.medium-4 {
+		width:33.3333%;
+	}
+	.grid > .cell.medium-5 {
+		width:41.6666%;
+	}
+	.grid > .cell.medium-6 {
+		width:50%;
+	}
+	.grid > .cell.medium-7 {
+		width:58.3333%;
+	}
+	.grid > .cell.medium-8 {
+		width:66.6666%;
+	}
+	.grid > .cell.medium-9 {
+		width:75%;
+	}
+	.grid > .cell.medium-10 {
+		width:83.3333%;
+	}
+	.grid > .cell.medium-11 {
+		width:91.6666%;
+	}
+	.grid > .cell.medium-12 {
+		width:100%;
+	}
+	.cell.lalign {
+		text-align:left;
+		display:flex;
+		align-items:center;
+		justify-content:flex-start;
+	}
+	.cell.lalign > *:not(:last-child) {
+		margin-right:var(--glbl-padding);
+	}
+
+	.cell.ralign {
+		text-align:right;
+		display:flex;
+		align-items:center;
+		justify-content:flex-end;
+	}
+	.cell.ralign > *:not(:first-child) {
+		margin-left:var(--glbl-padding);
+	}
+	/* ---------------------------------------------------------------------------
+	END grid definition styles
+	----------------------------------------------------------------------------*/
+}
+
