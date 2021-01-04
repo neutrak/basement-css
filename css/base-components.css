@@ -279,19 +279,19 @@ aside.iconbar.left-center ul.icons {
 	align-items:flex-start;
 }
 
-/* TODO: fix right icon bar animations */
-/*
 aside.iconbar.right-center {
 	right:0px;
 	top:50%;
-	transform:translateY(-50%);
+	transform:translateY(-50%) rotateY(180deg);
 	width:50px;
 }
 aside.iconbar.right-center ul.icons {
 	flex-direction:column;
-	align-items:flex-end;
+	align-items:flex-start;
 }
-*/
+aside.iconbar.right-center ul.icons img {
+	transform:rotateY(180deg);
+}
 
 /* ---------------------------------------------------------------------------
 END global component styles
