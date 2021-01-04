@@ -35,11 +35,11 @@ the color settings in base-components.css without needing additional css
 */
 
 body {
-	font-family:'Quicksand',sans-serif;
+	font-family:sans-serif;
 	transition:all var(--glbl-transition-time) ease;
 }
 h1,h2,h3,h4,h5,h6 {
-	font-family:'Quicksand',sans-serif;
+	font-family:sans-serif;
 	font-weight:600;
 }
 

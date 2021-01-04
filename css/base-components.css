@@ -22,6 +22,10 @@ body {
 	--clr-hover-title-bg:#cecece;
 	--clr-hover-title-shadow:#808080;
 	--clr-hover-title-border:transparent;
+	
+	--iconbar-size:50px;
+	--iconbar-focus-size:90px;
+	--iconbar-padding:8px;
 }
 
 
@@ -239,12 +243,13 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 aside.iconbar {
 	position:fixed;
 	background-color:rgba(255,255,255,0.70);
-	border-radius:16px;
+	border-radius:calc(var(--iconbar-padding) * 2);
 }
 aside.iconbar > ul.icons {
 	list-style-type:none;
 	width:100%;
-	padding:8px;
+	height:100%;
+	padding:var(--iconbar-padding);
 	display:flex;
 	align-items:center;
 	justify-content:center;
@@ -252,27 +257,36 @@ aside.iconbar > ul.icons {
 aside.iconbar > ul.icons img {
 	display:block;
 	width:100%;
+	height:100%;
 }
 aside.iconbar > ul.icons > li {
 	display:block;
+	height:100%;
+	width:100%;
 }
 aside.iconbar > ul.icons > li > * {
 	transition:all 0.5s ease;
 	display:inline-block;
+/*
 	width:100%;
+	height:100%;
+*/
+	width:calc(var(--iconbar-size) - (var(--iconbar-padding) * 2));
+	height:calc(var(--iconbar-size) - (var(--iconbar-padding) * 2));
 	position:relative;
 }
 aside.iconbar > ul.icons > li > *:hover,
 aside.iconbar > ul.icons > li > *:focus,
 aside.iconbar > ul.icons > li > *:active {
-	width:90px;
+	width:var(--iconbar-focus-size);
+	height:var(--iconbar-focus-size);
 }
 
 aside.iconbar.left-center {
 	left:0px;
 	top:50%;
 	transform:translateY(-50%);
-	width:50px;
+	width:var(--iconbar-size);
 }
 aside.iconbar.left-center ul.icons {
 	flex-direction:column;
@@ -283,7 +297,7 @@ aside.iconbar.right-center {
 	right:0px;
 	top:50%;
 	transform:translateY(-50%) rotateY(180deg);
-	width:50px;
+	width:var(--iconbar-size);
 }
 aside.iconbar.right-center ul.icons {
 	flex-direction:column;
@@ -292,6 +306,40 @@ aside.iconbar.right-center ul.icons {
 aside.iconbar.right-center ul.icons img {
 	transform:rotateY(180deg);
 }
+
+aside.iconbar.top-center {
+	top:0px;
+	left:50%;
+	transform:translateX(-50%);
+	height:var(--iconbar-size);
+}
+aside.iconbar.top-center.nav-cont-offset {
+	top:50px;
+}
+aside.iconbar.top-center ul.icons {
+	flex-direction:row;
+	align-items:flex-start;
+	justify-content:center;
+}
+
+aside.iconbar.bottom-center {
+	bottom:0px;
+	left:50%;
+	transform:translateX(-50%) rotateX(180deg);
+	height:var(--iconbar-size);
+}
+aside.iconbar.bottom-center.nav-cont-offset {
+	bottom:50px;
+}
+aside.iconbar.bottom-center ul.icons {
+	flex-direction:row;
+	align-items:flex-start;
+	justify-content:center;
+}
+aside.iconbar.bottom-center ul.icons img {
+	transform:rotateX(180deg);
+}
+
 
 /* ---------------------------------------------------------------------------
 END global component styles
