@@ -314,7 +314,7 @@ aside.iconbar.top-center {
 	height:var(--iconbar-size);
 }
 aside.iconbar.top-center.nav-cont-offset {
-	top:50px;
+	top:32px;
 }
 aside.iconbar.top-center ul.icons {
 	flex-direction:row;
@@ -329,7 +329,7 @@ aside.iconbar.bottom-center {
 	height:var(--iconbar-size);
 }
 aside.iconbar.bottom-center.nav-cont-offset {
-	bottom:50px;
+	bottom:32px;
 }
 aside.iconbar.bottom-center ul.icons {
 	flex-direction:row;
