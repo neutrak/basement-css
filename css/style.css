@@ -54,6 +54,21 @@ BEGIN module styles
 	align-items:center;
 	justify-content:flex-end;
 }
+.hdr-nav-cont .cell.hdr-options-cell > * {
+	margin-right:8px;
+}
+.hdr-nav-cont .cell.hdr-options-cell > *:last-child {
+	margin-right:0px;
+}
+
+.hdr-nav-cont .cell.hdr-options-cell.lalign {
+	justify-content:flex-start;
+}
+.hdr-nav-cont .cell.hdr-menu-cell.ralign {
+	display:flex;
+	align-items:center;
+	justify-content:flex-end;
+}
 
 footer {
 	text-align:center;
@@ -90,6 +105,12 @@ BEGIN medium and large display adjustments (mobile is default)
 		max-width:calc(var(--glbl-max-width) + var(--glbl-scrollbar-offset));
 	}
 	.hdr-nav-cont .cell.hdr-options-cell {
+		padding-right:12px; /* correct for header width being larger to accomodate scroll offset */
+	}
+	.hdr-nav-cont .cell.hdr-options-cell.lalign {
+		padding-right:0px;
+	}
+	.hdr-nav-cont .cell.hdr-menu-cell.ralign {
 		padding-right:12px; /* correct for header width being larger to accomodate scroll offset */
 	}
 

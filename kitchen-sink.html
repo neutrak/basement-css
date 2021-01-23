@@ -31,17 +31,55 @@
 			document.getElementById('iconbar-bottom-center').classList.toggle('nav-cont-offset');
 		}
 	}
+	//this function flips the left-right association between the menu and toggle sections in the menu bar
+	function menubar_horizontal_alignment_toggle() {
+		var navbar=document.getElementById('navbar');
+		if(navbar!==null){
+			//toggle the position of the cells within the nav bar
+			var menu_cell=navbar.getElementsByClassName('hdr-menu-cell')[0];
+			var options_cell=navbar.getElementsByClassName('hdr-options-cell')[0];
+			var parent_elem=menu_cell.parentNode;
+			if(menu_cell===parent_elem.firstElementChild){
+				parent_elem.removeChild(menu_cell);
+				parent_elem.appendChild(options_cell);
+				parent_elem.appendChild(menu_cell);
+			}else{
+				parent_elem.removeChild(options_cell);
+				parent_elem.appendChild(menu_cell);
+				parent_elem.appendChild(options_cell);
+			}
+			options_cell.classList.toggle('lalign');
+			menu_cell.classList.toggle('ralign');
+			
+			//toggle classes to flip alignment of items within the cells
+			var hover_titles=navbar.getElementsByClassName('hover-title');
+			for(var idx=0;idx<hover_titles.length;idx++){
+				hover_titles[idx].classList.toggle('ralign');
+				hover_titles[idx].classList.toggle('lalign');
+			}
+			
+			//toggle classes to flip left-right menu arrow position for menus when opened
+			var dropdown_menus=navbar.getElementsByClassName('dropdown-menu-cont');
+			for(var idx=0;idx<dropdown_menus.length;idx++){
+				dropdown_menus[idx].classList.toggle('ralign');
+				dropdown_menus[idx].classList.toggle('lalign');
+			}
+		}
+	}
 	
 	//this un-hides js-specific elements on page load
 	//which by default are hidden, since for clients that don't support javascript we don't display them
 	window.onload=function () {
 		var js_elems=document.getElementsByClassName('yes-js');
-		for(var idx=0;idx<js_elems.length;idx++){
-			js_elems[idx].classList.remove('yes-js');
+		//NOTE: because elements get removed from the js_elems list once we remove the yes-js class
+		//this is a check for while js_elems exist rather than a for loop with an index of the element
+		while(js_elems.length>0){
+			js_elems[0].classList.remove('yes-js');
 		}
 		
-		//initialize the alignment toggle to be unchecked, for consistency between page reloads
+		//initialize the alignment toggles to be unchecked, for consistency between page reloads
 		document.getElementById('header-vertical-alignment-toggle').checked=false;
+		document.getElementById('header-horizontal-alignment-toggle').checked=false;
 	}
 	</script>
 </head>
@@ -50,7 +88,7 @@
 <header class='topbar hdr-nav-cont' id='navbar'>
 	<div class='grid-container'>
 		<div class='grid'>
-			<div class='cell small-10'>
+			<div class='cell small-8 medium-10 hdr-menu-cell'>
 				<nav class='hdr-navbar'>
 					<ul class='horizontal-list hdr-nav-list'>
 						<li class='hdr-nav-submenu submenu'>
@@ -58,7 +96,7 @@
 								Menu
 							</label>
 							<input type='checkbox' class='dropdown-toggle hdr-dropdown-toggle' id='hdr-dropdown-0'>
-							<div class='dropdown-menu-cont hdr-dropdown-menu-cont'>
+							<div class='dropdown-menu-cont lalign hdr-dropdown-menu-cont'>
 								<ul class='dropdown-menu hdr-dropdown-menu'>
 									<li class=''>
 										<p>Text</p>
@@ -73,7 +111,7 @@
 					</ul>
 				</nav>
 			</div>
-			<div class='cell small-2 hdr-options-cell'>
+			<div class='cell small-4 medium-2 hdr-options-cell'>
 				<div class='hover-title-cont yes-js'>
 					<div class='toggle-slider'>
 						<!-- this toggle flips the top/bottom alignment of this section -->
@@ -84,7 +122,16 @@
 						Toggle Menu Bar Vertical Alignment
 					</div>
 				</div>
-				<!-- TODO: make another toggle that flips the left-right alignment of the menu versus the toggle section -->
+				<div class='hover-title-cont yes-js'>
+					<div class='toggle-slider'>
+						<!-- this toggle flips the left/right alignment of the menu versus the toggle section -->
+						<input type='checkbox' id='header-horizontal-alignment-toggle' onchange="menubar_horizontal_alignment_toggle();">
+						<label class='toggle-label' for='header-horizontal-alignment-toggle'></label>
+					</div>
+					<div class='hover-title below ralign arrow-nopadding'>
+						Toggle Menu Bar Horizontal Alignment
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
