@@ -22,6 +22,12 @@ body {
 	--clr-hover-title-bg:#cecece;
 	--clr-hover-title-shadow:#808080;
 	--clr-hover-title-border:transparent;
+	--clr-btn-font:#000000;
+	--clr-btn-bg:#eeeeee;
+	--clr-btn-border:var(--clr-toggle-label-switch-unchecked);
+	--clr-btn-hover-font:#000000;
+	--clr-btn-hover-bg:#ffffff;
+	--clr-btn-hover-border:var(--clr-toggle-label-switch-checked);
 
 	--dropdown-menu-link-vert-padding:1rem;
 	--dropdown-menu-link-horiz-padding:0.5rem;
@@ -30,6 +36,9 @@ body {
 	--iconbar-size:50px;
 	--iconbar-focus-size:90px;
 	--iconbar-padding:8px;
+	
+	--btn-padding:8px 16px;
+	--btn-border-radius:0.5rem;
 }
 
 
@@ -520,6 +529,25 @@ aside.iconbar.bottom-center ul.icons img {
 	transform:rotateX(180deg);
 }
 
+.btn {
+	padding:var(--btn-padding);
+	border-radius:var(--btn-border-radius);
+	border-width:1px;
+	border-style:solid;
+	transition:all var(--glbl-transition-time) ease;
+	text-decoration:none;
+	
+	color:var(--clr-btn-font);
+	background-color:var(--clr-btn-bg);
+	border-color:var(--clr-btn-border);
+}
+.btn:hover,
+.btn:focus,
+.btn:active {
+	color:var(--clr-btn-hover-font);
+	background-color:var(--clr-btn-hover-bg);
+	border-color:var(--clr-btn-hover-border);
+}
 
 /* ---------------------------------------------------------------------------
 END global component styles
