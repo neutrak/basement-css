@@ -4,20 +4,20 @@ body {
 	--clr-link-font:var(--clr-body-font);
 	--clr-link-font-hover:#2a2a7a;
 	--clr-hdg-font:var(--clr-body-font);
-	--clr-hdr-dropdown-shadow:#808080;
-	--clr-hdr-dropdown-bg:#0e0e0e;
-	--clr-hdr-dropdown-toggle-bg:var(--clr-hdr-dropdown-bg);
-	--clr-hdr-dropdown-toggle-hover-bg:#1f1f1f;
-	--clr-hdr-dropdown-toggle-border:var(--clr-body-font);
-	--clr-hdr-dropdown-link-bg:var(--clr-hdr-dropdown-toggle-bg);
-	--clr-hdr-dropdown-link-hover-bg:var(--clr-hdr-dropdown-toggle-hover-bg);
-	--clr-hdr-shadow:var(--clr-hdr-dropdown-shadow);
+	--clr-dropdown-shadow:#808080;
+	--clr-dropdown-bg:#0e0e0e;
+	--clr-dropdown-toggle-bg:var(--clr-dropdown-bg);
+	--clr-dropdown-toggle-hover-bg:#1f1f1f;
+	--clr-dropdown-toggle-border:var(--clr-body-font);
+	--clr-dropdown-link-bg:var(--clr-dropdown-toggle-bg);
+	--clr-dropdown-link-hover-bg:var(--clr-dropdown-toggle-hover-bg);
+	--clr-hdr-shadow:var(--clr-dropdown-shadow);
 	--clr-hdr-bg:#fef5de; /* #fefefe; */
 	--clr-toggle-label-bg:rgba(0,0,0,0.25);
 	--clr-toggle-label-switch-unchecked:rgba(16,16,190,0.5);
 	--clr-toggle-label-switch-checked:rgba(16,16,190,1);
-	--clr-hover-title-bg:var(--clr-hdr-dropdown-toggle-bg);
-	--clr-hover-title-border:var(--clr-hdr-dropdown-toggle-border);
+	--clr-hover-title-bg:var(--clr-dropdown-toggle-bg);
+	--clr-hover-title-border:var(--clr-dropdown-toggle-border);
 }
 
 
