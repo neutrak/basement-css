@@ -111,7 +111,18 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	display:inline-block;
 }
 .toggle-slider > input[type=checkbox] {
-	display:none;
+/*	display:none;*/
+	/* this needs to not be display:none for keyboard navigation to work */
+	opacity:0;
+	height:0px;
+	width:0px;
+	position:absolute;
+	z-index:-20;
+}
+.toggle-slider > input[type=checkbox]:hover ~ label.toggle-label,
+.toggle-slider > input[type=checkbox]:focus ~ label.toggle-label,
+.toggle-slider > input[type=checkbox]:active ~ label.toggle-label {
+	border:1px solid var(--clr-toggle-label-switch-unchecked);
 }
 .toggle-slider > label.toggle-label {
 	display:inline-block;
@@ -120,6 +131,7 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	height:16px;
 	width:32px;
 	background-color:var(--clr-toggle-label-bg);
+	border:1px solid transparent;
 }
 .toggle-slider > label.toggle-label::before {
 	content:' ';
@@ -130,8 +142,8 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	bottom:0px;
 
 	border-radius:8px;
-	width:16px;
-	height:16px;
+	width:14px;
+	height:14px;
 	transition:all 0.5s ease;
 	background-color:var(--clr-toggle-label-switch-unchecked);
 }
@@ -295,9 +307,20 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 .dropdown-toggle-label:active {
 	background-color:var(--clr-dropdown-toggle-hover-bg);
 }
+input[type=checkbox].dropdown-toggle:hover ~ label.dropdown-toggle-label,
+input[type=checkbox].dropdown-toggle:focus ~ label.dropdown-toggle-label,
+input[type=checkbox].dropdown-toggle:active ~ label.dropdown-toggle-label {
+	background-color:var(--clr-dropdown-toggle-hover-bg);
+}
 
 input[type=checkbox].dropdown-toggle {
-	display:none;
+/*	display:none; */
+	/* this needs to not be display:none for keyboard navigation to work */
+	opacity:0;
+	height:0px;
+	width:0px;
+	position:absolute;
+	z-index:-20;
 }
 input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
 	opacity:0;
