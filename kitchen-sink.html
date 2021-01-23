@@ -9,10 +9,45 @@
 	<link rel='stylesheet' href='css/style.css' />
 	<link rel='stylesheet' href='css/color-monochrome-grayscale.css' />
 	<title>Basement CSS library - Kitchen Sink</title>
+	
+	<script type='text/javascript'>
+	//this function flips the menu bar between top and bottom alignment options
+	function menubar_vertical_alignment_toggle(){
+		var navbar=document.getElementById('navbar');
+		if(navbar!==null){
+			navbar.classList.toggle('topbar');
+			navbar.classList.toggle('bottombar');
+			var submenus=navbar.getElementsByClassName('submenu');
+			for(var idx=0;idx<submenus.length;idx++){
+				submenus[idx].classList.toggle('bottom-aligned');
+			}
+			var hover_titles=navbar.getElementsByClassName('hover-title');
+			for(var idx=0;idx<hover_titles.length;idx++){
+				hover_titles[idx].classList.toggle('above');
+				hover_titles[idx].classList.toggle('below');
+			}
+			
+			document.getElementById('iconbar-top-center').classList.toggle('nav-cont-offset');
+			document.getElementById('iconbar-bottom-center').classList.toggle('nav-cont-offset');
+		}
+	}
+	
+	//this un-hides js-specific elements on page load
+	//which by default are hidden, since for clients that don't support javascript we don't display them
+	window.onload=function () {
+		var js_elems=document.getElementsByClassName('yes-js');
+		for(var idx=0;idx<js_elems.length;idx++){
+			js_elems[idx].classList.remove('yes-js');
+		}
+		
+		//initialize the alignment toggle to be unchecked, for consistency between page reloads
+		document.getElementById('header-vertical-alignment-toggle').checked=false;
+	}
+	</script>
 </head>
 <body>
 
-<header class='topbar hdr-nav-cont'>
+<header class='topbar hdr-nav-cont' id='navbar'>
 	<div class='grid-container'>
 		<div class='grid'>
 			<div class='cell small-10'>
@@ -31,6 +66,7 @@
 									<li class=''>
 										<a href='#'>Link</a>
 									</li>
+									<!-- TODO: nested menu support -->
 								</ul>
 							</div>
 						</li>
@@ -38,15 +74,17 @@
 				</nav>
 			</div>
 			<div class='cell small-2 hdr-options-cell'>
-				<div class='hover-title-cont'>
+				<div class='hover-title-cont yes-js'>
 					<div class='toggle-slider'>
-						<input type='checkbox' id='header-option-title'>
-						<label class='toggle-label' for='header-option-title'></label>
+						<!-- this toggle flips the top/bottom alignment of this section -->
+						<input type='checkbox' id='header-vertical-alignment-toggle' onchange="menubar_vertical_alignment_toggle();">
+						<label class='toggle-label' for='header-vertical-alignment-toggle'></label>
 					</div>
 					<div class='hover-title below ralign arrow-nopadding'>
-						Toggle Option
+						Toggle Menu Bar Vertical Alignment
 					</div>
 				</div>
+				<!-- TODO: make another toggle that flips the left-right alignment of the menu versus the toggle section -->
 			</div>
 		</div>
 	</div>
@@ -92,7 +130,7 @@
 	</ul>
 </aside>
 
-<aside class='iconbar top-center nav-cont-offset'>
+<aside class='iconbar top-center nav-cont-offset' id='iconbar-top-center'>
 	<ul class='icons'>
 		<li class=''>
 			<a href='#' title='Home'>
@@ -112,7 +150,7 @@
 	</ul>
 </aside>
 
-<aside class='iconbar bottom-center nav-cont-offset'>
+<aside class='iconbar bottom-center' id='iconbar-bottom-center'>
 	<ul class='icons'>
 		<li class=''>
 			<a href='#' title='Home'>
@@ -131,47 +169,6 @@
 		</li>
 	</ul>
 </aside>
-
-
-<div class='bottombar hdr-nav-cont'>
-	<div class='grid-container'>
-		<div class='grid'>
-			<div class='cell small-10 menu-cell'>
-				<nav class='hdr-navbar'>
-					<ul class='horizontal-list hdr-nav-list'>
-						<li class='submenu bottom-aligned'>
-							<label class='dropdown-toggle-label hdr-dropdown-toggle-label' for='bottombar-popup-0'>
-								Menu
-							</label>
-							<input type='checkbox' class='dropdown-toggle hdr-dropdown-toggle' id='bottombar-popup-0'>
-							<div class='dropdown-menu-cont hdr-dropdown-menu-cont'>
-								<ul class='dropdown-menu hdr-dropdown-menu'>
-									<li class=''>
-										<p>Text</p>
-									</li>
-									<li class=''>
-										<a href='#'>Link</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div class='cell small-2 hdr-options-cell'>
-				<div class='hover-title-cont'>
-					<div class='toggle-slider'>
-						<input type='checkbox' id='bottombar-option-title'>
-						<label class='toggle-label' for='bottombar-option-title'></label>
-					</div>
-					<div class='hover-title above ralign arrow-nopadding'>
-						Toggle Option
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <br />
 <br />
