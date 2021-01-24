@@ -34,6 +34,7 @@ the color settings in base-components.css without needing additional css
 body {
 	font-family:sans-serif;
 	transition:all var(--glbl-transition-time) ease;
+	padding-bottom:128px; /* save room for #iconbar-bottom-center */
 }
 h1,h2,h3,h4,h5,h6 {
 	font-family:sans-serif;

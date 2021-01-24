@@ -67,6 +67,17 @@
 		}
 	}
 	
+	function set_iconbar_shown(iconbar_id,show) {
+		var iconbar=document.getElementById(iconbar_id);
+		if(iconbar!==null){
+			if(show) {
+				iconbar.classList.remove('hidden');
+			}else{
+				iconbar.classList.add('hidden');
+			}
+		}
+	}
+	
 	//this un-hides js-specific elements on page load
 	//which by default are hidden, since for clients that don't support javascript we don't display them
 	window.onload=function () {
@@ -80,6 +91,12 @@
 		//initialize the alignment toggles to be unchecked, for consistency between page reloads
 		document.getElementById('header-vertical-alignment-toggle').checked=false;
 		document.getElementById('header-horizontal-alignment-toggle').checked=false;
+		
+		//and make sure the iconbar toggles match what's shown by default
+		document.getElementById('toggle-iconbar-top-center').checked=false;
+		document.getElementById('toggle-iconbar-bottom-center').checked=true;
+		document.getElementById('toggle-iconbar-left-center').checked=false;
+		document.getElementById('toggle-iconbar-right-center').checked=false;
 	}
 	</script>
 </head>
@@ -104,7 +121,7 @@
 									<li class=''>
 										<a href='#'>Link</a>
 									</li>
-									<!-- TODO: nested menu support -->
+									<!-- TODO: add nested menu support, after thinking for a bit about how it should display -->
 								</ul>
 							</div>
 						</li>
@@ -137,7 +154,7 @@
 	</div>
 </header>
 
-<aside class='iconbar left-center'>
+<aside class='iconbar left-center hidden' id='iconbar-left-center'>
 	<ul class='icons'>
 		<li class=''>
 			<a href='#' title='Home'>
@@ -157,7 +174,7 @@
 	</ul>
 </aside>
 
-<aside class='iconbar right-center'>
+<aside class='iconbar right-center hidden' id='iconbar-right-center'>
 	<ul class='icons'>
 		<li class=''>
 			<a href='#' title='Home'>
@@ -177,7 +194,7 @@
 	</ul>
 </aside>
 
-<aside class='iconbar top-center nav-cont-offset' id='iconbar-top-center'>
+<aside class='iconbar top-center nav-cont-offset hidden' id='iconbar-top-center'>
 	<ul class='icons'>
 		<li class=''>
 			<a href='#' title='Home'>
@@ -231,7 +248,97 @@
 				<p>
 					This is a simple demonstration of the basement css library components.
 				</p>
+				
+				<br />
+				
 				<a class='btn' href='#'>Button</a>
+				
+				<br />
+				<br />
+				
+				<div class='toggle-slider yes-js'>
+					<input type='checkbox' id='toggle-iconbar-top-center'
+						onchange='set_iconbar_shown("iconbar-top-center",event.currentTarget.checked)'
+					>
+					<label class='toggle-label' for='toggle-iconbar-top-center'></label>
+					<label class='toggle-label-checked' for='toggle-iconbar-top-center'>Top center iconbar is visible</label>
+					<label class='toggle-label-unchecked' for='toggle-iconbar-top-center'>Top center iconbar is hidden</label>
+				</div>
+				<br />
+				<div class='toggle-slider yes-js'>
+					<input type='checkbox' id='toggle-iconbar-bottom-center'
+						onchange='set_iconbar_shown("iconbar-bottom-center",event.currentTarget.checked)'
+					>
+					<label class='toggle-label' for='toggle-iconbar-bottom-center'></label>
+					<label class='toggle-label-checked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is visible</label>
+					<label class='toggle-label-unchecked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is hidden</label>
+				</div>
+				<br />
+				<div class='toggle-slider yes-js'>
+					<input type='checkbox' id='toggle-iconbar-left-center'
+						onchange='set_iconbar_shown("iconbar-left-center",event.currentTarget.checked)'
+					>
+					<label class='toggle-label' for='toggle-iconbar-left-center'></label>
+					<label class='toggle-label-checked' for='toggle-iconbar-left-center'>Left center iconbar is visible</label>
+					<label class='toggle-label-unchecked' for='toggle-iconbar-left-center'>Left center iconbar is hidden</label>
+				</div>
+				<br />
+				<div class='toggle-slider yes-js'>
+					<input type='checkbox' id='toggle-iconbar-right-center'
+						onchange='set_iconbar_shown("iconbar-right-center",event.currentTarget.checked)'
+					>
+					<label class='toggle-label' for='toggle-iconbar-right-center'></label>
+					<label class='toggle-label-checked' for='toggle-iconbar-right-center'>Right center iconbar is visible</label>
+					<label class='toggle-label-unchecked' for='toggle-iconbar-right-center'>Right center iconbar is hidden</label>
+				</div>
+				
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class='form-section'>
+	<div class='grid-container'>
+		<div class='grid'>
+			<div class='cell'>
+				<div class='form-card'>
+					<form action='' method='GET'>
+						<div class='grid'>
+							<div class='cell small-12 medium-6'>
+								<input type='text' name='full_name' placeholder='Full Name' required='true'>
+							</div>
+							<div class='cell small-12 medium-6'>
+								<input type='email' name='email' placeholder='Email Address' required='true'>
+							</div>
+							<div class='cell small-12 medium-6'>
+								<select name='inquiry_type' placeholder='Inquiry Type' required='true'>
+									<option value='general'>General Inquiry</option>
+									<option value='emergency'>Emergency Situation</option>
+								</select>
+							</div>
+							<div class='cell small-12 medium-6'>
+								<div class='toggle-slider'>
+									<input type='checkbox' id='form-checkbox-demo'>
+									<label class='toggle-label' for='form-checkbox-demo'></label>
+									<label class='toggle-label-checked' for='form-checkbox-demo'>
+										This is a follow up to a previous inquiry.
+									</label>
+									<label class='toggle-label-unchecked' for='form-checkbox-demo'>
+										This is your first attempt to contact us.
+									</label>
+								</div>
+							</div>
+							<div class='cell small-12'>
+								<textarea name='message' placeholder='Message' required='true'></textarea>
+							</div>
+							<div class='cell small-12'>
+								<input type='submit' value='Submit'>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>

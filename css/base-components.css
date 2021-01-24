@@ -5,11 +5,13 @@ NOTE: code which uses this stylesheet can override these settings later
 
 body {
 	--glbl-menu-arrow-height:0.75rem;
+	--glbl-toggle-slider-height:16px;
 	--glbl-hover-title-border-radius:0.5rem;
 	--glbl-hover-title-vert-padding:0.75rem;
 	--glbl-hover-title-horiz-padding:0.5rem;
 	--glbl-hover-title-slidein-offset:15px;
 	--glbl-transition-time:0.5s;
+	--glbl-section-vert-padding:16px;
 	
 	--clr-body-bg:#eeeeee;
 	--clr-body-font:#0a0a0a;
@@ -28,6 +30,7 @@ body {
 	--clr-btn-hover-font:#000000;
 	--clr-btn-hover-bg:#ffffff;
 	--clr-btn-hover-border:var(--clr-toggle-label-switch-checked);
+	--clr-form-card-bg:#ffffff;
 
 	--dropdown-menu-link-vert-padding:1rem;
 	--dropdown-menu-link-horiz-padding:0.5rem;
@@ -39,6 +42,8 @@ body {
 	
 	--btn-padding:8px 16px;
 	--btn-border-radius:0.5rem;
+	
+	--form-card-padding:16px;
 }
 
 
@@ -66,13 +71,16 @@ html,body {
 .yes-js {
 	display:none;
 }
+.hidden, .hide {
+	display:none;
+}
 
 body {
 /*	min-height:100vh; */
 	background-color:var(--clr-body-bg);
 	color:var(--clr-body-font);
 	padding-top:var(--hdr-height);
-	padding-bottom:var(--glbl-padding);
+	padding-bottom:var(--glbl-section-vert-padding);
 }
 
 h1, h2, h3, h4, h5 {
@@ -88,6 +96,10 @@ a {
 }
 a:hover, a:focus, a:active {
 	color:var(--clr-link-font-hover);
+}
+
+section ~ section {
+	padding-top:var(--glbl-section-vert-padding);
 }
 
 ul, ol {
@@ -109,6 +121,7 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 
 .toggle-slider {
 	display:inline-block;
+	height:var(--glbl-toggle-slider-height);
 }
 .toggle-slider > input[type=checkbox] {
 /*	display:none;*/
@@ -128,8 +141,8 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	display:inline-block;
 	position:relative;
 	border-radius:8px;
-	height:16px;
-	width:32px;
+	height:var(--glbl-toggle-slider-height);
+	width:calc(var(--glbl-toggle-slider-height) * 2);
 	background-color:var(--clr-toggle-label-bg);
 	border:1px solid transparent;
 }
@@ -142,8 +155,8 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	bottom:0px;
 
 	border-radius:8px;
-	width:14px;
-	height:14px;
+	width:calc(var(--glbl-toggle-slider-height) - 2px);
+	height:calc(var(--glbl-toggle-slider-height) - 2px);
 	transition:all 0.5s ease;
 	background-color:var(--clr-toggle-label-switch-unchecked);
 }
@@ -155,6 +168,22 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	background-color:var(--clr-toggle-label-switch-checked);
 	left:100%;
 	transform:translateX(-100%);
+}
+.toggle-slider > input[type=checkbox] ~ label.toggle-label-unchecked,
+.toggle-slider > input[type=checkbox] ~ label.toggle-label-checked {
+	margin-left:8px;
+}
+.toggle-slider > input[type=checkbox] ~ label.toggle-label-unchecked {
+	display:inline-block;
+}
+.toggle-slider > input[type=checkbox] ~ label.toggle-label-checked {
+	display:none;
+}
+.toggle-slider > input[type=checkbox]:checked ~ label.toggle-label-unchecked {
+	display:none;
+}
+.toggle-slider > input[type=checkbox]:checked ~ label.toggle-label-checked {
+	display:inline-block;
 }
 
 .topbar, .bottombar {
@@ -570,6 +599,76 @@ aside.iconbar.bottom-center ul.icons img {
 	color:var(--clr-btn-hover-font);
 	background-color:var(--clr-btn-hover-bg);
 	border-color:var(--clr-btn-hover-border);
+}
+
+.form-card {
+	background-color:var(--clr-form-card-bg);
+	padding:var(--form-card-padding);
+}
+.form-card .cell {
+	padding:8px;
+	display:flex;
+	align-items:center;
+	justify-content:flex-start;
+}
+
+form input[type=submit] {
+	padding:var(--btn-padding);
+	border-radius:var(--btn-border-radius);
+	border-width:1px;
+	border-style:solid;
+	transition:all var(--glbl-transition-time) ease;
+	text-decoration:none;
+	
+	color:var(--clr-btn-font);
+	background-color:var(--clr-btn-bg);
+	border-color:var(--clr-btn-border);
+}
+form input[type=submit]:hover,
+form input[type=submit]:focus,
+form input[type=submit]:active {
+	color:var(--clr-btn-hover-font);
+	background-color:var(--clr-btn-hover-bg);
+	border-color:var(--clr-btn-hover-border);
+}
+
+form input:not([type=checkbox]),
+form select,
+form textarea {
+	width:100%;
+	border-radius:0px;
+	border:1px solid var(--clr-btn-bg);
+	transition:all var(--glbl-transition-time) ease;
+}
+form select {
+	min-height:32px;
+	padding:6px;
+}
+form select > option {
+	min-height:32px;
+	padding:6px;
+}
+form input:not([type=checkbox]),
+form textarea {
+	padding:8px;
+}
+form input:not([type=checkbox]):hover,
+form input:not([type=checkbox]):focus,
+form input:not([type=checkbox]):active,
+form select:hover,
+form select:focus,
+form select:active,
+form textarea:hover
+form textarea:focus
+form textarea:active {
+	border:1px solid var(--clr-toggle-label-switch-unchecked);
+}
+form .toggle-slider {
+	min-height:32px;
+	height:100%;
+	display:flex;
+	align-items:center;
+	justify-content:flex-start;
 }
 
 /* ---------------------------------------------------------------------------
