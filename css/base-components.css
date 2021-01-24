@@ -71,22 +71,22 @@ html,body {
 	padding:0rem;
 }
 
-.no-js {
-	display:inline-block;
-}
-.yes-js {
-	display:none;
-}
-.hidden, .hide {
-	display:none;
-}
-
 body {
 /*	min-height:100vh; */
 	background-color:var(--clr-body-bg);
 	color:var(--clr-body-font);
 	padding-top:var(--hdr-height);
 	padding-bottom:var(--glbl-section-vert-padding);
+}
+
+body .no-js {
+	display:inline-block;
+}
+body .yes-js {
+	display:none;
+}
+body .hidden, body .hide {
+	display:none;
 }
 
 h1, h2, h3, h4, h5 {
