@@ -4,6 +4,8 @@ NOTE: code which uses this stylesheet can override these settings later
 ----------------------------------------------------------------------------*/
 
 body {
+	--glbl-padding:1.5rem;
+	--glbl-font-vbold:900;
 	--glbl-menu-arrow-height:0.75rem;
 	--glbl-toggle-slider-height:16px;
 	--glbl-hover-title-border-radius:0.5rem;
@@ -31,6 +33,10 @@ body {
 	--clr-btn-hover-bg:#ffffff;
 	--clr-btn-hover-border:var(--clr-toggle-label-switch-checked);
 	--clr-form-card-bg:#ffffff;
+	--clr-banner-font:#000000;
+	--clr-banner-bg:var(--clr-toggle-label-switch-unchecked);
+	
+	--hdr-height:3rem;
 
 	--dropdown-menu-link-vert-padding:1rem;
 	--dropdown-menu-link-horiz-padding:0.5rem;
@@ -157,7 +163,7 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	border-radius:8px;
 	width:calc(var(--glbl-toggle-slider-height) - 2px);
 	height:calc(var(--glbl-toggle-slider-height) - 2px);
-	transition:all 0.5s ease;
+	transition:all var(--glbl-transition-time) ease;
 	background-color:var(--clr-toggle-label-switch-unchecked);
 }
 .toggle-slider > input[type=checkbox]:checked ~ label.toggle-label::before {

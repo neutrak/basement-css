@@ -3,9 +3,6 @@ BEGIN global settings
 ----------------------------------------------------------------------------*/
 
 body {
-	--glbl-padding:1.5rem;
-	--glbl-font-vbold:900;
-	--glbl-menu-arrow-height:0.75rem;
 	--glbl-transition-time:0.4s; /* debug */
 	--glbl-scrollbar-offset:12px;
 	
