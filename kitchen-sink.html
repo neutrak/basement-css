@@ -67,6 +67,13 @@
 		}
 	}
 	
+	function banner_display_toggle() {
+		var banner_elems=document.getElementsByClassName('banner');
+		for(var idx=0;idx<banner_elems.length;idx++){
+			banner_elems[idx].classList.toggle('hidden');
+		}
+	}
+	
 	function set_iconbar_shown(iconbar_id,show) {
 		var iconbar=document.getElementById(iconbar_id);
 		if(iconbar!==null){
@@ -91,6 +98,7 @@
 		//initialize the alignment toggles to be unchecked, for consistency between page reloads
 		document.getElementById('header-vertical-alignment-toggle').checked=false;
 		document.getElementById('header-horizontal-alignment-toggle').checked=false;
+		document.getElementById('banner-display-toggle').checked=false;
 		
 		//and make sure the iconbar toggles match what's shown by default
 		document.getElementById('toggle-iconbar-top-center').checked=false;
@@ -103,9 +111,18 @@
 <body>
 
 <header class='topbar hdr-nav-cont' id='navbar'>
-	<div class='grid-container'>
+	<div class='banner hidden'>
 		<div class='grid'>
-			<div class='cell small-8 medium-10 hdr-menu-cell'>
+			<div class='cell small-12'>
+				<p>
+					Alert: There is a <a href='https://en.wikipedia.org/wiki/Coronavirus_disease_2019' target='_blank'>pandemic</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class='grid-container fixed-bar-height'>
+		<div class='grid'>
+			<div class='cell small-6 medium-9 hdr-menu-cell'>
 				<nav class='hdr-navbar'>
 					<ul class='horizontal-list hdr-nav-list'>
 						<li class='hdr-nav-submenu submenu'>
@@ -128,7 +145,7 @@
 					</ul>
 				</nav>
 			</div>
-			<div class='cell small-4 medium-2 hdr-options-cell'>
+			<div class='cell small-6 medium-3 hdr-options-cell'>
 				<div class='hover-title-cont yes-js'>
 					<div class='toggle-slider'>
 						<!-- this toggle flips the top/bottom alignment of this section -->
@@ -147,6 +164,16 @@
 					</div>
 					<div class='hover-title below halign-r arrow-nopadding'>
 						Toggle Menu Bar Horizontal Alignment
+					</div>
+				</div>
+				<div class='hover-title-cont yes-js'>
+					<div class='toggle-slider'>
+						<!-- this toggle flips the alert banner on or off -->
+						<input type='checkbox' id='banner-display-toggle' onchange="banner_display_toggle();">
+						<label class='toggle-label' for='banner-display-toggle'></label>
+					</div>
+					<div class='hover-title below halign-r arrow-nopadding'>
+						Toggle Banner Display
 					</div>
 				</div>
 			</div>

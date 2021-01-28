@@ -5,6 +5,8 @@ NOTE: code which uses this stylesheet can override these settings later
 
 body {
 	--glbl-padding:1.5rem;
+	--glbl-font-semibold:500;
+	--glbl-font-bold:700;
 	--glbl-font-vbold:900;
 	--glbl-menu-arrow-height:0.75rem;
 	--glbl-toggle-slider-height:16px;
@@ -199,11 +201,14 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	right:0vw;
 	width:100vw;
 	display:block;
-	height:var(--hdr-height);
+/*	height:var(--hdr-height); */
 	box-shadow:0rem 0.5rem 0.5rem var(--clr-hdr-shadow);
 	background-color:var(--clr-hdr-bg);
 	transition:all var(--glbl-transition-time) ease;
 	z-index:2;
+}
+.fixed-bar-height {
+	height:var(--hdr-height);
 }
 .bottombar {
 	top:unset;
@@ -675,6 +680,19 @@ form .toggle-slider {
 	display:flex;
 	align-items:center;
 	justify-content:flex-start;
+}
+
+.banner {
+	background-color:var(--clr-banner-bg);
+	color:var(--clr-banner-font);
+	text-align:center;
+	padding-top:calc(var(--glbl-padding) / 4);
+	padding-bottom:calc(var(--glbl-padding) / 4);
+	font-weight:var(--glbl-font-bold);
+}
+.banner p {
+	margin-top:0px;
+	margin-bottom:0px;
 }
 
 /* ---------------------------------------------------------------------------
