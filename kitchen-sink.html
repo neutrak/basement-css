@@ -19,7 +19,7 @@
 			navbar.classList.toggle('bottombar');
 			var submenus=navbar.getElementsByClassName('submenu');
 			for(var idx=0;idx<submenus.length;idx++){
-				submenus[idx].classList.toggle('bottom-aligned');
+				submenus[idx].classList.toggle('valign-b');
 			}
 			var hover_titles=navbar.getElementsByClassName('hover-title');
 			for(var idx=0;idx<hover_titles.length;idx++){
@@ -48,21 +48,21 @@
 				parent_elem.appendChild(menu_cell);
 				parent_elem.appendChild(options_cell);
 			}
-			options_cell.classList.toggle('lalign');
-			menu_cell.classList.toggle('ralign');
+			options_cell.classList.toggle('halign-l');
+			menu_cell.classList.toggle('halign-r');
 			
 			//toggle classes to flip alignment of items within the cells
 			var hover_titles=navbar.getElementsByClassName('hover-title');
 			for(var idx=0;idx<hover_titles.length;idx++){
-				hover_titles[idx].classList.toggle('ralign');
-				hover_titles[idx].classList.toggle('lalign');
+				hover_titles[idx].classList.toggle('halign-r');
+				hover_titles[idx].classList.toggle('halign-l');
 			}
 			
 			//toggle classes to flip left-right menu arrow position for menus when opened
 			var dropdown_menus=navbar.getElementsByClassName('dropdown-menu-cont');
 			for(var idx=0;idx<dropdown_menus.length;idx++){
-				dropdown_menus[idx].classList.toggle('ralign');
-				dropdown_menus[idx].classList.toggle('lalign');
+				dropdown_menus[idx].classList.toggle('halign-r');
+				dropdown_menus[idx].classList.toggle('halign-l');
 			}
 		}
 	}
@@ -113,7 +113,7 @@
 							<label class='dropdown-toggle-label hdr-dropdown-toggle-label' for='hdr-dropdown-0'>
 								Menu
 							</label>
-							<div class='dropdown-menu-cont lalign hdr-dropdown-menu-cont'>
+							<div class='dropdown-menu-cont halign-l hdr-dropdown-menu-cont'>
 								<ul class='dropdown-menu hdr-dropdown-menu'>
 									<li class=''>
 										<p>Text</p>
@@ -135,7 +135,7 @@
 						<input type='checkbox' id='header-vertical-alignment-toggle' onchange="menubar_vertical_alignment_toggle();">
 						<label class='toggle-label' for='header-vertical-alignment-toggle'></label>
 					</div>
-					<div class='hover-title below ralign arrow-nopadding'>
+					<div class='hover-title below halign-r arrow-nopadding'>
 						Toggle Menu Bar Vertical Alignment
 					</div>
 				</div>
@@ -145,7 +145,7 @@
 						<input type='checkbox' id='header-horizontal-alignment-toggle' onchange="menubar_horizontal_alignment_toggle();">
 						<label class='toggle-label' for='header-horizontal-alignment-toggle'></label>
 					</div>
-					<div class='hover-title below ralign arrow-nopadding'>
+					<div class='hover-title below halign-r arrow-nopadding'>
 						Toggle Menu Bar Horizontal Alignment
 					</div>
 				</div>

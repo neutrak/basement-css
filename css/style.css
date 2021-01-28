@@ -59,10 +59,10 @@ BEGIN module styles
 	margin-right:0px;
 }
 
-.hdr-nav-cont .cell.hdr-options-cell.lalign {
+.hdr-nav-cont .cell.hdr-options-cell.halign-l {
 	justify-content:flex-start;
 }
-.hdr-nav-cont .cell.hdr-menu-cell.ralign {
+.hdr-nav-cont .cell.hdr-menu-cell.halign-r {
 	display:flex;
 	align-items:center;
 	justify-content:flex-end;
@@ -105,10 +105,10 @@ BEGIN medium and large display adjustments (mobile is default)
 	.hdr-nav-cont .cell.hdr-options-cell {
 		padding-right:12px; /* correct for header width being larger to accomodate scroll offset */
 	}
-	.hdr-nav-cont .cell.hdr-options-cell.lalign {
+	.hdr-nav-cont .cell.hdr-options-cell.halign-l {
 		padding-right:0px;
 	}
-	.hdr-nav-cont .cell.hdr-menu-cell.ralign {
+	.hdr-nav-cont .cell.hdr-menu-cell.halign-r {
 		padding-right:12px; /* correct for header width being larger to accomodate scroll offset */
 	}
 

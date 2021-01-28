@@ -248,11 +248,11 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	top:calc(100% + var(--glbl-menu-arrow-height));
 	transform:translateY(var(--glbl-hover-title-slidein-offset));
 }
-.hover-title.lalign {
+.hover-title.halign-l {
 	left:0px;
 }
 
-.hover-title.ralign {
+.hover-title.halign-r {
 	right:0px;
 }
 
@@ -275,19 +275,19 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	transition:all var(--glbl-transition-time) ease;
 }
 
-.hover-title.ralign::before {
+.hover-title.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
 }
-.hover-title.ralign::after {
+.hover-title.halign-r::after {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
 }
-.hover-title.lalign::before {
+.hover-title.halign-l::before {
 	left:calc(-1px + var(--glbl-padding));
 	right:unset;
 }
-.hover-title.lalign::after {
+.hover-title.halign-l::after {
 	left:calc(-1px + var(--glbl-padding));
 	right:unset;
 }
@@ -309,13 +309,13 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-hover-title-border);
 }
 
-.hover-title.lalign.arrow-nopadding::after,
-.hover-title.lalign.arrow-nopadding::before {
+.hover-title.halign-l.arrow-nopadding::after,
+.hover-title.halign-l.arrow-nopadding::before {
 	right:unset;
 	left:var(--glbl-hover-title-border-radius);
 }
-.hover-title.ralign.arrow-nopadding::after,
-.hover-title.ralign.arrow-nopadding::before {
+.hover-title.halign-r.arrow-nopadding::after,
+.hover-title.halign-r.arrow-nopadding::before {
 	left:unset;
 	right:var(--glbl-hover-title-border-radius);
 }
@@ -446,43 +446,43 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	position:relative;
 }
 
-.submenu.bottom-aligned .dropdown-menu-cont {
+.submenu.valign-b .dropdown-menu-cont {
 	top:unset;
 	bottom:calc(100% + var(--glbl-menu-arrow-height));
 	box-shadow:0rem -0.5rem 0.5rem var(--clr-dropdown-shadow);
 }
-.submenu.bottom-aligned .dropdown-menu-cont::before,
-.submenu.bottom-aligned .dropdown-menu-cont::after {
+.submenu.valign-b .dropdown-menu-cont::before,
+.submenu.valign-b .dropdown-menu-cont::after {
 	top:unset;
 }
-.submenu.bottom-aligned .dropdown-menu-cont::before {
+.submenu.valign-b .dropdown-menu-cont::before {
 	border-bottom:none;
 	border-top:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-dropdown-toggle-border);
 	bottom:calc(-1px - var(--glbl-menu-arrow-height));
 }
-.submenu.bottom-aligned .dropdown-menu-cont::after {
+.submenu.valign-b .dropdown-menu-cont::after {
 	border-bottom:none;
 	border-top:var(--glbl-menu-arrow-height) solid var(--clr-dropdown-bg);
 	bottom:calc(0px - var(--glbl-menu-arrow-height));
 }
-.submenu.bottom-aligned input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
+.submenu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
 	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
 }
-.submenu.bottom-aligned input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
+.submenu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	transform:none;
 }
 
-.dropdown-menu-cont.lalign {
+.dropdown-menu-cont.halign-l {
 	/* left alignment is default so no styles are needed here; this is just for completeness */
 }
-.dropdown-menu-cont.ralign {
+.dropdown-menu-cont.halign-r {
 	right:0px;
 }
-.dropdown-menu-cont.ralign::after {
+.dropdown-menu-cont.halign-r::after {
 	left:unset;
 	right:var(--glbl-padding);
 }
-.dropdown-menu-cont.ralign::before {
+.dropdown-menu-cont.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
 }

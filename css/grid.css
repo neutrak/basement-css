@@ -122,23 +122,23 @@ BEGIN medium and large display adjustments (mobile is default)
 	.grid > .cell.medium-12 {
 		width:100%;
 	}
-	.cell.lalign {
+	.cell.halign-l {
 		text-align:left;
 		display:flex;
 		align-items:center;
 		justify-content:flex-start;
 	}
-	.cell.lalign > *:not(:last-child) {
+	.cell.halign-l > *:not(:last-child) {
 		margin-right:var(--glbl-padding);
 	}
 
-	.cell.ralign {
+	.cell.halign-r {
 		text-align:right;
 		display:flex;
 		align-items:center;
 		justify-content:flex-end;
 	}
-	.cell.ralign > *:not(:first-child) {
+	.cell.halign-r > *:not(:first-child) {
 		margin-left:var(--glbl-padding);
 	}
 	/* ---------------------------------------------------------------------------
