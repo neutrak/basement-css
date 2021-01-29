@@ -399,7 +399,10 @@ input[type=checkbox].submenu-toggle ~ .submenu-cont {
 	display:none;
 }
 input[type=checkbox].submenu-toggle:checked ~ .submenu-cont {
-	display:block
+	display:block;
+}
+input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-label-checked {
+	border-radius:0px;
 }
 
 .dropdown-menu-cont {
