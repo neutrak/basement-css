@@ -326,9 +326,9 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 }
 
 
-.dropdown-toggle-label {
+.dropdown-toggle-label, .topbar-link, .bottombar-link {
 	height:100%;
-	padding:0rem var(--glbl-padding);
+	padding:0rem calc(var(--glbl-padding) / 2);
 	font-weight:var(--glbl-font-vbold);
 	height:var(--hdr-height);
 	display:block;
@@ -341,11 +341,26 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	border-left:1px solid var(--clr-dropdown-toggle-border);
 	border-right:1px solid var(--clr-dropdown-toggle-border);
 	transition:all var(--glbl-transition-time) ease;
+	text-decoration:none;
 }
 .dropdown-toggle-label:hover,
 .dropdown-toggle-label:focus,
-.dropdown-toggle-label:active {
+.dropdown-toggle-label:active,
+.topbar-link:hover,
+.topbar-link:focus,
+.topbar-link:active,
+.bottombar-link:hover,
+.bottombar-link:focus,
+.bottombar-link:active {
 	background-color:var(--clr-dropdown-toggle-hover-bg);
+}
+.topbar-link:hover,
+.topbar-link:focus,
+.topbar-link:active,
+.bottombar-link:hover,
+.bottombar-link:focus,
+.bottombar-link:active {
+	color:var(--clr-body-font);
 }
 input[type=checkbox].dropdown-toggle:hover ~ label.dropdown-toggle-label,
 input[type=checkbox].dropdown-toggle:focus ~ label.dropdown-toggle-label,
@@ -446,35 +461,40 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	border-bottom:0px solid transparent;
 }
 
-.submenu {
+.menu {
 	height:100%;
 	position:relative;
 }
 
-.submenu.valign-b .dropdown-menu-cont {
+.menu.valign-b .dropdown-menu-cont {
 	top:unset;
 	bottom:calc(100% + var(--glbl-menu-arrow-height));
 	box-shadow:0rem -0.5rem 0.5rem var(--clr-dropdown-shadow);
 }
-.submenu.valign-b .dropdown-menu-cont::before,
-.submenu.valign-b .dropdown-menu-cont::after {
+.menu.valign-b .dropdown-menu-cont::before,
+.menu.valign-b .dropdown-menu-cont::after {
 	top:unset;
 }
-.submenu.valign-b .dropdown-menu-cont::before {
+.menu.valign-b .dropdown-menu-cont::before {
 	border-bottom:none;
 	border-top:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-dropdown-toggle-border);
 	bottom:calc(-1px - var(--glbl-menu-arrow-height));
 }
-.submenu.valign-b .dropdown-menu-cont::after {
+.menu.valign-b .dropdown-menu-cont::after {
 	border-bottom:none;
 	border-top:var(--glbl-menu-arrow-height) solid var(--clr-dropdown-bg);
 	bottom:calc(0px - var(--glbl-menu-arrow-height));
 }
-.submenu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
+.menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
 	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
 }
-.submenu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
+.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	transform:none;
+}
+.nav-list-item ~ .nav-list-item .topbar-link,
+.nav-list-item ~ .nav-list-item .bottombar-link,
+.nav-list-item ~ .nav-list-item .dropdown-toggle-label {
+	border-left:none;
 }
 
 .dropdown-menu-cont.halign-l {
@@ -709,6 +729,9 @@ BEGIN medium and large display adjustments (mobile is default)
 	BEGIN global component styles
 	----------------------------------------------------------------------------*/
 
+	.dropdown-toggle-label, .topbar-link, .bottombar-link {
+		padding:0rem var(--glbl-padding);
+	}
 
 	/* ---------------------------------------------------------------------------
 	END global component styles

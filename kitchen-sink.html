@@ -17,9 +17,9 @@
 		if(navbar!==null){
 			navbar.classList.toggle('topbar');
 			navbar.classList.toggle('bottombar');
-			var submenus=navbar.getElementsByClassName('submenu');
-			for(var idx=0;idx<submenus.length;idx++){
-				submenus[idx].classList.toggle('valign-b');
+			var menus=navbar.getElementsByClassName('menu');
+			for(var idx=0;idx<menus.length;idx++){
+				menus[idx].classList.toggle('valign-b');
 			}
 			var hover_titles=navbar.getElementsByClassName('hover-title');
 			for(var idx=0;idx<hover_titles.length;idx++){
@@ -125,7 +125,12 @@
 			<div class='cell small-6 medium-9 hdr-menu-cell'>
 				<nav class='hdr-navbar'>
 					<ul class='horizontal-list hdr-nav-list'>
-						<li class='hdr-nav-submenu submenu'>
+						<li class='nav-list-item topbar-link-cont hdr-nav-link'>
+							<a class='topbar-link' href='#'>
+								Home
+							</a>
+						</li>
+						<li class='nav-list-item hdr-nav-menu menu'>
 							<input type='checkbox' class='dropdown-toggle hdr-dropdown-toggle' id='hdr-dropdown-0'>
 							<label class='dropdown-toggle-label hdr-dropdown-toggle-label' for='hdr-dropdown-0'>
 								Menu
