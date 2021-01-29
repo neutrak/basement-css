@@ -37,6 +37,7 @@ body {
 	--clr-form-card-bg:#ffffff;
 	--clr-banner-font:#000000;
 	--clr-banner-bg:var(--clr-toggle-label-switch-unchecked);
+	--clr-submenu-margin-bg:#aeaeae;
 	
 	--hdr-height:3rem;
 
@@ -181,16 +182,16 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 .toggle-slider > input[type=checkbox] ~ label.toggle-label-checked {
 	margin-left:8px;
 }
-.toggle-slider > input[type=checkbox] ~ label.toggle-label-unchecked {
+input[type=checkbox] ~ label.toggle-label-unchecked {
 	display:inline-block;
 }
-.toggle-slider > input[type=checkbox] ~ label.toggle-label-checked {
+input[type=checkbox] ~ label.toggle-label-checked {
 	display:none;
 }
-.toggle-slider > input[type=checkbox]:checked ~ label.toggle-label-unchecked {
+input[type=checkbox]:checked ~ label.toggle-label-unchecked {
 	display:none;
 }
-.toggle-slider > input[type=checkbox]:checked ~ label.toggle-label-checked {
+input[type=checkbox]:checked ~ label.toggle-label-checked {
 	display:inline-block;
 }
 
@@ -351,7 +352,10 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 .topbar-link:active,
 .bottombar-link:hover,
 .bottombar-link:focus,
-.bottombar-link:active {
+.bottombar-link:active,
+.submenu-toggle-label:hover,
+.submenu-toggle-label:focus,
+.submenu-toggle-label:active {
 	background-color:var(--clr-dropdown-toggle-hover-bg);
 }
 .topbar-link:hover,
@@ -364,11 +368,14 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 }
 input[type=checkbox].dropdown-toggle:hover ~ label.dropdown-toggle-label,
 input[type=checkbox].dropdown-toggle:focus ~ label.dropdown-toggle-label,
-input[type=checkbox].dropdown-toggle:active ~ label.dropdown-toggle-label {
+input[type=checkbox].dropdown-toggle:active ~ label.dropdown-toggle-label,
+input[type=checkbox].submenu-toggle:hover ~ label.submenu-toggle-label,
+input[type=checkbox].submenu-toggle:focus ~ label.submenu-toggle-label,
+input[type=checkbox].submenu-toggle:active ~ label.submenu-toggle-label {
 	background-color:var(--clr-dropdown-toggle-hover-bg);
 }
 
-input[type=checkbox].dropdown-toggle {
+input[type=checkbox].dropdown-toggle, input[type=checkbox].submenu-toggle {
 /*	display:none; */
 	/* this needs to not be display:none for keyboard navigation to work */
 	opacity:0;
@@ -388,6 +395,12 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	pointer-events:auto;
 	transform:none;
 }
+input[type=checkbox].submenu-toggle ~ .submenu-cont {
+	display:none;
+}
+input[type=checkbox].submenu-toggle:checked ~ .submenu-cont {
+	display:block
+}
 
 .dropdown-menu-cont {
 	z-index:0;
@@ -397,6 +410,7 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	border-radius:var(--dropdown-border-radius);
 	border:1px solid var(--clr-dropdown-toggle-border);
 	width:10rem;
+	text-align:center;
 }
 
 .dropdown-menu-cont::after {
@@ -427,11 +441,13 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	padding:0rem;
 	border-radius:var(--dropdown-border-radius);
 }
-.dropdown-menu > li {
+.dropdown-menu > li, .submenu > li {
 	padding:0rem;
 }
 .dropdown-menu > li > a,
-.dropdown-menu > li > * {
+.dropdown-menu > li > *,
+.submenu > li > a,
+.submenu > li > * {
 	display:flex;
 	align-items:center;
 	justify-content:center;
@@ -446,15 +462,20 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus,
-.dropdown-menu > li > a:active {
+.dropdown-menu > li > a:active,
+.submenu > li > a:hover,
+.submenu > li > a:focus,
+.submenu > li > a:active {
 	background-color:var(--clr-dropdown-link-hover-bg);
 	text-decoration:underline;
 }
 
+.dropdown-menu > li:first-child,
 .dropdown-menu > li:first-child > a,
 .dropdown-menu > li:first-child > * {
 	border-radius:var(--dropdown-border-radius) var(--dropdown-border-radius) 0rem 0rem;
 }
+.dropdown-menu > li:last-child,
 .dropdown-menu > li:last-child > a,
 .dropdown-menu > li:last-child > * {
 	border-radius:0rem 0rem var(--dropdown-border-radius) var(--dropdown-border-radius);
@@ -510,6 +531,33 @@ input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 .dropdown-menu-cont.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
+}
+
+.submenu-opener {
+	height:100%;
+	width:100%;
+	text-align:center;
+}
+.submenu-toggle-label {
+	width:100%;
+	border-bottom:none;
+	cursor:pointer;
+}
+.submenu > li > .submenu-toggle-label.toggle-label-checked {
+	border-bottom:none;
+}
+.submenu-opener > .submenu-cont {
+	background-color:var(--clr-submenu-margin-bg);
+	border-top:1px solid var(--clr-dropdown-toggle-border);
+	padding:0px 8px 0px 8px;
+}
+.submenu {
+	list-style-type:none;
+	padding:0px;
+}
+.submenu > li:last-child > a,
+.submenu > li:last-child > * {
+	border-bottom:none;
 }
 
 aside.iconbar {
@@ -729,6 +777,9 @@ BEGIN medium and large display adjustments (mobile is default)
 	BEGIN global component styles
 	----------------------------------------------------------------------------*/
 
+	.dropdown-menu-cont {
+		width:15rem;
+	}
 	.dropdown-toggle-label, .topbar-link, .bottombar-link {
 		padding:0rem var(--glbl-padding);
 	}
