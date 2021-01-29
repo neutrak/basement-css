@@ -38,6 +38,13 @@ body {
 	--clr-banner-font:#000000;
 	--clr-banner-bg:var(--clr-toggle-label-switch-unchecked);
 	--clr-submenu-margin-bg:#aeaeae;
+	--clr-dropdown-shadow:#808080;
+	--clr-dropdown-bg:#efefef;
+	--clr-dropdown-toggle-bg:var(--clr-dropdown-bg);
+	--clr-dropdown-toggle-hover-bg:#cecece;
+	--clr-dropdown-toggle-border:var(--clr-body-font);
+	--clr-dropdown-link-bg:var(--clr-dropdown-toggle-bg);
+	--clr-dropdown-link-hover-bg:var(--clr-dropdown-toggle-hover-bg);
 	
 	--hdr-height:3rem;
 
@@ -332,7 +339,6 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 	padding:0rem calc(var(--glbl-padding) / 2);
 	font-weight:var(--glbl-font-vbold);
 	height:var(--hdr-height);
-	display:block;
 	position:relative;
 	background-color:var(--clr-dropdown-toggle-bg);
 	display:flex;
