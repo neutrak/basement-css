@@ -394,12 +394,23 @@ input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
 	opacity:0;
 	pointer-events:none;
 	transition:all var(--glbl-transition-time) ease;
+	transform:translateY(var(--glbl-hover-title-slidein-offset)) translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
+}
+input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-l,
+input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-r {
 	transform:translateY(var(--glbl-hover-title-slidein-offset));
 }
 input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	opacity:1;
 	pointer-events:auto;
+}
+input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-l,
+input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-r {
 	transform:none;
+}
+input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont:not(.halign-l):not(.halign-r) {
+	/* NOTE: This assumes that the dropdown-toggle has --glbl-padding applied */
+	transform:translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
 }
 input[type=checkbox].submenu-toggle ~ .submenu-cont {
 	display:none;
@@ -427,7 +438,8 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	z-index:1;
 	position:absolute;
 	top:calc(0rem - var(--glbl-menu-arrow-height));
-	left:var(--glbl-padding);
+	left:50%;
+	transform:translateX(-50%);
 	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-dropdown-bg);
 	border-left:var(--glbl-menu-arrow-height) solid transparent;
 	border-right:var(--glbl-menu-arrow-height) solid transparent;
@@ -438,7 +450,8 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	z-index:1;
 	position:absolute;
 	top:calc(-1px - var(--glbl-menu-arrow-height));
-	left:calc(-1px + var(--glbl-padding));
+	left:50%;
+	transform:translateX(-50%);
 	border-bottom:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-dropdown-toggle-border);
 	border-left:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
 	border-right:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
@@ -501,6 +514,9 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	bottom:calc(100% + var(--glbl-menu-arrow-height));
 	box-shadow:0rem -0.5rem 0.5rem var(--clr-dropdown-shadow);
 }
+.menu.valign-b .dropdown-menu-cont:not(.halign-r) {
+	left:0px;
+}
 .menu.valign-b .dropdown-menu-cont::before,
 .menu.valign-b .dropdown-menu-cont::after {
 	top:unset;
@@ -516,10 +532,18 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	bottom:calc(0px - var(--glbl-menu-arrow-height));
 }
 .menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
+	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset))) translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
+}
+.menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-l,
+.menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-r {
 	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
 }
-.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
+.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-l,
+.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-r {
 	transform:none;
+}
+.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont:not(.halign-l):not(.halign-r) {
+	transform:translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
 }
 .nav-list-item ~ .nav-list-item .topbar-link,
 .nav-list-item ~ .nav-list-item .bottombar-link,
@@ -527,19 +551,34 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	border-left:none;
 }
 
+.dropdown-menu-cont.halign-c {
+	/* center alignment is default so no styles are needed here; this is just for completeness */
+}
 .dropdown-menu-cont.halign-l {
-	/* left alignment is default so no styles are needed here; this is just for completeness */
+	left:0px;
 }
 .dropdown-menu-cont.halign-r {
 	right:0px;
 }
+.dropdown-menu-cont.halign-l::after {
+	left:var(--glbl-padding);
+	right:unset;
+	transform:none;
+}
+.dropdown-menu-cont.halign-l::before {
+	left:calc(-1px + var(--glbl-padding));
+	right:unset;
+	transform:none;
+}
 .dropdown-menu-cont.halign-r::after {
 	left:unset;
 	right:var(--glbl-padding);
+	transform:none;
 }
 .dropdown-menu-cont.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
+	transform:none;
 }
 
 .submenu-opener {
