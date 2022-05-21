@@ -477,6 +477,8 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	list-style-type:none;
 	padding:0rem;
 	border-radius:var(--dropdown-border-radius);
+	max-height:calc(100vh - var(--hdr-height) - 2rem);
+	overflow:auto;
 }
 .dropdown-menu > li, .submenu > li {
 	padding:0rem;
