@@ -82,6 +82,12 @@ END grid definition styles
 BEGIN medium and large display adjustments (mobile is default)
 ----------------------------------------------------------------------------*/
 @media all and (min-width:768px) { /* $screen-size-medium */
+	.hidden-on-medium {
+		display:none;
+	}
+	.shown-on-medium, .hidden.shown-on-medium {
+		display:inline-block;
+	}
 	
 	/* ---------------------------------------------------------------------------
 	BEGIN grid definition styles

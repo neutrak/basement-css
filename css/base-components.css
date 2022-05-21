@@ -134,6 +134,9 @@ ul.horizontal-list > li, ol.horizontal-list > li {
 	display:inline-block;
 	height:100%;
 }
+ul.horizontal-list > li.hidden, ol.horizontal-list > li.hidden {
+	display:none;
+}
 
 .toggle-slider {
 	display:inline-block;
@@ -235,9 +238,6 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 	pointer-events:auto;
 	transform:none;
 }
-.hover-title-cont:hover .hover-title:not(.halign-l):not(.halign-r) { /* halign-c */
-	transform:translateX(-25%) translateX(calc(0px - var(--glbl-padding)));
-}
 
 .hover-title {
 	z-index:1;
@@ -260,17 +260,11 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
 	box-shadow:0rem -0.5rem 0.5rem var(--clr-hover-title-shadow);
 }
-.hover-title.above:not(.halign-l):not(.halign-r){ /* halign-c */
-	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset))) translateX(-25%) translateX(calc(0px - var(--glbl-padding)));
-}
 .hover-title.below {
 	top:calc(100% + var(--glbl-menu-arrow-height));
 	transform:translateY(var(--glbl-hover-title-slidein-offset));
 }
-.hover-title.below:not(.halign-l):not(.halign-r){ /* halign-c */
-	transform:translateY(var(--glbl-hover-title-slidein-offset)) translateX(-25%) translateX(calc(0px - var(--glbl-padding)));
-}
-.hover-title:not(.halign-r) { /* halign-l, halign-c */
+.hover-title.halign-l {
 	left:0px;
 }
 
@@ -282,8 +276,7 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 	content:' ';
 	z-index:1;
 	position:absolute;
-	left:50%;
-	transform:translateX(-50%);
+	left:var(--glbl-padding);
 	border-left:var(--glbl-menu-arrow-height) solid transparent;
 	border-right:var(--glbl-menu-arrow-height) solid transparent;
 	transition:all var(--glbl-transition-time) ease;
@@ -292,8 +285,7 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 	content:' ';
 	z-index:1;
 	position:absolute;
-	left:50%;
-	transform:translateX(-50%);
+	left:calc(-1px + var(--glbl-padding));
 	border-left:var(--glbl-menu-arrow-height) solid transparent;
 	border-right:var(--glbl-menu-arrow-height) solid transparent;
 	transition:all var(--glbl-transition-time) ease;
@@ -302,22 +294,18 @@ input[type=checkbox]:checked ~ label.toggle-label-checked {
 .hover-title.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
-	transform:none;
 }
 .hover-title.halign-r::after {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
-	transform:none;
 }
 .hover-title.halign-l::before {
 	left:calc(-1px + var(--glbl-padding));
 	right:unset;
-	transform:none;
 }
 .hover-title.halign-l::after {
 	left:calc(-1px + var(--glbl-padding));
 	right:unset;
-	transform:none;
 }
 
 .hover-title.above::after {
@@ -409,23 +397,12 @@ input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
 	opacity:0;
 	pointer-events:none;
 	transition:all var(--glbl-transition-time) ease;
-	transform:translateY(var(--glbl-hover-title-slidein-offset)) translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
-}
-input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-l,
-input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-r {
 	transform:translateY(var(--glbl-hover-title-slidein-offset));
 }
 input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	opacity:1;
 	pointer-events:auto;
-}
-input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-l,
-input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-r {
 	transform:none;
-}
-input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont:not(.halign-l):not(.halign-r) { /* halign-c */
-	/* NOTE: This assumes that the dropdown-toggle has --glbl-padding applied */
-	transform:translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
 }
 input[type=checkbox].submenu-toggle ~ .submenu-cont {
 	display:none;
@@ -453,8 +430,7 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	z-index:1;
 	position:absolute;
 	top:calc(0rem - var(--glbl-menu-arrow-height));
-	left:50%;
-	transform:translateX(-50%);
+	left:var(--glbl-padding);
 	border-bottom:var(--glbl-menu-arrow-height) solid var(--clr-dropdown-bg);
 	border-left:var(--glbl-menu-arrow-height) solid transparent;
 	border-right:var(--glbl-menu-arrow-height) solid transparent;
@@ -465,8 +441,7 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	z-index:1;
 	position:absolute;
 	top:calc(-1px - var(--glbl-menu-arrow-height));
-	left:50%;
-	transform:translateX(-50%);
+	left:calc(-1px + var(--glbl-padding));
 	border-bottom:calc(1px + var(--glbl-menu-arrow-height)) solid var(--clr-dropdown-toggle-border);
 	border-left:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
 	border-right:calc(1px + var(--glbl-menu-arrow-height)) solid transparent;
@@ -477,8 +452,6 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	list-style-type:none;
 	padding:0rem;
 	border-radius:var(--dropdown-border-radius);
-	max-height:calc(100vh - var(--hdr-height) - 2rem);
-	overflow:auto;
 }
 .dropdown-menu > li, .submenu > li {
 	padding:0rem;
@@ -531,9 +504,6 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	bottom:calc(100% + var(--glbl-menu-arrow-height));
 	box-shadow:0rem -0.5rem 0.5rem var(--clr-dropdown-shadow);
 }
-.menu.valign-b .dropdown-menu-cont:not(.halign-r) { /* halign-l, halign-c */
-	left:0px;
-}
 .menu.valign-b .dropdown-menu-cont::before,
 .menu.valign-b .dropdown-menu-cont::after {
 	top:unset;
@@ -549,53 +519,30 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	bottom:calc(0px - var(--glbl-menu-arrow-height));
 }
 .menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont {
-	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset))) translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
-}
-.menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-l,
-.menu.valign-b input[type=checkbox].dropdown-toggle ~ .dropdown-menu-cont.halign-r {
 	transform:translateY(calc(0px - var(--glbl-hover-title-slidein-offset)));
 }
-.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-l,
-.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont.halign-r {
+.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont {
 	transform:none;
 }
-.menu.valign-b input[type=checkbox].dropdown-toggle:checked ~ .dropdown-menu-cont:not(.halign-l):not(.halign-r) { /* halign-c */
-	transform:translateX(-25%) translateX(calc(0px - (var(--glbl-padding) / 2)));
-}
-.nav-list-item ~ .nav-list-item .topbar-link,
-.nav-list-item ~ .nav-list-item .bottombar-link,
-.nav-list-item ~ .nav-list-item .dropdown-toggle-label {
+.nav-list-item:not(.hidden-on-medium) ~ .nav-list-item .topbar-link,
+.nav-list-item:not(.hidden-on-medium) ~ .nav-list-item .bottombar-link,
+.nav-list-item:not(.hidden-on-medium) ~ .nav-list-item .dropdown-toggle-label {
 	border-left:none;
 }
 
-.dropdown-menu-cont.halign-c {
-	/* center alignment is default so no styles are needed here; this is just for completeness */
-}
 .dropdown-menu-cont.halign-l {
-	left:0px;
+	/* left alignment is default so no styles are needed here; this is just for completeness */
 }
 .dropdown-menu-cont.halign-r {
 	right:0px;
 }
-.dropdown-menu-cont.halign-l::after {
-	left:var(--glbl-padding);
-	right:unset;
-	transform:none;
-}
-.dropdown-menu-cont.halign-l::before {
-	left:calc(-1px + var(--glbl-padding));
-	right:unset;
-	transform:none;
-}
 .dropdown-menu-cont.halign-r::after {
 	left:unset;
 	right:var(--glbl-padding);
-	transform:none;
 }
 .dropdown-menu-cont.halign-r::before {
 	left:unset;
 	right:calc(-1px + var(--glbl-padding));
-	transform:none;
 }
 
 .submenu-opener {
@@ -756,26 +703,6 @@ aside.iconbar.bottom-center ul.icons img {
 	justify-content:flex-start;
 }
 
-form input[type=submit] {
-	padding:var(--btn-padding);
-	border-radius:var(--btn-border-radius);
-	border-width:1px;
-	border-style:solid;
-	transition:all var(--glbl-transition-time) ease;
-	text-decoration:none;
-	
-	color:var(--clr-btn-font);
-	background-color:var(--clr-btn-bg);
-	border-color:var(--clr-btn-border);
-}
-form input[type=submit]:hover,
-form input[type=submit]:focus,
-form input[type=submit]:active {
-	color:var(--clr-btn-hover-font);
-	background-color:var(--clr-btn-hover-bg);
-	border-color:var(--clr-btn-hover-border);
-}
-
 form input:not([type=checkbox]),
 form select,
 form textarea {
@@ -807,6 +734,27 @@ form textarea:focus
 form textarea:active {
 	border:1px solid var(--clr-toggle-label-switch-unchecked);
 }
+form input[type=submit] {
+	padding:var(--btn-padding);
+	border-radius:var(--btn-border-radius);
+	border-width:1px;
+	border-style:solid;
+	transition:all var(--glbl-transition-time) ease;
+	text-decoration:none;
+	width:auto;
+	
+	color:var(--clr-btn-font);
+	background-color:var(--clr-btn-bg);
+	border-color:var(--clr-btn-border);
+}
+form input[type=submit]:hover,
+form input[type=submit]:focus,
+form input[type=submit]:active {
+	color:var(--clr-btn-hover-font);
+	background-color:var(--clr-btn-hover-bg);
+	border-color:var(--clr-btn-hover-border);
+}
+
 form .toggle-slider {
 	min-height:32px;
 	height:100%;
@@ -841,6 +789,13 @@ BEGIN medium and large display adjustments (mobile is default)
 	/* ---------------------------------------------------------------------------
 	BEGIN global component styles
 	----------------------------------------------------------------------------*/
+
+	ul.horizontal-list > li.hidden.shown-on-medium, ol.horizontal-list > li.hidden.shown-on-medium {
+		display:inline-block;
+	}
+	ul.horizontal-list > li.hidden-on-medium, ol.horizontal-list > li.hidden-on-medium {
+		display:none;
+	}
 
 	.dropdown-menu-cont {
 		width:15rem;

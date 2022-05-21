@@ -18,6 +18,8 @@ body {
 	--clr-toggle-label-switch-checked:rgba(16,16,190,1);
 	--clr-hover-title-bg:var(--clr-dropdown-toggle-bg);
 	--clr-hover-title-border:var(--clr-dropdown-toggle-border);
+	--clr-btn-hover-boxshadow:var(--clr-hdr-shadow);
+	--clr-menu-item-selected:rgba(32,32,128,0.60);
 }
 
 

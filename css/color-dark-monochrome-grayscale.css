@@ -2,12 +2,12 @@ body {
 	--clr-body-bg:#0a0a0a;
 	--clr-body-font:#eeeeee;
 	--clr-link-font:var(--clr-body-font);
-	--clr-link-font-hover:#2a2a7a;
+	--clr-link-font-hover:#9a9aca;
 	--clr-hdg-font:var(--clr-body-font);
 	--clr-dropdown-shadow:#808080;
 	--clr-dropdown-bg:#0e0e0e;
 	--clr-dropdown-toggle-bg:var(--clr-dropdown-bg);
-	--clr-dropdown-toggle-hover-bg:#1f1f1f;
+	--clr-dropdown-toggle-hover-bg:#3f3f3f;
 	--clr-dropdown-toggle-border:var(--clr-body-font);
 	--clr-dropdown-link-bg:var(--clr-dropdown-toggle-bg);
 	--clr-dropdown-link-hover-bg:var(--clr-dropdown-toggle-hover-bg);
@@ -18,7 +18,15 @@ body {
 	--clr-toggle-label-switch-checked:rgba(16,16,190,1);
 	--clr-hover-title-bg:var(--clr-dropdown-toggle-bg);
 	--clr-hover-title-border:var(--clr-dropdown-toggle-border);
+	--clr-btn-font:var(--clr-body-font);
+	--clr-btn-bg:var(--clr-dropdown-toggle-bg);
+	--clr-btn-border:var(--clr-hdr-bg);
+	--clr-btn-boxshadow:transparent;
+	--clr-btn-hover-font:var(--clr-body-font);
+	--clr-btn-hover-bg:var(--clr-dropdown-toggle-hover-bg);
+	--clr-btn-hover-border:var(--clr-hdr-bg);
+	--clr-btn-hover-boxshadow:var(--clr-hdr-shadow);
+	--clr-menu-item-selected:rgba(32,32,128,1);
 }
-
 
 
