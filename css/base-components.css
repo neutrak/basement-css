@@ -452,6 +452,10 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	list-style-type:none;
 	padding:0rem;
 	border-radius:var(--dropdown-border-radius);
+	
+	/* if the dropdown menu is too tall for the display, then it scrolls */
+	max-height: calc(100vh - var(--hdr-height) - 2rem);
+	overflow: auto;
 }
 .dropdown-menu > li, .submenu > li {
 	padding:0rem;
@@ -472,6 +476,11 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 	margin-top:0px;
 	margin-bottom:0px;
 }
+
+.dropdown-menu > li > .submenu-toggle:checked ~ .submenu-toggle-label {
+	border-bottom:none;
+}
+
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus,
 .dropdown-menu > li > a:active,
@@ -484,7 +493,10 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 
 .dropdown-menu > li:first-child,
 .dropdown-menu > li:first-child > a,
-.dropdown-menu > li:first-child > * {
+.dropdown-menu > li:first-child > *:not(.submenu-cont) {
+	border-radius:var(--dropdown-border-radius) var(--dropdown-border-radius) 0rem 0rem;
+}
+.dropdown-menu > li:first-child > input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-label-checked {
 	border-radius:var(--dropdown-border-radius) var(--dropdown-border-radius) 0rem 0rem;
 }
 .dropdown-menu > li:last-child,
