@@ -85,6 +85,52 @@
 		}
 	}
 	
+	function open_menu(menu_id){
+		let menu_toggle=document.getElementById(menu_id);
+		if(menu_toggle!==null){
+			menu_toggle.checked=true;
+		}
+	}
+
+	function close_menu(menu_id){
+		let menu_toggle=document.getElementById(menu_id);
+		if(menu_toggle!==null){
+			menu_toggle.checked=false;
+		}
+	}
+
+	function on_body_click(event) {
+		let menu_toggles=document.getElementsByClassName('hdr-dropdown-toggle');
+		for(let toggle_idx=0;toggle_idx<menu_toggles.length;toggle_idx++){
+			let menu_id=menu_toggles[toggle_idx].id;
+			
+			let menu_toggle=document.getElementById(menu_id);
+			//if the main menu is currently open
+			if(menu_toggle!==null && menu_toggle.checked){
+				//check if this click event was within the menu
+				let is_menu_click=false;
+				let elem=event.target;
+				while(elem.parentNode!==null){
+					//if this click was within some kind of header menu (but not necessarily the one we're checking)
+					if(elem.classList.contains('hdr-nav-menu')){
+						//if the toggle is a sibling somewhere within that
+						if(elem.querySelector('#'+menu_id)!==null){
+							//then this click occurred somewhere within the menu we're considering
+							is_menu_click=true;
+							break;
+						}
+					}
+					elem=elem.parentNode;
+				}
+				//if this click event was not within the menu itself
+				if(!is_menu_click){
+					//close the menu
+					close_menu(menu_id);
+				}
+			}
+		}
+	}
+	
 	//this un-hides js-specific elements on page load
 	//which by default are hidden, since for clients that don't support javascript we don't display them
 	window.onload=function () {
@@ -105,6 +151,9 @@
 		document.getElementById('toggle-iconbar-bottom-center').checked=true;
 		document.getElementById('toggle-iconbar-left-center').checked=false;
 		document.getElementById('toggle-iconbar-right-center').checked=false;
+		
+		//close the menu when the user clicks elsewhere
+		document.body.addEventListener('click',on_body_click);
 	}
 	</script>
 </head>
