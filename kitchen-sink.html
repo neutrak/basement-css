@@ -169,6 +169,13 @@
 			</div>
 		</div>
 	</div>
+	<a href='#main-page-content' class='access-skip-to-content'>Skip to main page content</a>
+	<!--
+	TODO: notification widget
+		experiment with different ideas to find a good one
+		not married to the toast format but not totally opposed to it either
+		needs to not interrupt user flow or change user context
+	-->
 	<div class='grid-container fixed-bar-height'>
 		<div class='grid'>
 			<div class='cell small-6 medium-9 hdr-menu-cell'>
@@ -395,112 +402,113 @@
 <br />
 <br />
 
-
-<section class=''>
-	<div class='grid-container'>
-		<div class='grid'>
-			<div class='cell'>
-				<h1>Basement CSS Kitchen Sink</h1>
-				<p>
-					This is a simple demonstration of the basement css library components.
-				</p>
-				
-				<br />
-				
-				<a class='btn' href='#'>Button</a>
-				
-				<div class='yes-js'>
-					<br />
+<main id='main-page-content'>
+	<section class=''>
+		<div class='grid-container'>
+			<div class='grid'>
+				<div class='cell'>
+					<h1>Basement CSS Kitchen Sink</h1>
+					<p>
+						This is a simple demonstration of the basement css library components.
+					</p>
+					
 					<br />
 					
-					<div class='toggle-slider'>
-						<input type='checkbox' id='toggle-iconbar-top-center'
-							onchange='set_iconbar_shown("iconbar-top-center",event.currentTarget.checked)'
-						>
-						<label class='toggle-label' for='toggle-iconbar-top-center'></label>
-						<label class='toggle-label-checked' for='toggle-iconbar-top-center'>Top center iconbar is visible</label>
-						<label class='toggle-label-unchecked' for='toggle-iconbar-top-center'>Top center iconbar is hidden</label>
+					<a class='btn' href='#'>Button</a>
+					
+					<div class='yes-js'>
+						<br />
+						<br />
+						
+						<div class='toggle-slider'>
+							<input type='checkbox' id='toggle-iconbar-top-center'
+								onchange='set_iconbar_shown("iconbar-top-center",event.currentTarget.checked)'
+							>
+							<label class='toggle-label' for='toggle-iconbar-top-center'></label>
+							<label class='toggle-label-checked' for='toggle-iconbar-top-center'>Top center iconbar is visible</label>
+							<label class='toggle-label-unchecked' for='toggle-iconbar-top-center'>Top center iconbar is hidden</label>
+						</div>
+						<br />
+						<div class='toggle-slider'>
+							<input type='checkbox' id='toggle-iconbar-bottom-center'
+								onchange='set_iconbar_shown("iconbar-bottom-center",event.currentTarget.checked)'
+							>
+							<label class='toggle-label' for='toggle-iconbar-bottom-center'></label>
+							<label class='toggle-label-checked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is visible</label>
+							<label class='toggle-label-unchecked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is hidden</label>
+						</div>
+						<br />
+						<div class='toggle-slider'>
+							<input type='checkbox' id='toggle-iconbar-left-center'
+								onchange='set_iconbar_shown("iconbar-left-center",event.currentTarget.checked)'
+							>
+							<label class='toggle-label' for='toggle-iconbar-left-center'></label>
+							<label class='toggle-label-checked' for='toggle-iconbar-left-center'>Left center iconbar is visible</label>
+							<label class='toggle-label-unchecked' for='toggle-iconbar-left-center'>Left center iconbar is hidden</label>
+						</div>
+						<br />
+						<div class='toggle-slider'>
+							<input type='checkbox' id='toggle-iconbar-right-center'
+								onchange='set_iconbar_shown("iconbar-right-center",event.currentTarget.checked)'
+							>
+							<label class='toggle-label' for='toggle-iconbar-right-center'></label>
+							<label class='toggle-label-checked' for='toggle-iconbar-right-center'>Right center iconbar is visible</label>
+							<label class='toggle-label-unchecked' for='toggle-iconbar-right-center'>Right center iconbar is hidden</label>
+						</div>
 					</div>
+						
 					<br />
-					<div class='toggle-slider'>
-						<input type='checkbox' id='toggle-iconbar-bottom-center'
-							onchange='set_iconbar_shown("iconbar-bottom-center",event.currentTarget.checked)'
-						>
-						<label class='toggle-label' for='toggle-iconbar-bottom-center'></label>
-						<label class='toggle-label-checked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is visible</label>
-						<label class='toggle-label-unchecked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is hidden</label>
-					</div>
 					<br />
-					<div class='toggle-slider'>
-						<input type='checkbox' id='toggle-iconbar-left-center'
-							onchange='set_iconbar_shown("iconbar-left-center",event.currentTarget.checked)'
-						>
-						<label class='toggle-label' for='toggle-iconbar-left-center'></label>
-						<label class='toggle-label-checked' for='toggle-iconbar-left-center'>Left center iconbar is visible</label>
-						<label class='toggle-label-unchecked' for='toggle-iconbar-left-center'>Left center iconbar is hidden</label>
-					</div>
-					<br />
-					<div class='toggle-slider'>
-						<input type='checkbox' id='toggle-iconbar-right-center'
-							onchange='set_iconbar_shown("iconbar-right-center",event.currentTarget.checked)'
-						>
-						<label class='toggle-label' for='toggle-iconbar-right-center'></label>
-						<label class='toggle-label-checked' for='toggle-iconbar-right-center'>Right center iconbar is visible</label>
-						<label class='toggle-label-unchecked' for='toggle-iconbar-right-center'>Right center iconbar is hidden</label>
-					</div>
 				</div>
-					
-				<br />
-				<br />
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section class='form-section'>
-	<div class='grid-container'>
-		<div class='grid'>
-			<div class='cell'>
-				<div class='form-card'>
-					<form action='' method='GET'>
-						<div class='grid'>
-							<div class='cell small-12 medium-6'>
-								<input type='text' name='full_name' placeholder='Full Name' required='true'>
-							</div>
-							<div class='cell small-12 medium-6'>
-								<input type='email' name='email' placeholder='Email Address' required='true'>
-							</div>
-							<div class='cell small-12 medium-6'>
-								<select name='inquiry_type' placeholder='Inquiry Type' required='true'>
-									<option value='general'>General Inquiry</option>
-									<option value='emergency'>Emergency Situation</option>
-								</select>
-							</div>
-							<div class='cell small-12 medium-6'>
-								<div class='toggle-slider'>
-									<input type='checkbox' id='form-checkbox-demo'>
-									<label class='toggle-label' for='form-checkbox-demo'></label>
-									<label class='toggle-label-checked' for='form-checkbox-demo'>
-										This is a follow up to a previous inquiry.
-									</label>
-									<label class='toggle-label-unchecked' for='form-checkbox-demo'>
-										This is your first attempt to contact us.
-									</label>
+	<section class='form-section'>
+		<div class='grid-container'>
+			<div class='grid'>
+				<div class='cell'>
+					<div class='form-card'>
+						<form action='' method='GET'>
+							<div class='grid'>
+								<div class='cell small-12 medium-6'>
+									<input type='text' name='full_name' placeholder='Full Name' required='true'>
+								</div>
+								<div class='cell small-12 medium-6'>
+									<input type='email' name='email' placeholder='Email Address' required='true'>
+								</div>
+								<div class='cell small-12 medium-6'>
+									<select name='inquiry_type' placeholder='Inquiry Type' required='true'>
+										<option value='general'>General Inquiry</option>
+										<option value='emergency'>Emergency Situation</option>
+									</select>
+								</div>
+								<div class='cell small-12 medium-6'>
+									<div class='toggle-slider'>
+										<input type='checkbox' id='form-checkbox-demo'>
+										<label class='toggle-label' for='form-checkbox-demo'></label>
+										<label class='toggle-label-checked' for='form-checkbox-demo'>
+											This is a follow up to a previous inquiry.
+										</label>
+										<label class='toggle-label-unchecked' for='form-checkbox-demo'>
+											This is your first attempt to contact us.
+										</label>
+									</div>
+								</div>
+								<div class='cell small-12'>
+									<textarea name='message' placeholder='Message' required='true'></textarea>
+								</div>
+								<div class='cell small-12'>
+									<input type='submit' value='Submit'>
 								</div>
 							</div>
-							<div class='cell small-12'>
-								<textarea name='message' placeholder='Message' required='true'></textarea>
-							</div>
-							<div class='cell small-12'>
-								<input type='submit' value='Submit'>
-							</div>
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</main>
 
 <br />
 <br />
