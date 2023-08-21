@@ -145,6 +145,7 @@
 			
 				//intentional intendtation to match generated html's nesting level
 				let new_notification_content=document.createElement('DIV');
+				new_notification_content.classList.add('page-notification-content');
 				new_notification_content.addEventListener('click',on_activate_callback);
 				
 					//intentional intendtation to match generated html's nesting level
@@ -192,81 +193,43 @@
 /*
 				let new_notification_config=document.createElement('DIV');
 */
-			new_notification.addEventListener('dragstart',(ev) => {
-				console.log('send_page_notification got notification drag start event ',ev); //debug
+			new_notification.addEventListener('mousedown',(ev) => {
+				console.log('send_page_notification got notification custom drag start (mousedown) event ',ev); //debug
+				
+				//don't do normal click behaviour
+				ev.preventDefault();
+				ev.stopPropagation();
 				
 				window.active_notification_drag={
-					x:ev.clientX,
-					y:ev.clientY,
-					offsetX:ev.offsetX,
-					offsetY:ev.offsetY,
+					client_x:ev.clientX,
+					client_y:ev.clientY,
+					offset_x:ev.offsetX,
+					offset_y:ev.offsetY,
+					last_move_x:ev.clientX,
+					last_move_y:ev.clientY,
+					last_move_x_vel:0,
+					last_move_y_vel:0,
 				};
 				
 				ev.target.classList.add('drag-in-progress');
 				
-				//TODO: figure out how to hide or mask the "ghost" that appears when dragging
-				//I DON'T WANT IT THERE; it is added by built-in browser handing for draggable='true' elements
-				
-/*
-				let drag_ghost_mask=ev.target.cloneNode(true);
-				drag_ghost_mask.classList.add('is-drag-ghost-mask');
-				ev.target.after(drag_ghost_mask);
-*/
-				//don't show the drag image (ghost element) that would return to the original pre-drag location
-				//as that's confusing and unhelpful in this context
-				let drag_img_elem=document.createElement('DIV');
-				drag_img_elem.style.width=ev.target.style.width;
-				drag_img_elem.style.height=ev.target.style.height;
-				drag_img_elem.style.opacity=0;
-				ev.dataTransfer.setDragImage(drag_img_elem,0,0);
+				return false;
 			});
-			//during drag
-			new_notification.addEventListener('drag',(ev) => {
-//				return; //debug (trying mouse move event instead)
-				let existing_offset={
-//					x:(['',null,undefined].includes(ev.target.style.left)?0:ev.target.style.left.replace('px','')-0),
-//					y:(['',null,undefined].includes(ev.target.style.top)?0:ev.target.style.top.replace('px','')-0),
-					x:0,
-					y:0,
-//					x:ev.target.offsetLeft,
-//					y:ev.target.offsetTop,
-				};
-				
-				let transform_offset={
-//					x:(ev.clientX-window.active_notification_drag.x),
-//					y:(ev.clientY-window.active_notification_drag.y),
-//					x:(ev.layerX+window.active_notification_drag.x),
-//					y:(ev.layerY+window.active_notification_drag.y),
-//					x:(ev.offsetX-window.active_notification_drag.offsetX),
-//					y:(ev.offsetY-window.active_notification_drag.offsetY),
-//					x:ev.offsetX,
-//					y:ev.offsetY,
-					x:0,
-					y:0,
-				};
-				
-				//set position so nothing moves suddenly or unexpectedly
-				//since we have no ghost (drag image) we need to move the actual element itself
-				//to correspond to user movements
-//				ev.target.style.left=existing_offset.x+transform_offset.x+'px';
-//				ev.target.style.top=existing_offset.y+transform_offset.y+'px';
-				console.log('send_page_notification got drag event clientX='+ev.clientX+' clientY='+ev.clientY); //debug
-				console.log('send_page_notification got drag event screenX='+ev.screenX+' screenY='+ev.screenY); //debug
-				console.log('send_page_notification got drag event ',ev,' for element ',ev.target,' with offsets existing_offset=',existing_offset,' transform_offset=',transform_offset); //debug
-			});
-/*
 			new_notification.addEventListener('mousemove',(ev) => {
 				if(![null,undefined].includes(window.active_notification_drag)){
 					console.log('send_page_notification got mouse move event ',ev); //debug
 					
+					window.active_notification_drag.last_move_x=ev.clientX;
+					window.active_notification_drag.last_move_y=ev.clientY;
+					
 					let existing_offset={
-						x:(['',null,undefined].includes(ev.target.style.left)?0:ev.target.style.left.replace('px','')-0),
-						y:(['',null,undefined].includes(ev.target.style.top)?0:ev.target.style.top.replace('px','')-0),
+						x:0,
+						y:0,
 					};
 					
 					let transform_offset={
-						x:(ev.clientX-window.active_notification_drag.x),
-						y:(ev.clientY-window.active_notification_drag.y),
+						x:(ev.clientX-window.active_notification_drag.client_x),
+						y:(ev.clientY-window.active_notification_drag.client_y),
 					};
 					
 					//set position so nothing moves suddenly or unexpectedly
@@ -276,19 +239,8 @@
 					ev.target.style.top=existing_offset.y+transform_offset.y+'px';
 				}
 			});
-*/
-			new_notification.addEventListener('dragend',(ev) => {
-//				console.log('send_page_notification got notification drag end event ',ev); //debug
-				
-/*
-				setTimeout(() => {
-					//remove any drag ghost masks now that drag has completed
-					let drag_ghost_masks=document.querySelectorAll('.page-notification.is-drag-ghost-mask');
-					for(let idx=0;idx<drag_ghost_masks.length;idx++){
-						drag_ghost_masks[idx].parentNode.removeChild(drag_ghost_masks[idx]);
-					}
-				},500);
-*/
+			new_notification.addEventListener('mouseup',(ev) => {
+				console.log('send_page_notification got notification drag end (mousedown) event ',ev); //debug
 				
 				//if you moved the element left or right by at least 25 px
 				//then this is a dismissal event
@@ -297,13 +249,13 @@
 				let is_dismissing=false;
 				let dismiss_direction='right';
 				let transform_offset={
-					x:(ev.clientX-window.active_notification_drag.x),
-					y:(ev.clientY-window.active_notification_drag.y),
+					x:(ev.clientX-window.active_notification_drag.client_x),
+					y:(ev.clientY-window.active_notification_drag.client_y),
 				};
-				if(ev.clientX>=(window.active_notification_drag.x+dismiss_movement_threshold_px)){
+				if(ev.clientX>=(window.active_notification_drag.client_x+dismiss_movement_threshold_px)){
 					is_dismissing=true;
 					dismiss_direction='right';
-				}else if(ev.clientX<=(window.active_notification_drag.x-dismiss_movement_threshold_px)){
+				}else if(ev.clientX<=(window.active_notification_drag.client_x-dismiss_movement_threshold_px)){
 					is_dismissing=true;
 					dismiss_direction='left';
 				}
@@ -325,6 +277,7 @@
 					
 					//remove this notifcation from the DOM
 					//but do so in a pretty way
+					ev.target.classList.remove('drag-in-progress');
 					ev.target.classList.add('fade-out');
 					ev.target.classList.add(dismiss_direction);
 					
@@ -334,12 +287,26 @@
 					setTimeout(() => {
 						ev.target.parentNode.removeChild(ev.target);
 					},500);
+				}else{
+					ev.target.style.left='unset';
+					ev.target.style.top='unset';
 				}
 				
 				//this element is no longer in the process of being dragged
 				ev.target.classList.remove('drag-in-progress');
 				
 				//remove unnecessary state so it doesn't clutter the namespace until the next drag
+				delete window.active_notification_drag;
+			});
+			
+			new_notification.addEventListener('mouseleave',(ev) => {
+				ev.target.style.left='unset';
+				ev.target.style.top='unset';
+				ev.target.classList.remove('drag-in-progress');
+				ev.target.classList.remove('fade-out');
+				ev.target.classList.remove('left');
+				ev.target.classList.remove('right');
+				
 				delete window.active_notification_drag;
 			});
 			
@@ -720,6 +687,12 @@
 							event.target.querySelector("input[name=title]").value,
 							event.target.querySelector("input[name=message]").value,
 							event.target.querySelector("select[name=css-classes]").value,
+							(ev) => {
+								console.log("Page notification was activated (clicked)"); //debug
+							},
+							(ev) => {
+								console.log("Page notification was dismissed"); //debug
+							},
 						);
 						return false;
 					'>
