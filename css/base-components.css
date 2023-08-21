@@ -48,6 +48,7 @@ body {
 	--clr-close-btn-font:black;
 	--clr-close-btn-bg:rgba(159,95,95,1);
 	--clr-close-btn-hover-bg:rgba(228,26,26,1);
+	--clr-page-notification-stack-bg:white;
 	--clr-notification-success-bg:rgba(25,135,84,1);
 	--clr-notification-success-font:white;
 	--clr-notification-error-bg:rgba(220,53,69,1);
@@ -825,7 +826,7 @@ form .toggle-slider {
 	width:100%;
 	height:100%;
 	filter:blur(3px);
-	background-color:rgba(255,255,255,0.5);
+	background-color:var(--clr-page-notification-stack-bg);
 	background:radial-gradient(#ffffff,rgba(255,255,255,0.5) 90%,transparent 100%);
 	z-index:-1;
 }
@@ -840,8 +841,10 @@ form .toggle-slider {
 	justify-content:space-between;
 	width:100%;
 	transition:all var(--glbl-transition-time) ease;
-	animation:notification-fade-in 0.5s;
 	position:relative;
+}
+.page-notification-stack .page-notification.fade-in {
+	animation:notification-fade-in 0.5s;
 }
 .page-notification-stack .page-notification.fade-out {
 	opacity:0;
@@ -929,6 +932,28 @@ form .toggle-slider {
 .page-notification-stack .page-notification.info .page-notification-title,
 .page-notification-stack .page-notification.info .page-notification-message {
 	color:var(--clr-notification-info-font);
+}
+.page-notification-stack .page-notification.drag-in-progress {
+	transition:none;
+/*	display:none; */
+	opacity:0.5;
+}
+.page-notification-stack .page-notification.is-drag-ghost {
+	pointer-events:none;
+	transition:none;
+}
+.page-notification-stack .page-notification.is-drag-ghost-mask {
+	transition:none;
+/*
+	opacity:0;
+	visibility:hidden;
+*/
+	transform:translateY(-100%);
+	z-index:4;
+	margin-top:calc(0px - var(--glbl-padding));
+	background-color:var(--clr-page-notification-stack-bg);
+	box-shadow:0px 0px 10px var(--clr-page-notification-stack-bg);
+	pointer-events:none;
 }
 
 /* ---------------------------------------------------------------------------
