@@ -137,6 +137,7 @@
 			let new_notification=document.createElement('DIV');
 			new_notification.className=css_classes;
 			new_notification.classList.add('page-notification');
+			new_notification.setAttribute('draggable',true);
 			
 				//intentional intendtation to match generated html's nesting level
 				let new_notification_content=document.createElement('DIV');
@@ -167,6 +168,10 @@
 					//remove this notifcation from the DOM
 					//but do so in a pretty way
 					ev.target.parentNode.classList.add('fade-out');
+					ev.target.parentNode.classList.add('right');
+					//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
+					//this setTimeout should be for the same time as the duration of the animation
+					//so that the item gets cleanly removed from the DOM as soon as it has faded out
 					setTimeout(() => {
 						ev.target.parentNode.parentNode.removeChild(ev.target.parentNode);
 					},500);
@@ -183,6 +188,62 @@
 /*
 				let new_notification_config=document.createElement('DIV');
 */
+			new_notification.addEventListener('dragstart',(ev) => {
+//				console.log('send_page_notification got notification drag start event ',ev); //debug
+				
+				window.active_notification_drag={
+					x:ev.clientX,
+					y:ev.clientY,
+				};
+			});
+			new_notification.addEventListener('dragend',(ev) => {
+//				console.log('send_page_notification got notification drag end event ',ev); //debug
+				
+				//if you moved the element by at least 25 px
+				//then this is a dismissal event
+				let dismiss_movement_threshold_px=25;
+				
+				let is_dismissing=false;
+				let dismiss_direction='right';
+				let transform_offset={
+					x:(ev.clientX-window.active_notification_drag.x),
+					y:(ev.clientY-window.active_notification_drag.y),
+				};
+				if(ev.clientX>=(window.active_notification_drag.x+dismiss_movement_threshold_px)){
+					is_dismissing=true;
+					dismiss_direction='right';
+				}else if(ev.clientX<=(window.active_notification_drag.x-dismiss_movement_threshold_px)){
+					is_dismissing=true;
+					dismiss_direction='left';
+				}
+				
+				if(is_dismissing){
+					//run the callback
+					on_dismiss_callback(ev);
+					
+//					console.log('send_page_notification dismissing notification ev.target=',ev.target); //debug
+					
+					//set position so nothing moves suddenly or unexpectedly
+					ev.target.style.left=transform_offset.x+'px';
+					ev.target.style.top=transform_offset.y+'px';
+					
+					//remove this notifcation from the DOM
+					//but do so in a pretty way
+					ev.target.classList.add('fade-out');
+					ev.target.classList.add(dismiss_direction);
+					
+					//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
+					//this setTimeout should be for the same time as the duration of the animation
+					//so that the item gets cleanly removed from the DOM as soon as it has faded out
+					setTimeout(() => {
+						ev.target.parentNode.removeChild(ev.target);
+					},500);
+				}
+				
+				//remove unnecessary state so it doesn't clutter the namespace until the next drag
+				delete window.active_notification_drag;
+			});
+			
 			/*
 			TODO: support drag-to-dismiss behaviour in addition to the close button
 			TODO: a timer (horizontal line that shows the progress of time relative to total time of notification on screen)
