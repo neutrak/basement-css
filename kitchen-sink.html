@@ -211,8 +211,6 @@
 					last_move_y_vel:0,
 				};
 				
-				ev.target.classList.add('drag-in-progress');
-				
 				return false;
 			});
 			new_notification.addEventListener('dragend',(ev) => {
@@ -264,11 +262,10 @@
 					},500);
 				}
 				
-				//this element is no longer in the process of being dragged
-				ev.target.classList.remove('drag-in-progress');
-				
 				//remove unnecessary state so it doesn't clutter the namespace until the next drag
 				delete window.active_notification_drag;
+				
+				return false;
 			});
 			
 			/*
