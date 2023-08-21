@@ -943,10 +943,6 @@ form .toggle-slider {
 .page-notification-stack .page-notification.info .page-notification-message {
 	color:var(--clr-notification-info-font);
 }
-.page-notification-stack .page-notification.drag-in-progress {
-	transition:none;
-	opacity:0.75;
-}
 
 /* ---------------------------------------------------------------------------
 END global component styles

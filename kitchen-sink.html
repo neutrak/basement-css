@@ -193,12 +193,12 @@
 /*
 				let new_notification_config=document.createElement('DIV');
 */
-			new_notification.addEventListener('mousedown',(ev) => {
-				console.log('send_page_notification got notification custom drag start (mousedown) event ',ev); //debug
-				
-				//don't do normal click behaviour
-				ev.preventDefault();
-				ev.stopPropagation();
+			
+			//add event listeners for drag-to-dismiss functionality
+			//these are applied to the notification element
+			
+			new_notification.addEventListener('dragstart',(ev) => {
+//				console.log('send_page_notification got notification drag start event ',ev); //debug
 				
 				window.active_notification_drag={
 					client_x:ev.clientX,
@@ -215,32 +215,8 @@
 				
 				return false;
 			});
-			new_notification.addEventListener('mousemove',(ev) => {
-				if(![null,undefined].includes(window.active_notification_drag)){
-					console.log('send_page_notification got mouse move event ',ev); //debug
-					
-					window.active_notification_drag.last_move_x=ev.clientX;
-					window.active_notification_drag.last_move_y=ev.clientY;
-					
-					let existing_offset={
-						x:0,
-						y:0,
-					};
-					
-					let transform_offset={
-						x:(ev.clientX-window.active_notification_drag.client_x),
-						y:(ev.clientY-window.active_notification_drag.client_y),
-					};
-					
-					//set position so nothing moves suddenly or unexpectedly
-					//since we have no ghost (drag image) we need to move the actual element itself
-					//to correspond to user movements
-					ev.target.style.left=existing_offset.x+transform_offset.x+'px';
-					ev.target.style.top=existing_offset.y+transform_offset.y+'px';
-				}
-			});
-			new_notification.addEventListener('mouseup',(ev) => {
-				console.log('send_page_notification got notification drag end (mousedown) event ',ev); //debug
+			new_notification.addEventListener('dragend',(ev) => {
+//				console.log('send_page_notification got notification drag end event ',ev); //debug
 				
 				//if you moved the element left or right by at least 25 px
 				//then this is a dismissal event
@@ -277,7 +253,6 @@
 					
 					//remove this notifcation from the DOM
 					//but do so in a pretty way
-					ev.target.classList.remove('drag-in-progress');
 					ev.target.classList.add('fade-out');
 					ev.target.classList.add(dismiss_direction);
 					
@@ -287,26 +262,12 @@
 					setTimeout(() => {
 						ev.target.parentNode.removeChild(ev.target);
 					},500);
-				}else{
-					ev.target.style.left='unset';
-					ev.target.style.top='unset';
 				}
 				
 				//this element is no longer in the process of being dragged
 				ev.target.classList.remove('drag-in-progress');
 				
 				//remove unnecessary state so it doesn't clutter the namespace until the next drag
-				delete window.active_notification_drag;
-			});
-			
-			new_notification.addEventListener('mouseleave',(ev) => {
-				ev.target.style.left='unset';
-				ev.target.style.top='unset';
-				ev.target.classList.remove('drag-in-progress');
-				ev.target.classList.remove('fade-out');
-				ev.target.classList.remove('left');
-				ev.target.classList.remove('right');
-				
 				delete window.active_notification_drag;
 			});
 			
