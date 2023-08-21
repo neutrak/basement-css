@@ -45,6 +45,17 @@ body {
 	--clr-dropdown-toggle-border:var(--clr-body-font);
 	--clr-dropdown-link-bg:var(--clr-dropdown-toggle-bg);
 	--clr-dropdown-link-hover-bg:var(--clr-dropdown-toggle-hover-bg);
+	--clr-close-btn-font:black;
+	--clr-close-btn-bg:rgba(159,95,95,1);
+	--clr-close-btn-hover-bg:rgba(228,26,26,1);
+	--clr-notification-success-bg:rgba(25,135,84,1);
+	--clr-notification-success-font:white;
+	--clr-notification-error-bg:rgba(220,53,69,1);
+	--clr-notification-error-font:white;
+	--clr-notification-warning-bg:rgba(255,193,7,1);
+	--clr-notification-warning-font:black;
+	--clr-notification-info-bg:rgba(13,202,240,1);
+	--clr-notification-info-font:black;
 	
 	--hdr-height:3rem;
 
@@ -112,6 +123,10 @@ a {
 }
 a:hover, a:focus, a:active {
 	color:var(--clr-link-font-hover);
+}
+
+a.access-skip-to-content {
+	display:none;
 }
 
 section ~ section {
@@ -788,8 +803,150 @@ form .toggle-slider {
 	margin-bottom:0px;
 }
 
+.page-notification-stack {
+	width:calc(var(--glbl-max-width) / 2);
+	position:fixed;
+	top:calc(var(--hdr-height) + var(--glbl-menu-arrow-height));
+	left:50%;
+	transform:translateX(-50%);
+	transition:all var(--glbl-transition-time) ease;
+	padding: var(--glbl-padding) calc(var(--glbl-padding) * 2);
+	border-radius: var(--glbl-hover-title-border-radius);
+	z-index:3;
+}
+.page-notification-stack:empty {
+	display:none;
+}
+.page-notification-stack::before {
+	content:' ';
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	filter:blur(3px);
+	background-color:rgba(255,255,255,0.5);
+	background:radial-gradient(#ffffff,rgba(255,255,255,0.5) 90%,transparent 100%);
+	z-index:-1;
+}
+.page-notification-stack .page-notification {
+	padding:var(--glbl-padding);
+	box-shadow:0px 0px 10px rgba(0,0,0,0.7);
+	border-radius: var(--glbl-hover-title-border-radius);
+	background-color:var(--clr-form-card-bg);
+	display:flex;
+	flex-direction:row;
+	align-items:stretch;
+	justify-content:space-between;
+	width:100%;
+	transition:all var(--glbl-transition-time) ease;
+	animation:notification-fade-in 0.5s;
+}
+.page-notification-stack .page-notification.fade-out {
+	opacity:0;
+	transform:translateX(150%);
+	pointer-events:none;
+}
+.page-notification-stack .page-notification:not(:last-child) {
+	margin-bottom:var(--glbl-padding);
+}
+.page-notification-stack .page-notification.success {
+	color:var(--clr-notification-success-font);
+	background-color:var(--clr-notification-success-bg);
+}
+.page-notification-stack .page-notification.error {
+	color:var(--clr-notification-error-font);
+	background-color:var(--clr-notification-error-bg);
+}
+.page-notification-stack .page-notification.warning {
+	color:var(--clr-notification-warning-font);
+	background-color:var(--clr-notification-warning-bg);
+}
+.page-notification-stack .page-notification.info {
+	color:var(--clr-notification-info-font);
+	background-color:var(--clr-notification-info-bg);
+}
+.page-notification-stack .page-notification .page-notification-close-btn {
+	min-height:100%;
+	font-size:1.5rem;
+	font-weight:bold;
+	margin:calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) var(--glbl-padding);
+	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
+	border:none;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	transition:all var(--glbl-transition-time) ease;
+	color:var(--clr-close-btn-font);
+	background-color:var(--clr-close-btn-bg);
+	cursor:pointer;
+	/*
+	NOTE: close button is HIDDEN until user hovers over notification
+	*/
+	width:0px;
+	overflow:hidden;
+	padding:0px;
+}
+.page-notification-stack .page-notification:hover .page-notification-close-btn,
+.page-notification-stack .page-notification:focus .page-notification-close-btn,
+.page-notification-stack .page-notification:active .page-notification-close-btn {
+	width:24px;
+	overflow:visible;
+	margin:calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) var(--glbl-padding);
+	padding:calc(var(--glbl-padding) / 2);
+}
+.page-notification-stack .page-notification .page-notification-close-btn:hover,
+.page-notification-stack .page-notification .page-notification-close-btn:focus,
+.page-notification-stack .page-notification .page-notification-close-btn:active {
+	background-color:var(--clr-close-btn-hover-bg);
+}
+.page-notification-stack .page-notification .page-notification-title,
+.page-notification-stack .page-notification .page-notification-message {
+	margin-bottom:0px;
+}
+.page-notification-stack .page-notification .page-notification-title {
+	font-size:1.1rem;
+}
+.page-notification-stack .page-notification.success .page-notification-title,
+.page-notification-stack .page-notification.success .page-notification-message {
+	color:var(--clr-notification-success-font);
+}
+.page-notification-stack .page-notification.error .page-notification-title,
+.page-notification-stack .page-notification.error .page-notification-message {
+	color:var(--clr-notification-error-font);
+}
+.page-notification-stack .page-notification.warning .page-notification-title,
+.page-notification-stack .page-notification.warning .page-notification-message {
+	color:var(--clr-notification-warning-font);
+}
+.page-notification-stack .page-notification.info .page-notification-title,
+.page-notification-stack .page-notification.info .page-notification-message {
+	color:var(--clr-notification-info-font);
+}
+
 /* ---------------------------------------------------------------------------
 END global component styles
+----------------------------------------------------------------------------*/
+
+/* ---------------------------------------------------------------------------
+BEGIN animation definitions
+----------------------------------------------------------------------------*/
+
+@keyframes notification-fade-in {
+	0% {
+		transform:translateY(-150%);
+		opacity:0;
+		pointer-events:none;
+	}
+	100% {
+		transform:none;
+		opacity:1;
+		pointer-events:all;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+END animation definitions
 ----------------------------------------------------------------------------*/
 
 

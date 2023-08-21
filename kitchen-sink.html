@@ -131,6 +131,69 @@
 		}
 	}
 	
+	function send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {}){
+		let notification_stacks=document.querySelectorAll('.page-notification-stack');
+		for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
+			let new_notification=document.createElement('DIV');
+			new_notification.className=css_classes;
+			new_notification.classList.add('page-notification');
+			
+				//intentional intendtation to match generated html's nesting level
+				let new_notification_content=document.createElement('DIV');
+				new_notification_content.addEventListener('click',on_activate_callback);
+				
+					//intentional intendtation to match generated html's nesting level
+					let new_notification_title=document.createElement('H2');
+					new_notification_title.classList.add('page-notification-title');
+					new_notification_title.innerText=page_notification_title;
+					new_notification_content.appendChild(new_notification_title);
+					
+					let new_notification_message=document.createElement('P');
+					new_notification_message.classList.add('page-notification-message');
+					new_notification_message.innerText=page_notification_message;
+					new_notification_content.appendChild(new_notification_message);
+				
+				new_notification.appendChild(new_notification_content);
+				
+				//on close click or drag-to-dismiss
+				let on_dismiss=(ev) => {
+					//run the callback
+					on_dismiss_callback(ev);
+					
+					//stop event propagation
+					ev.preventDefault();
+					ev.stopPropagation();
+					
+					//remove this notifcation from the DOM
+					//but do so in a pretty way
+					ev.target.parentNode.classList.add('fade-out');
+					setTimeout(() => {
+						ev.target.parentNode.parentNode.removeChild(ev.target.parentNode);
+					},500);
+					
+					return false;
+				};
+				
+				let new_notification_close_btn=document.createElement('BUTTON');
+				new_notification_close_btn.setAttribute('type','button');
+				new_notification_close_btn.classList.add('page-notification-close-btn');
+				new_notification_close_btn.innerHTML='&times;';
+				new_notification_close_btn.addEventListener('click',on_dismiss);
+				new_notification.appendChild(new_notification_close_btn);
+/*
+				let new_notification_config=document.createElement('DIV');
+*/
+			/*
+			TODO: support drag-to-dismiss behaviour in addition to the close button
+			TODO: a timer (horizontal line that shows the progress of time relative to total time of notification on screen)
+			TODO: configuration options (keep on screen, etc.) shown by a cog icon
+			TODO: on mouse over cancel any timers and consider this notification manually-cancel-only from now on
+			*/
+			
+			notification_stacks[stack_idx].appendChild(new_notification);
+		}
+	}
+	
 	//this un-hides js-specific elements on page load
 	//which by default are hidden, since for clients that don't support javascript we don't display them
 	window.onload=function () {
@@ -176,6 +239,7 @@
 		not married to the toast format but not totally opposed to it either
 		needs to not interrupt user flow or change user context
 	-->
+	<div class='page-notification-stack'></div>
 	<div class='grid-container fixed-bar-height'>
 		<div class='grid'>
 			<div class='cell small-6 medium-9 hdr-menu-cell'>
@@ -411,10 +475,20 @@
 					<p>
 						This is a simple demonstration of the basement css library components.
 					</p>
-					
+				</div>
+			</div>
+			<div class='grid'>
+				<div class='cell'>
+					<h2>Simple components and icon bar options</h2>
+				</div>
+			</div>
+			<div class='grid'>
+				<div class='cell'>
 					<br />
 					
 					<a class='btn' href='#'>Button</a>
+					
+					<br />
 					
 					<div class='yes-js'>
 						<br />
@@ -463,9 +537,64 @@
 			</div>
 		</div>
 	</section>
+	
+	<section class='notification-section'>
+		<div class='grid-container'>
+			<div class='grid'>
+				<div class='cell'>
+					<h2>View Notifcations</h2>
+				</div>
+			</div>
+			<div class='grid'>
+				<div class='cell'>
+					<form action='#' onsubmit='
+						event.preventDefault();
+						event.stopPropagation();
+						
+						send_page_notification(
+							event.target.querySelector("input[name=title]").value,
+							event.target.querySelector("input[name=message]").value,
+							event.target.querySelector("select[name=css-classes]").value,
+						);
+						return false;
+					'>
+						<ul class='horizontal-list'>
+							<li>
+								<label for='page-notification-css-classes'>Type</label>
+								<select id='page-notification-css-classes' name='css-classes'>
+									<option value='success'>Success</option>
+									<option value='warning'>Warning</option>
+									<option value='error'>Error</option>
+									<option value='info'>Info</option>
+								</select>
+							</li>
+							<li>
+								<label for='page-notification-title'>Title</label>
+								<input id='page-notification-title' type='text' name='title' placeholder='Page Notification Title'>
+							</li>
+							<li>
+								<label for='page-notification-message'>Message</label>
+								<input id='page-notification-message' type='text' name='message' placeholder='Page Notification Message'>
+							</li>
+						</ul>
+						<br />
+						<input type='submit' value='Send a test notification'>
+					</form>
+					
+					<br />
+					<br />
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<section class='form-section'>
 		<div class='grid-container'>
+			<div class='grid'>
+				<div class='cell'>
+					<h2>An Example Form</h2>
+				</div>
+			</div>
 			<div class='grid'>
 				<div class='cell'>
 					<div class='form-card'>

@@ -45,9 +45,6 @@ END global component styles
 /* ---------------------------------------------------------------------------
 BEGIN module styles
 ----------------------------------------------------------------------------*/
-a.access-skip-to-content {
-	display:none;
-}
 
 .hdr-nav-cont .cell.hdr-options-cell {
 	height:var(--hdr-height);
