@@ -173,7 +173,7 @@
 					//remove this notifcation from the DOM
 					//but do so in a pretty way
 					ev.target.parentNode.classList.add('fade-out');
-					ev.target.parentNode.classList.add('right');
+					ev.target.parentNode.classList.add('fade-out-right');
 					//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
 					//this setTimeout should be for the same time as the duration of the animation
 					//so that the item gets cleanly removed from the DOM as soon as it has faded out
@@ -221,17 +221,17 @@
 				let dismiss_movement_threshold_px=40;
 				
 				let is_dismissing=false;
-				let dismiss_direction='right';
+				let dismiss_direction_class='fade-out-right';
 				let transform_offset={
 					x:(ev.clientX-window.active_notification_drag.client_x),
 					y:(ev.clientY-window.active_notification_drag.client_y),
 				};
 				if(ev.clientX>=(window.active_notification_drag.client_x+dismiss_movement_threshold_px)){
 					is_dismissing=true;
-					dismiss_direction='right';
+					dismiss_direction_class='fade-out-right';
 				}else if(ev.clientX<=(window.active_notification_drag.client_x-dismiss_movement_threshold_px)){
 					is_dismissing=true;
-					dismiss_direction='left';
+					dismiss_direction_class='fade-out-left';
 				}
 				
 				let existing_offset={
@@ -252,7 +252,7 @@
 					//remove this notifcation from the DOM
 					//but do so in a pretty way
 					ev.target.classList.add('fade-out');
-					ev.target.classList.add(dismiss_direction);
+					ev.target.classList.add(dismiss_direction_class);
 					
 					//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
 					//this setTimeout should be for the same time as the duration of the animation

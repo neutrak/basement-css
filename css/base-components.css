@@ -857,10 +857,10 @@ form .toggle-slider {
 	opacity:0;
 	pointer-events:none;
 }
-.page-notification-stack .page-notification.fade-out.left {
+.page-notification-stack .page-notification.fade-out.fade-out-left {
 	transform:translateX(-150%);
 }
-.page-notification-stack .page-notification.fade-out.right {
+.page-notification-stack .page-notification.fade-out.fade-out-right {
 	transform:translateX(150%);
 }
 .page-notification-stack .page-notification:not(:last-child) {
