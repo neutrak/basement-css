@@ -845,6 +845,7 @@ form .toggle-slider {
 	position:relative;
 	cursor:pointer;
 	opacity:0.9;
+	touch-action:none;
 }
 .page-notification-stack .page-notification:hover,
 .page-notification-stack .page-notification:focus,

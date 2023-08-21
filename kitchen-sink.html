@@ -634,7 +634,7 @@
 					<h2>View Notifcations</h2>
 				</div>
 			</div>
-			<div class='grid'>
+			<div class='grid grid-padding'>
 				<div class='cell'>
 					<form action='#' onsubmit='
 						event.preventDefault();
@@ -653,8 +653,8 @@
 						);
 						return false;
 					'>
-						<ul class='horizontal-list'>
-							<li>
+						<div class='grid grid-padding'>
+							<div class='cell medium-4'>
 								<label for='page-notification-css-classes'>Type</label>
 								<select id='page-notification-css-classes' name='css-classes'>
 									<option value='success'>Success</option>
@@ -662,17 +662,20 @@
 									<option value='error'>Error</option>
 									<option value='info'>Info</option>
 								</select>
-							</li>
-							<li>
+							</div>
+							<div class='cell medium-4'>
 								<label for='page-notification-title'>Title</label>
 								<input id='page-notification-title' type='text' name='title' placeholder='Page Notification Title'>
-							</li>
-							<li>
+							</div>
+							<div class='cell medium-4'>
 								<label for='page-notification-message'>Message</label>
 								<input id='page-notification-message' type='text' name='message' placeholder='Page Notification Message'>
-							</li>
-						</ul>
+							</div>
+						</div>
+						
 						<br />
+						<br />
+						
 						<input type='submit' value='Send a test notification'>
 					</form>
 					

@@ -37,6 +37,12 @@ h1,h2,h3,h4,h5,h6 {
 	font-family:sans-serif;
 	font-weight:600;
 }
+form label:not(.toggle-label):not(.toggle-label-unchecked):not(.toggle-label-checked) {
+	display:block;
+	margin-bottom:calc(var(--glbl-padding) / 2);
+	font-size:0.8rem;
+	font-weight:bold;
+}
 
 /* ---------------------------------------------------------------------------
 END global component styles
