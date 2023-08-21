@@ -805,7 +805,8 @@ form .toggle-slider {
 }
 
 .page-notification-stack {
-	width:calc(var(--glbl-max-width) / 2);
+	width:var(--glbl-max-width); /* mobile */
+/*	width:calc(var(--glbl-max-width) / 2); (desktop sizes only; defined later in the desktop-specific section) */
 	position:fixed;
 	top:calc(var(--hdr-height) + var(--glbl-menu-arrow-height));
 	left:50%;
@@ -900,18 +901,12 @@ form .toggle-slider {
 	background-color:var(--clr-close-btn-bg);
 	cursor:pointer;
 	/*
-	NOTE: close button is HIDDEN until user hovers over notification
+	NOTE: on desktop close button is HIDDEN until user hovers over notification
+	however on mobile because the html draggable attribute is not consistently supported
+	we need the close action constantly visible
 	*/
-	width:0px;
-	overflow:hidden;
-	padding:0px;
-}
-.page-notification-stack .page-notification:hover .page-notification-close-btn,
-.page-notification-stack .page-notification:focus .page-notification-close-btn,
-.page-notification-stack .page-notification:active .page-notification-close-btn {
 	width:24px;
 	overflow:visible;
-	margin:calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding)) var(--glbl-padding);
 	padding:calc(var(--glbl-padding) / 2);
 }
 .page-notification-stack .page-notification .page-notification-close-btn:hover,
@@ -992,7 +987,25 @@ BEGIN medium and large display adjustments (mobile is default)
 	.dropdown-toggle-label, .topbar-link, .bottombar-link {
 		padding:0rem var(--glbl-padding);
 	}
-
+	.page-notification-stack {
+		width:calc(var(--glbl-max-width) / 2);
+	}
+	.page-notification-stack .page-notification .page-notification-close-btn {
+		/*
+		NOTE: close button is HIDDEN until user hovers over notification
+		*/
+		width:0px;
+		overflow:hidden;
+		padding:0px;
+	}
+	.page-notification-stack .page-notification:hover .page-notification-close-btn,
+	.page-notification-stack .page-notification:focus .page-notification-close-btn,
+	.page-notification-stack .page-notification:active .page-notification-close-btn {
+		width:24px;
+		overflow:visible;
+		padding:calc(var(--glbl-padding) / 2);
+	}
+	
 	/* ---------------------------------------------------------------------------
 	END global component styles
 	----------------------------------------------------------------------------*/

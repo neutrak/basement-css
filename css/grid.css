@@ -1,6 +1,6 @@
-/* default settings */
+/* default settings (mobile-first) */
 body {
-	--glbl-max-width:1200px;
+	--glbl-max-width:100vw;
 	--glbl-padding:1.5rem;
 }
 html {
@@ -82,6 +82,11 @@ END grid definition styles
 BEGIN medium and large display adjustments (mobile is default)
 ----------------------------------------------------------------------------*/
 @media all and (min-width:768px) { /* $screen-size-medium */
+	/* desktop default settings, where different from mobile */
+	body {
+		--glbl-max-width:1200px;
+	}
+	
 	.hidden-on-medium {
 		display:none;
 	}
