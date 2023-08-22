@@ -912,7 +912,6 @@ form .toggle-slider {
 	justify-content:center;
 	transition:all var(--glbl-transition-time) ease;
 	color:var(--clr-close-btn-font);
-	cursor:pointer;
 	/*
 	NOTE: on desktop close button is HIDDEN until user hovers over notification
 	however on mobile because the html draggable attribute is not consistently supported
@@ -932,6 +931,7 @@ form .toggle-slider {
 	align-items:center;
 	justify-content:center;
 	transition:all var(--glbl-transition-time) ease;
+	cursor:pointer;
 }
 .page-notification-stack .page-notification .page-notification-action-btns > *:first-child {
 	border-top-right-radius:var(--glbl-hover-title-border-radius);
