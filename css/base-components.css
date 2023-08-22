@@ -833,6 +833,8 @@ form .toggle-slider {
 }
 .page-notification-stack .page-notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
+/*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
+	/* TODO: border or inner box shadow that makes this look like a button popping out of the page; give it depth */
 	box-shadow:0px 0px 10px rgba(0,0,0,0.7);
 	border-radius: var(--glbl-hover-title-border-radius);
 	background-color:var(--clr-form-card-bg);
@@ -887,30 +889,57 @@ form .toggle-slider {
 .page-notification-stack .page-notification .page-notification-content {
 	width:100%;
 	margin:calc(0px - var(--glbl-padding)) 0px calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding));
+/*	margin:calc(0px - (var(--glbl-padding) / 2)) 0px calc(0px - (var(--glbl-padding) / 2)) calc(0px - (var(--glbl-padding) / 2)); */
 	padding:var(--glbl-padding);
+/*	padding:calc(var(--glbl-padding) / 2); */
+	display:flex;
+	flex-direction:column;
+	align-items:flex-start;
+	justify-content:center;
 }
-.page-notification-stack .page-notification .page-notification-close-btn {
+.page-notification-stack .page-notification .page-notification-action-btns {
 	min-height:100%;
 	font-size:1.5rem;
 	font-weight:bold;
 	margin:calc(0px - var(--glbl-padding)) 0px;
+/*	margin:calc(0px - (var(--glbl-padding) / 2)) 0px; */
 	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
 	border:none;
 	display:flex;
+	flex-direction:column;
 	align-items:center;
 	justify-content:center;
 	transition:all var(--glbl-transition-time) ease;
 	color:var(--clr-close-btn-font);
-	background-color:var(--clr-close-btn-bg);
 	cursor:pointer;
 	/*
 	NOTE: on desktop close button is HIDDEN until user hovers over notification
 	however on mobile because the html draggable attribute is not consistently supported
 	we need the close action constantly visible
 	*/
-	width:24px;
+	width:32px;
 	overflow:visible;
+	padding:0px;
+}
+.page-notification-stack .page-notification .page-notification-action-btns > * {
+	border:none;
+	height:100%;
+	width:100%;
 	padding:calc(var(--glbl-padding) / 2);
+	font-size:1.5rem;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	transition:all var(--glbl-transition-time) ease;
+}
+.page-notification-stack .page-notification .page-notification-action-btns > *:first-child {
+	border-top-right-radius:var(--glbl-hover-title-border-radius);
+}
+.page-notification-stack .page-notification .page-notification-action-btns > *:last-child {
+	border-bottom-right-radius:var(--glbl-hover-title-border-radius);
+}
+.page-notification-stack .page-notification .page-notification-close-btn {
+	background-color:var(--clr-close-btn-bg);
 }
 .page-notification-stack .page-notification .page-notification-close-btn:hover,
 .page-notification-stack .page-notification .page-notification-close-btn:focus,
@@ -993,7 +1022,7 @@ BEGIN medium and large display adjustments (mobile is default)
 	.page-notification-stack {
 		width:calc(var(--glbl-max-width) / 2);
 	}
-	.page-notification-stack .page-notification .page-notification-close-btn {
+	.page-notification-stack .page-notification .page-notification-action-btns {
 		/*
 		NOTE: close button is HIDDEN until user hovers over notification
 		*/
@@ -1001,11 +1030,15 @@ BEGIN medium and large display adjustments (mobile is default)
 		overflow:hidden;
 		padding:0px;
 	}
-	.page-notification-stack .page-notification:hover .page-notification-close-btn,
-	.page-notification-stack .page-notification:focus .page-notification-close-btn,
-	.page-notification-stack .page-notification:active .page-notification-close-btn {
-		width:24px;
+	.page-notification-stack .page-notification:hover .page-notification-action-btns,
+	.page-notification-stack .page-notification:focus .page-notification-action-btns,
+	.page-notification-stack .page-notification:active .page-notification-action-btns {
+		width:32px;
 		overflow:visible;
+	}
+	.page-notification-stack .page-notification:hover .page-notification-action-btns > *,
+	.page-notification-stack .page-notification:focus .page-notification-action-btns > *,
+	.page-notification-stack .page-notification:active .page-notification-action-btns > * {
 		padding:calc(var(--glbl-padding) / 2);
 	}
 	

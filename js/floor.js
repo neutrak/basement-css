@@ -52,29 +52,45 @@ function send_page_notification(page_notification_title,page_notification_messag
 				ev.preventDefault();
 				ev.stopPropagation();
 				
+				let notification_node=ev.target.parentNode.parentNode;
+				
 				//remove this notifcation from the DOM
 				//but do so in a pretty way
-				ev.target.parentNode.classList.add('fade-out');
-				ev.target.parentNode.classList.add('fade-out-right');
+				notification_node.classList.add('fade-out');
+				notification_node.classList.add('fade-out-right');
 				//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
 				//this setTimeout should be for the same time as the duration of the animation
 				//so that the item gets cleanly removed from the DOM as soon as it has faded out
 				setTimeout(() => {
-					ev.target.parentNode.parentNode.removeChild(ev.target.parentNode);
+					notification_node.parentNode.removeChild(notification_node);
 				},500);
 				
 				return false;
 			};
 			
-			let new_notification_close_btn=document.createElement('BUTTON');
-			new_notification_close_btn.setAttribute('type','button');
-			new_notification_close_btn.classList.add('page-notification-close-btn');
-			new_notification_close_btn.innerHTML='&times;';
-			new_notification_close_btn.addEventListener('click',on_dismiss);
-			new_notification.appendChild(new_notification_close_btn);
-/*
-			let new_notification_config=document.createElement('DIV');
-*/
+			let new_notification_action_btns=document.createElement('DIV');
+			new_notification_action_btns.classList.add('page-notification-action-btns');
+			
+				let new_notification_close_btn=document.createElement('BUTTON');
+				new_notification_close_btn.setAttribute('type','button');
+				new_notification_close_btn.classList.add('page-notification-close-btn');
+				new_notification_close_btn.innerHTML='&times;';
+				new_notification_close_btn.addEventListener('click',on_dismiss);
+				new_notification_action_btns.appendChild(new_notification_close_btn);
+				
+				let new_notification_config_btn=document.createElement('BUTTON');
+				new_notification_config_btn.setAttribute('type','button');
+				new_notification_config_btn.classList.add('page-notification-config-btn');
+				//TODO: replace this with a cog/config icon
+				new_notification_config_btn.innerHTML='<img style="width:24px;height:24px;" src="images/info-circle.svg">';
+				//TODO: add event listener for configuration options
+				//which will be:
+				//	select notifications to show (checkbox for each type: error, warning, success, info)
+				//	timer: off, 1s min, 2s min, 3s min... up to 10s minimum time
+				new_notification_config_btn.addEventListener('click',(ev) => {});
+				new_notification_action_btns.appendChild(new_notification_config_btn);
+			
+			new_notification.appendChild(new_notification_action_btns);
 		
 		//add event listeners for drag-to-dismiss functionality
 		//these are applied to the notification element
@@ -85,12 +101,6 @@ function send_page_notification(page_notification_title,page_notification_messag
 			window.active_notification_drag={
 				client_x:ev.clientX,
 				client_y:ev.clientY,
-				offset_x:ev.offsetX,
-				offset_y:ev.offsetY,
-				last_move_x:ev.clientX,
-				last_move_y:ev.clientY,
-				last_move_x_vel:0,
-				last_move_y_vel:0,
 			};
 			
 			return false;
