@@ -834,8 +834,9 @@ form .toggle-slider {
 .page-notification-stack .page-notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
-	/* TODO: border or inner box shadow that makes this look like a button popping out of the page; give it depth */
-	box-shadow:0px 0px 10px rgba(0,0,0,0.7);
+	/* TODO: improve the inner box shadow to make this look like a button popping out of the page; give it more depth */
+/*	box-shadow:0px 0px 10px rgba(0,0,0,0.7); */
+	box-shadow:2px 2px 10px rgba(0,0,0,0.7), inset 2px 2px 10px rgba(255,255,255,1);
 	border-radius: var(--glbl-hover-title-border-radius);
 	background-color:var(--clr-form-card-bg);
 	display:flex;
