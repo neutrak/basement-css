@@ -57,6 +57,8 @@ body {
 	--clr-notification-warning-font:black;
 	--clr-notification-info-bg:rgba(13,202,240,1);
 	--clr-notification-info-font:black;
+	--clr-popout-outer-shadow:var(--clr-dropdown-shadow);
+	--clr-popout-inner-shadow:rgba(255,255,255,0.5);
 	
 	--hdr-height:3rem;
 
@@ -67,6 +69,7 @@ body {
 	--iconbar-size:50px;
 	--iconbar-focus-size:90px;
 	--iconbar-padding:8px;
+	--iconbar-z-index:1;
 	
 	--btn-padding:8px 16px;
 	--btn-border-radius:0.5rem;
@@ -604,6 +607,7 @@ aside.iconbar {
 	position:fixed;
 	background-color:rgba(255,255,255,0.70);
 	border-radius:calc(var(--iconbar-padding) * 2);
+	z-index:var(--iconbar-z-index,1);
 }
 aside.iconbar > ul.icons {
 	list-style-type:none;
@@ -834,9 +838,7 @@ form .toggle-slider {
 .page-notification-stack .page-notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
-	/* TODO: improve the inner box shadow to make this look like a button popping out of the page; give it more depth */
-/*	box-shadow:0px 0px 10px rgba(0,0,0,0.7); */
-	box-shadow:2px 2px 10px rgba(0,0,0,0.7), inset 2px 2px 10px rgba(255,255,255,1);
+	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow), inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow);
 	border-radius: var(--glbl-hover-title-border-radius);
 	background-color:var(--clr-form-card-bg);
 	display:flex;
@@ -905,6 +907,7 @@ form .toggle-slider {
 	margin:calc(0px - var(--glbl-padding)) 0px;
 /*	margin:calc(0px - (var(--glbl-padding) / 2)) 0px; */
 	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
+	box-shadow:inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow);
 	border:none;
 	display:flex;
 	flex-direction:column;
@@ -920,10 +923,14 @@ form .toggle-slider {
 	width:32px;
 	overflow:visible;
 	padding:0px;
+	opacity:1;
+
 }
 .page-notification-stack .page-notification .page-notification-action-btns > * {
 	border:none;
-	height:100%;
+	/* TODO: generalize height setting so it works correctly regardless of the number of items within the container */
+/*	height:100%; */
+	height:50%; /* (100% / <number of elements>) */
 	width:100%;
 	padding:calc(var(--glbl-padding) / 2);
 	font-size:1.5rem;
@@ -933,11 +940,21 @@ form .toggle-slider {
 	transition:all var(--glbl-transition-time) ease;
 	cursor:pointer;
 }
+.page-notification-stack .page-notification .page-notification-action-btns > *:hover,
+.page-notification-stack .page-notification .page-notification-action-btns > *:focus,
+.page-notification-stack .page-notification .page-notification-action-btns > *:active {
+	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow), inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow);
+	z-index:1;
+}
 .page-notification-stack .page-notification .page-notification-action-btns > *:first-child {
 	border-top-right-radius:var(--glbl-hover-title-border-radius);
 }
 .page-notification-stack .page-notification .page-notification-action-btns > *:last-child {
 	border-bottom-right-radius:var(--glbl-hover-title-border-radius);
+}
+.page-notification-stack .page-notification .page-notification-icon {
+	height:16px;
+	width:16px;
 }
 .page-notification-stack .page-notification .page-notification-close-btn {
 	background-color:var(--clr-close-btn-bg);
@@ -1027,15 +1044,21 @@ BEGIN medium and large display adjustments (mobile is default)
 		/*
 		NOTE: close button is HIDDEN until user hovers over notification
 		*/
+/*
 		width:0px;
 		overflow:hidden;
 		padding:0px;
+*/
+		opacity:0;
 	}
 	.page-notification-stack .page-notification:hover .page-notification-action-btns,
 	.page-notification-stack .page-notification:focus .page-notification-action-btns,
 	.page-notification-stack .page-notification:active .page-notification-action-btns {
+/*
 		width:32px;
 		overflow:visible;
+*/
+		opacity:1;
 	}
 	.page-notification-stack .page-notification:hover .page-notification-action-btns > *,
 	.page-notification-stack .page-notification:focus .page-notification-action-btns > *,

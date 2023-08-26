@@ -81,8 +81,8 @@ function send_page_notification(page_notification_title,page_notification_messag
 				let new_notification_config_btn=document.createElement('BUTTON');
 				new_notification_config_btn.setAttribute('type','button');
 				new_notification_config_btn.classList.add('page-notification-config-btn');
-				//TODO: replace this with a cog/config icon
-				new_notification_config_btn.innerHTML='<img style="width:24px;height:24px;" src="images/info-circle.svg">';
+				//a cog/config icon
+				new_notification_config_btn.innerHTML='<img class="page-notification-icon" src="images/gear.svg">';
 				//TODO: add event listener for configuration options
 				//which will be:
 				//	select notifications to show (checkbox for each type: error, warning, success, info)
