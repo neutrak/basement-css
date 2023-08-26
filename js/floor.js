@@ -2,6 +2,7 @@
 
 const ANIMATION_DURATION_MS=500;
 const DISMISS_MOVE_THRESHOLD_PX=40;
+const USER_ATTENTION_PULSE_COUNT=2;
 
 //this is the event handler that runs when a page notification starts being dragged
 //args:
@@ -145,12 +146,12 @@ function send_page_notification(page_notification_title,page_notification_messag
 			new_notification.classList.remove('fade-in');
 		},ANIMATION_DURATION_MS);
 		
-			//intentional intendtation to match generated html's nesting level
+			//intentional indentation to match generated html's nesting level
 			let new_notification_content=document.createElement('DIV');
 			new_notification_content.classList.add('page-notification-content');
 			new_notification_content.addEventListener('click',on_activate_callback);
 			
-				//intentional intendtation to match generated html's nesting level
+				//intentional indentation to match generated html's nesting level
 				let new_notification_title=document.createElement('H2');
 				new_notification_title.classList.add('page-notification-title');
 				new_notification_title.innerText=page_notification_title;
@@ -163,34 +164,30 @@ function send_page_notification(page_notification_title,page_notification_messag
 			
 			new_notification.appendChild(new_notification_content);
 			
-			//on close click or drag-to-dismiss
-			let on_dismiss=(ev) => {
-				return handle_page_notification_close_btn(ev,on_dismiss_callback);
-			};
-			
 			let new_notification_action_btns=document.createElement('DIV');
 			new_notification_action_btns.classList.add('page-notification-action-btns');
 			
-				let new_notification_close_btn=document.createElement('BUTTON');
-				new_notification_close_btn.setAttribute('type','button');
-				new_notification_close_btn.classList.add('page-notification-close-btn');
-				new_notification_close_btn.innerHTML='&times;';
-				new_notification_close_btn.addEventListener('click',on_dismiss);
-				new_notification_action_btns.appendChild(new_notification_close_btn);
-				
-				let new_notification_config_btn=document.createElement('BUTTON');
-				new_notification_config_btn.setAttribute('type','button');
-				new_notification_config_btn.classList.add('page-notification-config-btn');
-				//a cog/config icon
-				new_notification_config_btn.innerHTML='<img class="page-notification-icon" src="images/gear.svg">';
-				//TODO: add event listener for configuration options
-				//which will be:
-				//	select notifications to show (checkbox for each type: error, warning, success, info)
-				//	timer: off, 1s min, 2s min, 3s min... up to 10s minimum time
-				new_notification_config_btn.addEventListener('click',(ev) => {
-//					show_page_notification_settings();
+				//intentional indentation to match generated html's nesting level
+				let close_btn_elem=document.createElement('BUTTON');
+				close_btn_elem.setAttribute('type','button');
+				close_btn_elem.classList.add('page-notification-close-btn');
+				close_btn_elem.innerHTML='&times;';
+				//add event listener for on close click
+				close_btn_elem.addEventListener('click',(ev) => {
+					return handle_page_notification_close_btn(ev,on_dismiss_callback);
 				});
-				new_notification_action_btns.appendChild(new_notification_config_btn);
+				new_notification_action_btns.appendChild(close_btn_elem);
+				
+				let config_btn_elem=document.createElement('BUTTON');
+				config_btn_elem.setAttribute('type','button');
+				config_btn_elem.classList.add('page-notification-config-btn');
+				//a cog/config icon
+				config_btn_elem.innerHTML='<img class="page-notification-icon" src="images/gear.svg">';
+				//add event listener for configuration options
+				config_btn_elem.addEventListener('click',(ev) => {
+					show_page_notification_settings();
+				});
+				new_notification_action_btns.appendChild(config_btn_elem);
 			
 			new_notification.appendChild(new_notification_action_btns);
 		
@@ -222,28 +219,103 @@ function send_page_notification(page_notification_title,page_notification_messag
 //	shows the page notification dialog in the page notification stack
 //	if this dialog is not already present
 function show_page_notification_settings(){
-	//TODO: add configuration options
-	//which will be:
-	//	select notifications to show (checkbox for each type: error, warning, success, info)
-	//	timer: off, 1s min, 2s min, 3s min... up to 10s minimum time
-	
 	let notification_stacks=document.querySelectorAll('.page-notification-stack');
 	for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
 		
 		//if a config dialog is already present then don't show it again
-		let existing_notification_settings=notification_stacks[stack_idx].querySelectorAll('.page-notification-config');
+		let existing_notification_settings=notification_stacks[stack_idx].querySelectorAll('.page-notification-settings');
 		if(existing_notification_settings.length>0){
 			//do highlight it though just to focus the user's attention
 			for(let setting_idx=0;setting_idx<existing_notification_settings.length;setting_idx++){
-				existing_notification_settings[setting_idx].classList.remove('user-attention');
 				existing_notification_settings[setting_idx].classList.add('user-attention');
+				setTimeout(() => {
+					existing_notification_settings[setting_idx].classList.remove('user-attention');
+				},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT)));
 			}
 			continue;
 		}
 		
 		let notification_settings_elem=document.createElement('DIV');
+		notification_settings_elem.classList.add('page-notification');
+		notification_settings_elem.classList.add('page-notification-settings');
+		notification_settings_elem.classList.add('fade-in');
+		notification_settings_elem.setAttribute('draggable',true);
+		setTimeout(() => {
+			notification_settings_elem.classList.remove('fade-in');
+			//NOTE: we want to WAIT to get the user's attention until AFTER the fadein has completed
+/*			notification_settings_elem.classList.add('user-attention'); */
+		},ANIMATION_DURATION_MS);
+/*
+		//NOTE: user-attention animation pulses 2x then stops
+		//so we have to wait 2 animation cycles before removing the class
+		//and we DO need to remove it so we can re-add it later and have it animate
+		//in case the user clicks the cog again while settings is already open
+		setTimeout(() => {
+			notification_settings_elem.classList.remove('user-attention');
+		},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT+1)));
+*/
 		
-		notification_stacks[stack_idx].appendChild(notification_settings_elem);
+			//intentional indentation to match generated html's nesting level
+			let settings_content_elem=document.createElement('DIV');
+			settings_content_elem.classList.add('page-notification-settings-content');
+			
+				//intentional indentation to match generated html's nesting level
+				let title_elem=document.createElement('H2');
+				title_elem.classList.add('page-notification-title');
+				title_elem.innerText="Page Notification Settings";
+				settings_content_elem.appendChild(title_elem);
+				
+			
+			//TODO: configuration options
+			//	select notifications to show (checkbox for each type: error, warning, success, info)
+			
+			//TODO: configuration options
+			//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
+			//		<input type="number" step="1" min="0" name="page-notification-min-time">
+			//			<button type="button" class="clear-input-field" data-for="page-notification-min-time">&times;</button>
+			//		<input type="number" step="1" min="0" name="page-notification-max-time">
+			//			<button type="button" class="clear-input-field" data-for="page-notification-max-time">&times;</button>
+			
+			notification_settings_elem.appendChild(settings_content_elem);
+			
+			let settings_action_btns=document.createElement('DIV');
+			settings_action_btns.classList.add('page-notification-action-btns');
+			
+				//intentional indentation to match generated html's nesting level
+				let close_btn_elem=document.createElement('BUTTON');
+				close_btn_elem.setAttribute('type','button');
+				close_btn_elem.classList.add('page-notification-close-btn');
+				close_btn_elem.innerHTML='&times;';
+				//add event listener for on close click
+				close_btn_elem.addEventListener('click',(ev) => {
+					return handle_page_notification_close_btn(ev);
+				});
+				settings_action_btns.appendChild(close_btn_elem);
+				
+				//blank button; a placeholder for layout purposes that actually does nothing
+				let blank_btn_elem=document.createElement('BUTTON');
+				blank_btn_elem.setAttribute('type','button');
+				blank_btn_elem.classList.add('page-notification-blank-btn');
+				settings_action_btns.appendChild(blank_btn_elem);
+			
+			notification_settings_elem.appendChild(settings_action_btns);
+		
+		//add event listeners for drag-to-dismiss functionality
+		notification_settings_elem.addEventListener('dragstart',(ev) => {
+			return handle_page_notification_dragstart(ev);
+		});
+		notification_settings_elem.addEventListener('dragend',(ev) => {
+			return handle_page_notification_dragend(ev);
+		});
+		
+		//insert the settings elem at the top of the notification stack
+		if(notification_stacks[stack_idx].children.length>0){
+			notification_stacks[stack_idx].insertBefore(notification_settings_elem,notification_stacks[stack_idx].children[0]);
+		//if the notification stack is empty
+		}else{
+			//insert it as an only child
+			notification_stacks[stack_idx].appendChild(notification_settings_elem);
+		}
 	}
 }
 
