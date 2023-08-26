@@ -1014,6 +1014,20 @@ form .toggle-slider {
 	color:var(--clr-notification-info-font);
 }
 
+.page-notification-enable-list {
+	padding-top:calc(var(--glbl-padding) / 2);
+}
+.page-notification-enable-list > .toggle-slider {
+	width:100%;
+	height:auto;
+	display:flex;
+	align-items:stretch;
+	justify-content:flex-start;
+}
+.page-notification-enable-list > .toggle-slider:not(:last-child) {
+	margin-bottom:calc(var(--glbl-padding) / 4);
+}
+
 /* ---------------------------------------------------------------------------
 END global component styles
 ----------------------------------------------------------------------------*/

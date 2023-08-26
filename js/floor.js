@@ -134,7 +134,27 @@ function handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
 //side-effects:
 //	adds a <div class='page-notification fade-in' draggable='true'></div> and associated content to the DOM
 //	within each container <div class='page-notification-stack'></div> that the page's html defines
+//	unless user-specified settings disabled this notification type (in which case nothing occurs)
 function send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {}){
+	//get local page notification settings, if there are any
+	let local_notification_settings=localStorage.getItem('page-notification-settings');
+	if(local_notification_settings!==null){
+		local_notification_settings=JSON.parse(local_notification_settings);
+		
+		//if a setting was found for this notification type
+		if(local_notification_settings.hasOwnProperty('page-notification-setting-enable-'+css_classes)){
+			//if this type of notification is disabled
+			if(!local_notification_settings['page-notification-setting-enable-'+css_classes]){
+				//then do nothing; this notification is disabled!
+				console.log('send_page_notification not sending a notification of type '+css_classes+' because that notification type is disabled by local settings!'); //debug
+				return;
+			}
+		}
+	}
+	
+	//if we got here and didn't return then this notification is either implicitly or explicitly enabled
+	//so we're good to now show it anywhere it was requested to be visible
+	
 	let notification_stacks=document.querySelectorAll('.page-notification-stack');
 	for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
 		let new_notification=document.createElement('DIV');
@@ -210,6 +230,107 @@ function send_page_notification(page_notification_title,page_notification_messag
 	}
 }
 
+//this function generates the enable/disable notification settings html
+//args:
+//	none
+//return:
+//	returns an HTML element (DIV) which contains the enable/disable settings for all the notification types
+//side-effects:
+//	none
+function gen_page_notification_enable_settings(){
+	//define the types of notifications that the user can configure
+	//NOTE: this list is ORDERED which is why it's not an object with css classes as keys
+	let toggle_notifications_cont=document.createElement('DIV');
+	toggle_notifications_cont.classList.add('page-notification-enable-list');
+	let notification_types=[
+		{
+			'css_class':'error',
+			'display_name':'Error',
+			'dflt_is_checked':true,
+		},
+		{
+			'css_class':'warning',
+			'display_name':'Warning',
+			'dflt_is_checked':true,
+		},
+		{
+			'css_class':'success',
+			'display_name':'Success',
+			'dflt_is_checked':true,
+		},
+		{
+			'css_class':'info',
+			'display_name':'Info',
+			'dflt_is_checked':true,
+		},
+	];
+	
+	//get already existing local settings, if there are any
+	let local_notification_settings=localStorage.getItem('page-notification-settings');
+	if(local_notification_settings!==null){
+		local_notification_settings=JSON.parse(local_notification_settings);
+	}
+	
+	//for each notification type
+	for(let type_idx=0;type_idx<notification_types.length;type_idx++){
+		//create a toggler to enable or disable this type of notification
+		let notification_type_toggle_elem=document.createElement('DIV');
+		notification_type_toggle_elem.classList.add('toggle-slider');
+		
+			//intentional indentation to match html nesting level
+			let toggle_chkbox=document.createElement('INPUT');
+			toggle_chkbox.setAttribute('type','checkbox');
+			toggle_chkbox.id='page-notification-setting-enable-'+notification_types[type_idx].css_class;
+			
+			//on change immediately save the setting to apply it for future notifications
+			toggle_chkbox.addEventListener('change',(ev) => {
+				//get already existing local settings, if there are any
+				let local_notification_settings=localStorage.getItem('page-notification-settings');
+				if(local_notification_settings!==null){
+					local_notification_settings=JSON.parse(local_notification_settings);
+				}else{
+					local_notification_settings={};
+				}
+				
+				//store the setting that was actually changed
+				local_notification_settings[toggle_chkbox.id]=ev.target.checked;
+				
+				//save the result in localStorage (which persists between page loads)
+				localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
+			});
+			
+			if(local_notification_settings!==null){
+				toggle_chkbox.checked=local_notification_settings[toggle_chkbox.id];
+			}else{
+				toggle_chkbox.checked=notification_types[type_idx].dflt_is_checked;
+			}
+			
+			notification_type_toggle_elem.appendChild(toggle_chkbox);
+			
+			let toggle_slider=document.createElement('LABEL');
+			toggle_slider.setAttribute('for',toggle_chkbox.id);
+			toggle_slider.classList.add('toggle-label');
+			notification_type_toggle_elem.appendChild(toggle_slider);
+			
+			let toggle_label_unchecked=document.createElement('LABEL');
+			toggle_label_unchecked.setAttribute('for',toggle_chkbox.id);
+			toggle_label_unchecked.classList.add('toggle-label-unchecked');
+			toggle_label_unchecked.innerText=notification_types[type_idx]['display_name']+' notifications are disabled';
+			notification_type_toggle_elem.appendChild(toggle_label_unchecked);
+			
+			let toggle_label_checked=document.createElement('LABEL');
+			toggle_label_checked.setAttribute('for',toggle_chkbox.id);
+			toggle_label_checked.classList.add('toggle-label-checked');
+			toggle_label_checked.innerText=notification_types[type_idx]['display_name']+' notifications are enabled';
+			notification_type_toggle_elem.appendChild(toggle_label_checked);
+		
+		toggle_notifications_cont.appendChild(notification_type_toggle_elem);
+		
+	}
+	
+	return toggle_notifications_cont;
+}
+
 //this function shows the global page notification settings
 //args:
 //	none
@@ -266,8 +387,10 @@ function show_page_notification_settings(){
 				settings_content_elem.appendChild(title_elem);
 				
 			
-			//TODO: configuration options
+			//configuration options
 			//	select notifications to show (checkbox for each type: error, warning, success, info)
+			let toggle_notifications_cont=gen_page_notification_enable_settings();
+			settings_content_elem.appendChild(toggle_notifications_cont);
 			
 			//TODO: configuration options
 			//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
