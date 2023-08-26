@@ -1,5 +1,125 @@
 //floor.js, a javascript library for when you want an experience above that of a basement
 
+const ANIMATION_DURATION_MS=500;
+const DISMISS_MOVE_THRESHOLD_PX=40;
+
+//this is the event handler that runs when a page notification starts being dragged
+//args:
+//	ev: the javascript event that generated this action
+//return:
+//	returns false always
+//side-effects:
+//	stores drag state in the window object for later reference
+function handle_page_notification_dragstart(ev){
+//	console.log('handle_page_notification_dragstart got notification drag start event ',ev); //debug
+	
+	window.active_notification_drag={
+		client_x:ev.clientX,
+		client_y:ev.clientY,
+	};
+	
+	return false;
+}
+
+//this is the event handler that runs when a page notification stops being dragged
+//args:
+//	ev: the javascript event that generated this action
+//	on_dismiss_callback: the callback function to run when a dismissal action occurs
+//		on_dismiss_callback, if provided, is a function which takes a single argument
+//			ev: the javascript event that generated this action
+//return:
+//	returns false always
+//side-effects:
+//	potentially dismisses the notification, if the drag distance was greater than DISMISS_MOVE_THRESHOLD_PX
+function handle_page_notification_dragend(ev,on_dismiss_callback=(ev)=>{}){
+//	console.log('handle_page_notification_dragend got notification drag end event ',ev); //debug
+	
+	let is_dismissing=false;
+	let dismiss_direction_class='fade-out-right';
+	let transform_offset={
+		x:(ev.clientX-window.active_notification_drag.client_x),
+		y:(ev.clientY-window.active_notification_drag.client_y),
+	};
+	
+	//if you moved the element left or right by at least DISMISS_MOVE_THRESHOLD_PX
+	//then this is a dismissal event
+	//but how we animate that depends on which direction you moved in
+	//so detect direction and apply css accordingly
+	if(ev.clientX>=(window.active_notification_drag.client_x+DISMISS_MOVE_THRESHOLD_PX)){
+		is_dismissing=true;
+		dismiss_direction_class='fade-out-right';
+	}else if(ev.clientX<=(window.active_notification_drag.client_x-DISMISS_MOVE_THRESHOLD_PX)){
+		is_dismissing=true;
+		dismiss_direction_class='fade-out-left';
+	}
+	
+	let existing_offset={
+		x:(['',null,undefined].includes(ev.target.style.left)?0:ev.target.style.left.replace('px','')-0),
+		y:(['',null,undefined].includes(ev.target.style.top)?0:ev.target.style.top.replace('px','')-0),
+	};
+	
+	if(is_dismissing){
+		//run the callback
+		on_dismiss_callback(ev);
+		
+//		console.log('handle_page_notification_dragend dismissing notification ev.target=',ev.target,' existing_offset=',existing_offset); //debug
+		
+		//set position so nothing moves suddenly or unexpectedly
+		ev.target.style.left=existing_offset.x+transform_offset.x+'px';
+		ev.target.style.top=existing_offset.y+transform_offset.y+'px';
+		
+		//remove this notification from the DOM
+		//but do so in a pretty way
+		ev.target.classList.add('fade-out');
+		ev.target.classList.add(dismiss_direction_class);
+		
+		//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
+		//this setTimeout should be for the same time as the duration of the animation
+		//so that the item gets cleanly removed from the DOM as soon as it has faded out
+		setTimeout(() => {
+			ev.target.parentNode.removeChild(ev.target);
+		},ANIMATION_DURATION_MS);
+	}
+	
+	//remove unnecessary state so it doesn't clutter the namespace until the next drag
+	delete window.active_notification_drag;
+	
+	return false;
+}
+
+//this is the event handler that runs when the user clicks the close button on a notification
+//args:
+//	ev: the javascript click event which triggered this function call
+//	on_dismiss_callback: the callback function to run when a dismissal action occurs
+//		on_dismiss_callback, if provided, is a function which takes a single argument
+//			ev: the javascript event that generated this action
+//return:
+//	returns false always
+//side-effects:
+//	dismisses the associated page notification
+function handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
+	//run the callback
+	on_dismiss_callback(ev);
+	
+	//stop event propagation
+	ev.preventDefault();
+	ev.stopPropagation();
+	
+	let notification_node=ev.target.parentNode.parentNode;
+	
+	//remove this notification from the DOM
+	//but do so in a pretty way
+	notification_node.classList.add('fade-out');
+	notification_node.classList.add('fade-out-right');
+	//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
+	//this setTimeout should be for the same time as the duration of the animation
+	//so that the item gets cleanly removed from the DOM as soon as it has faded out
+	setTimeout(() => {
+		notification_node.parentNode.removeChild(notification_node);
+	},ANIMATION_DURATION_MS);
+	
+	return false;
+}
 
 //this function sends a page-wide notification to the user
 //args:
@@ -23,7 +143,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 		new_notification.setAttribute('draggable',true);
 		setTimeout(() => {
 			new_notification.classList.remove('fade-in');
-		},500);
+		},ANIMATION_DURATION_MS);
 		
 			//intentional intendtation to match generated html's nesting level
 			let new_notification_content=document.createElement('DIV');
@@ -45,27 +165,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 			
 			//on close click or drag-to-dismiss
 			let on_dismiss=(ev) => {
-				//run the callback
-				on_dismiss_callback(ev);
-				
-				//stop event propagation
-				ev.preventDefault();
-				ev.stopPropagation();
-				
-				let notification_node=ev.target.parentNode.parentNode;
-				
-				//remove this notifcation from the DOM
-				//but do so in a pretty way
-				notification_node.classList.add('fade-out');
-				notification_node.classList.add('fade-out-right');
-				//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
-				//this setTimeout should be for the same time as the duration of the animation
-				//so that the item gets cleanly removed from the DOM as soon as it has faded out
-				setTimeout(() => {
-					notification_node.parentNode.removeChild(notification_node);
-				},500);
-				
-				return false;
+				return handle_page_notification_close_btn(ev,on_dismiss_callback);
 			};
 			
 			let new_notification_action_btns=document.createElement('DIV');
@@ -87,77 +187,20 @@ function send_page_notification(page_notification_title,page_notification_messag
 				//which will be:
 				//	select notifications to show (checkbox for each type: error, warning, success, info)
 				//	timer: off, 1s min, 2s min, 3s min... up to 10s minimum time
-				new_notification_config_btn.addEventListener('click',(ev) => {});
+				new_notification_config_btn.addEventListener('click',(ev) => {
+//					show_page_notification_settings();
+				});
 				new_notification_action_btns.appendChild(new_notification_config_btn);
 			
 			new_notification.appendChild(new_notification_action_btns);
 		
 		//add event listeners for drag-to-dismiss functionality
 		//these are applied to the notification element
-		
 		new_notification.addEventListener('dragstart',(ev) => {
-//			console.log('send_page_notification got notification drag start event ',ev); //debug
-			
-			window.active_notification_drag={
-				client_x:ev.clientX,
-				client_y:ev.clientY,
-			};
-			
-			return false;
+			return handle_page_notification_dragstart(ev);
 		});
 		new_notification.addEventListener('dragend',(ev) => {
-//			console.log('send_page_notification got notification drag end event ',ev); //debug
-			
-			//if you moved the element left or right by at least 40 px
-			//then this is a dismissal event
-			let dismiss_movement_threshold_px=40;
-			
-			let is_dismissing=false;
-			let dismiss_direction_class='fade-out-right';
-			let transform_offset={
-				x:(ev.clientX-window.active_notification_drag.client_x),
-				y:(ev.clientY-window.active_notification_drag.client_y),
-			};
-			if(ev.clientX>=(window.active_notification_drag.client_x+dismiss_movement_threshold_px)){
-				is_dismissing=true;
-				dismiss_direction_class='fade-out-right';
-			}else if(ev.clientX<=(window.active_notification_drag.client_x-dismiss_movement_threshold_px)){
-				is_dismissing=true;
-				dismiss_direction_class='fade-out-left';
-			}
-			
-			let existing_offset={
-				x:(['',null,undefined].includes(ev.target.style.left)?0:ev.target.style.left.replace('px','')-0),
-				y:(['',null,undefined].includes(ev.target.style.top)?0:ev.target.style.top.replace('px','')-0),
-			};
-			
-			if(is_dismissing){
-				//run the callback
-				on_dismiss_callback(ev);
-				
-//				console.log('send_page_notification dismissing notification ev.target=',ev.target,' existing_offset=',existing_offset); //debug
-				
-				//set position so nothing moves suddenly or unexpectedly
-				ev.target.style.left=existing_offset.x+transform_offset.x+'px';
-				ev.target.style.top=existing_offset.y+transform_offset.y+'px';
-				
-				//remove this notifcation from the DOM
-				//but do so in a pretty way
-				ev.target.classList.add('fade-out');
-				ev.target.classList.add(dismiss_direction_class);
-				
-				//NOTE: because we want this to animate away we can't remove it from the DOM until the animation has completed
-				//this setTimeout should be for the same time as the duration of the animation
-				//so that the item gets cleanly removed from the DOM as soon as it has faded out
-				setTimeout(() => {
-					ev.target.parentNode.removeChild(ev.target);
-				},500);
-			}
-			
-			//remove unnecessary state so it doesn't clutter the namespace until the next drag
-			delete window.active_notification_drag;
-			
-			return false;
+			return handle_page_notification_dragend(ev,on_dismiss_callback);
 		});
 		
 		/*
@@ -167,6 +210,40 @@ function send_page_notification(page_notification_title,page_notification_messag
 		*/
 		
 		notification_stacks[stack_idx].appendChild(new_notification);
+	}
+}
+
+//this function shows the global page notification settings
+//args:
+//	none
+//return:
+//	none
+//side-effects:
+//	shows the page notification dialog in the page notification stack
+//	if this dialog is not already present
+function show_page_notification_settings(){
+	//TODO: add configuration options
+	//which will be:
+	//	select notifications to show (checkbox for each type: error, warning, success, info)
+	//	timer: off, 1s min, 2s min, 3s min... up to 10s minimum time
+	
+	let notification_stacks=document.querySelectorAll('.page-notification-stack');
+	for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
+		
+		//if a config dialog is already present then don't show it again
+		let existing_notification_settings=notification_stacks[stack_idx].querySelectorAll('.page-notification-config');
+		if(existing_notification_settings.length>0){
+			//do highlight it though just to focus the user's attention
+			for(let setting_idx=0;setting_idx<existing_notification_settings.length;setting_idx++){
+				existing_notification_settings[setting_idx].classList.remove('user-attention');
+				existing_notification_settings[setting_idx].classList.add('user-attention');
+			}
+			continue;
+		}
+		
+		let notification_settings_elem=document.createElement('DIV');
+		
+		notification_stacks[stack_idx].appendChild(notification_settings_elem);
 	}
 }
 

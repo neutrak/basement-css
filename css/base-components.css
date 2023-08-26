@@ -859,6 +859,7 @@ form .toggle-slider {
 }
 .page-notification-stack .page-notification.fade-in {
 	animation:notification-fade-in 0.5s;
+	animation-iteration-count:1;
 }
 .page-notification-stack .page-notification.fade-out {
 	opacity:0;
