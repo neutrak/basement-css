@@ -78,6 +78,8 @@ body {
 	--btn-border-radius:0.5rem;
 	
 	--form-card-padding:16px;
+	
+	--progress-bar-height:16px;
 }
 
 
@@ -904,6 +906,36 @@ form .toggle-slider {
 	cursor:auto;
 	background-color:var(--clr-notification-settings-bg,#b0d4dc);
 }
+.page-notification .progress-bar {
+/*	content:' '; */
+	position:absolute;
+	height:calc(0.5rem + var(--progress-bar-height));
+	width:100%;
+	bottom:calc(0.5rem - var(--progress-bar-height));
+	left:50%;
+	transform:translateX(-50%);
+/*	transition:all 5s ease; */
+	border-radius:0px 0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius);
+/*	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow); */
+	z-index:-1;
+	background-color:var(--clr-form-card-bg);
+}
+.page-notification.success .progress-bar {
+/*	color:var(--clr-notification-success-font); */
+	background-color:var(--clr-notification-success-bg);
+}
+.page-notification.error .progress-bar {
+/*	color:var(--clr-notification-error-font); */
+	background-color:var(--clr-notification-error-bg);
+}
+.page-notification.warning .progress-bar {
+/*	color:var(--clr-notification-warning-font); */
+	background-color:var(--clr-notification-warning-bg);
+}
+.page-notification.info .progress-bar {
+/*	color:var(--clr-notification-info-font); */
+	background-color:var(--clr-notification-info-bg);
+}
 .page-notification-content {
 	width:100%;
 	margin:calc(0px - var(--glbl-padding)) 0px calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding));
@@ -1058,6 +1090,16 @@ BEGIN animation definitions
 		box-shadow:0rem 0.5rem 0.5rem var(--clr-user-attention-shadow-bg);
 	}
 }
+
+@keyframes linear-shrink {
+	0% {
+		width:100%;
+	}
+	100% {
+		width:0px;
+	}
+}
+
 
 /* ---------------------------------------------------------------------------
 END animation definitions

@@ -3,6 +3,7 @@
 const ANIMATION_DURATION_MS=500;
 const DISMISS_MOVE_THRESHOLD_PX=40;
 const USER_ATTENTION_PULSE_COUNT=2;
+const MS_PER_SEC=1000;
 
 //this is the event handler that runs when a page notification starts being dragged
 //args:
@@ -129,13 +130,17 @@ function handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
 //	css_classes: the css classes which determine notification type (success,error,warning,info)
 //	on_activate_callback: the optional function to run when the user clicks to select the notification
 //	on_dismiss_callback: the optional function to run when the user dismisses or exits from the notification
+//	display_time_ms: the number of milliseconds to leave this notification on the screen if the user doesn't interact with it
+//		NOTE: mouseover and/or mouseenter events should invalidate this
+//		NOTE: we will animate a progress bar to make the duration of notifications apparent to the user
+//		NOTE: passing a value of null or 0 will make the notification stay on the screen indefinitely (until the user manually dismisses it)
 //return:
 //	none
 //side-effects:
 //	adds a <div class='page-notification fade-in' draggable='true'></div> and associated content to the DOM
 //	within each container <div class='page-notification-stack'></div> that the page's html defines
 //	unless user-specified settings disabled this notification type (in which case nothing occurs)
-function send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {}){
+function send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {},display_time_ms=5000){
 	//get local page notification settings, if there are any
 	let local_notification_settings=localStorage.getItem('page-notification-settings');
 	if(local_notification_settings!==null){
@@ -198,6 +203,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 				});
 				new_notification_action_btns.appendChild(close_btn_elem);
 				
+				//configuration options (what to show, how long to keep on screen, etc.) indicated by a cog icon
 				let config_btn_elem=document.createElement('BUTTON');
 				config_btn_elem.setAttribute('type','button');
 				config_btn_elem.classList.add('page-notification-config-btn');
@@ -221,10 +227,34 @@ function send_page_notification(page_notification_title,page_notification_messag
 		});
 		
 		/*
-		TODO: a timer (horizontal line that shows the progress of time relative to total time of notification on screen)
-			on mouse over cancel any timers and consider this notification manually-cancel-only from now on
-		TODO: configuration options (keep on screen, etc.) shown by a cog icon
+		a timer (horizontal line that shows the progress of time relative to total time of notification on screen)
+		NOTE: on mouse over we cancel any timers and consider this notification manually-cancel-only from now on
 		*/
+		if((display_time_ms!==null) && (display_time_ms>0)){
+			let progress_bar_elem=document.createElement('DIV');
+			progress_bar_elem.classList.add('progress-bar');
+			new_notification.appendChild(progress_bar_elem);
+			setTimeout(() => {
+				//animate the progress bar
+				progress_bar_elem.style.animation='linear-shrink '+(display_time_ms/MS_PER_SEC)+'s linear';
+			});
+			
+			setTimeout(() => {
+				if(new_notification.hasOwnProperty('is_timeout_cancelled') && new_notification.is_timeout_cancelled){
+					return;
+				}
+				new_notification.querySelector('.page-notification-close-btn').click();
+			},display_time_ms);
+			
+			//if the user mouses over a notification then that cancels its associated timeout
+			new_notification.addEventListener('mouseover',(ev) => {
+				let progress_bar_elem=new_notification.querySelector('.progress-bar');
+				if(progress_bar_elem!==null){
+					progress_bar_elem.parentNode.removeChild(progress_bar_elem);
+				}
+				new_notification.is_timeout_cancelled=true;
+			});
+		}
 		
 		notification_stacks[stack_idx].appendChild(new_notification);
 	}
