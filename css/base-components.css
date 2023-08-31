@@ -819,17 +819,47 @@ form .toggle-slider {
 	animation-iteration-count:2;
 }
 
-.page-notification-stack {
-	width:var(--glbl-max-width); /* mobile */
-/*	width:calc(var(--glbl-max-width) / 2); (desktop sizes only; defined later in the desktop-specific section) */
+/*
+NOTE: .page-notification-stack cannot have overflow-y:auto;overflow-x:visible;
+so we need this container around it :/
+*/
+.page-notification-stack-cont {
+	width:100%;
 	position:fixed;
-	top:calc(var(--hdr-height) + var(--glbl-menu-arrow-height));
+	margin-top:var(--hdr-height);
 	left:50%;
 	transform:translateX(-50%);
-	transition:all var(--glbl-transition-time) ease;
+/*	z-index:0; */
+	height:calc(100% - var(--hdr-height));
+	overflow-y:auto;
+	/*
+	this container is only for overflow uses
+	so it shouldn't get any pointer events or show any scrollbars
+	NOTE: this means the page-notification-stack MUST have pointer-events:auto set
+	otherwise no pointer events will reach the notifications!
+	*/
+	pointer-events:none;
+	scrollbar-width:none;
+}
+.banner:not(:empty):not(.hidden) ~ .page-notification-stack-cont {
+	height:calc(100% - (var(--hdr-height) * 2));
+}
+.bottombar .page-notification-stack-cont {
+	bottom:var(--hdr-height);
+	margin-top:0px;
+}
+.bottombar .banner:not(:empty):not(.hidden) ~ .page-notification-stack-cont {
+	bottom:calc(var(--hdr-height) * 2);
+}
+.page-notification-stack {
+	position:relative;
+	height:auto;
+	pointer-events:auto;
+	width:var(--glbl-max-width); /* mobile */
+/*	width:calc(var(--glbl-max-width) / 2); (desktop sizes only; defined later in the desktop-specific section) */
 	padding: var(--glbl-padding) calc(var(--glbl-padding) * 2);
-	border-radius: var(--glbl-hover-title-border-radius);
-	z-index:3;
+	left:50%;
+	transform:translateX(-50%);
 }
 .page-notification-stack:empty {
 	display:none;
@@ -905,6 +935,7 @@ form .toggle-slider {
 .page-notification.page-notification-settings {
 	cursor:auto;
 	background-color:var(--clr-notification-settings-bg,#b0d4dc);
+	border:1px solid transparent;
 }
 .page-notification .progress-bar {
 /*	content:' '; */
@@ -1084,10 +1115,12 @@ BEGIN animation definitions
 @keyframes pulse {
 	0% {
 		box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow);
+		border:1px solid transparent;
 	}
 	100% {
 /*		box-shadow:0rem 0.5rem 0.5rem var(--clr-notification-info-bg); */
 		box-shadow:0rem 0.5rem 0.5rem var(--clr-user-attention-shadow-bg);
+		border:1px solid var(--clr-user-attention-shadow-bg);
 	}
 }
 
