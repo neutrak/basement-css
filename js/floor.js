@@ -1,5 +1,13 @@
 //floor.js, a javascript library for when you want an experience above that of a basement
 
+//TODO: clean up code in this file in the following manner:
+//	move constants to a separate constants.js file for better re-use
+//	rename this file page-notifictions.js and update the associated <script> in kitchen-sink.html
+//	rename all functions for consistency and to start with the bsmnt_ prefix
+//	remove any debug statements
+//	write unit tests if/where possible
+//		(maybe not based on the functions in this file, which seem closely tied to the DOM)
+
 const ANIMATION_DURATION_MS=500;
 const DISMISS_MOVE_THRESHOLD_PX=40;
 const USER_ATTENTION_PULSE_COUNT=2;
@@ -174,7 +182,15 @@ function send_page_notification(page_notification_title,page_notification_messag
 			//intentional indentation to match generated html's nesting level
 			let new_notification_content=document.createElement('DIV');
 			new_notification_content.classList.add('page-notification-content');
-			new_notification_content.addEventListener('click',on_activate_callback);
+			new_notification_content.addEventListener('click',(ev) => {
+				//after a click to activate event any timeout active should be cancelled
+				if(new_notification.hasOwnProperty('cancel_timeout')){
+					new_notification.cancel_timeout();
+				}
+				
+				//and run the user-specified callback function now
+				return on_activate_callback(ev);
+			});
 			
 				//intentional indentation to match generated html's nesting level
 				let new_notification_title=document.createElement('H2');
@@ -231,6 +247,15 @@ function send_page_notification(page_notification_title,page_notification_messag
 		NOTE: on mouse over we cancel any timers and consider this notification manually-cancel-only from now on
 		*/
 		if((display_time_ms!==null) && (display_time_ms>0)){
+			//add a function that we can use to cancel the timeout on this notification from any context
+			new_notification.cancel_timeout=() => {
+				let progress_bar_elem=new_notification.querySelector('.progress-bar');
+				if(progress_bar_elem!==null){
+					progress_bar_elem.parentNode.removeChild(progress_bar_elem);
+				}
+				new_notification.is_timeout_cancelled=true;
+			}
+
 			let progress_bar_elem=document.createElement('DIV');
 			progress_bar_elem.classList.add('progress-bar');
 			new_notification.appendChild(progress_bar_elem);
@@ -248,11 +273,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 			
 			//if the user mouses over a notification then that cancels its associated timeout
 			new_notification.addEventListener('mouseover',(ev) => {
-				let progress_bar_elem=new_notification.querySelector('.progress-bar');
-				if(progress_bar_elem!==null){
-					progress_bar_elem.parentNode.removeChild(progress_bar_elem);
-				}
-				new_notification.is_timeout_cancelled=true;
+				new_notification.cancel_timeout();
 			});
 		}
 		

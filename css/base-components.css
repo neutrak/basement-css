@@ -876,6 +876,7 @@ so we need this container around it :/
 	background:radial-gradient(#ffffff,rgba(255,255,255,0.5) 90%,transparent 100%);
 	z-index:-1;
 }
+/* TODO: test drag-to-dismiss-notification on real mobile device */
 .page-notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
@@ -891,13 +892,13 @@ so we need this container around it :/
 	transition:all var(--glbl-transition-time) ease;
 	position:relative;
 	cursor:pointer;
-	opacity:0.9;
+	opacity:0.9; /* mobile */
 	touch-action:none;
 }
 .page-notification:hover,
 .page-notification:focus,
 .page-notification:active {
-	opacity:1;
+	opacity:1; /* mobile */
 }
 .page-notification.fade-in {
 	animation:notification-fade-in 0.5s;
@@ -1107,7 +1108,7 @@ BEGIN animation definitions
 	}
 	100% {
 		transform:none;
-		opacity:1;
+		opacity:0.9; /* mobile */
 		pointer-events:all;
 	}
 }
@@ -1164,7 +1165,15 @@ BEGIN medium and large display adjustments (mobile is default)
 	.page-notification-stack {
 		width:calc(var(--glbl-max-width) / 2);
 	}
-	.page-notification-stack .page-notification .page-notification-action-btns {
+	.page-notification {
+		opacity:0.75;
+	}
+	.page-notification:hover,
+	.page-notification:focus,
+	.page-notification:active {
+		opacity:0.95;
+	}
+	.page-notification-action-btns {
 		/*
 		NOTE: close button is HIDDEN until user hovers over notification
 		*/
@@ -1175,23 +1184,44 @@ BEGIN medium and large display adjustments (mobile is default)
 */
 		opacity:0;
 	}
-	.page-notification-stack .page-notification:hover .page-notification-action-btns,
-	.page-notification-stack .page-notification:focus .page-notification-action-btns,
-	.page-notification-stack .page-notification:active .page-notification-action-btns {
+	.page-notification:hover .page-notification-action-btns,
+	.page-notification:focus .page-notification-action-btns,
+	.page-notification:active .page-notification-action-btns {
 /*
 		width:32px;
 		overflow:visible;
 */
 		opacity:1;
 	}
-	.page-notification-stack .page-notification:hover .page-notification-action-btns > *,
-	.page-notification-stack .page-notification:focus .page-notification-action-btns > *,
-	.page-notification-stack .page-notification:active .page-notification-action-btns > * {
+	.page-notification:hover .page-notification-action-btns > *,
+	.page-notification:focus .page-notification-action-btns > *,
+	.page-notification:active .page-notification-action-btns > * {
 		padding:calc(var(--glbl-padding) / 2);
 	}
 	
 	/* ---------------------------------------------------------------------------
 	END global component styles
+	----------------------------------------------------------------------------*/
+
+	/* ---------------------------------------------------------------------------
+	BEGIN animation definitions
+	----------------------------------------------------------------------------*/
+	
+	@keyframes notification-fade-in {
+		0% {
+			transform:translateY(-150%);
+			opacity:0;
+			pointer-events:none;
+		}
+		100% {
+			transform:none;
+			opacity:0.75;
+			pointer-events:all;
+		}
+	}
+	
+	/* ---------------------------------------------------------------------------
+	END animation definitions
 	----------------------------------------------------------------------------*/
 
 }
