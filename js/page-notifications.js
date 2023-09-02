@@ -5,12 +5,6 @@
 //	being present FIRST
 //	so that constants are defined
 
-//TODO: clean up code in this file in the following manner:
-//	rename all functions for consistency and to start with the bsmnt_ prefix
-//	remove any debug statements
-//	write unit tests if/where possible
-//		(maybe not based on the functions in this file, which seem closely tied to the DOM)
-
 //this is the event handler that runs when a page notification starts being dragged
 //args:
 //	ev: the javascript event that generated this action
