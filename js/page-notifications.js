@@ -463,7 +463,7 @@ function bsmnt_gen_page_notification_timeout_settings(){
 	max_time_elem.setAttribute('step','1');
 	max_time_elem.setAttribute('min','0');
 	max_time_elem.setAttribute('name','page-notification-max-time');
-	max_time_elem.setAttribute('placeholder','Max notification time');
+	max_time_elem.setAttribute('placeholder','Maximum notification time');
 	max_time_elem.classList.add('page-notification-time-input');
 	if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
 		max_time_elem.value=local_notification_settings['page-notification-max-time'];

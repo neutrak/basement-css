@@ -742,7 +742,8 @@ aside.iconbar.bottom-center ul.icons img {
 
 form input:not([type=checkbox]),
 form select,
-form textarea {
+form textarea,
+input:not([type=checkbox]) {
 	width:100%;
 	border-radius:0px;
 	border:1px solid var(--clr-btn-bg);
@@ -757,8 +758,9 @@ form select > option {
 	padding:6px;
 }
 form input:not([type=checkbox]),
-form textarea {
-	padding:8px;
+form textarea,
+input:not([type=checkbox]) {
+	padding:calc(var(--glbl-padding,24px) / 4);
 }
 form input:not([type=checkbox]):hover,
 form input:not([type=checkbox]):focus,
@@ -768,7 +770,10 @@ form select:focus,
 form select:active,
 form textarea:hover
 form textarea:focus
-form textarea:active {
+form textarea:active,
+input:not([type=checkbox]):hover,
+input:not([type=checkbox]):focus,
+input:not([type=checkbox]):active {
 	border:1px solid var(--clr-toggle-label-switch-unchecked);
 }
 form input[type=submit] {
@@ -979,6 +984,9 @@ so we need this container around it :/
 	align-items:flex-start;
 	justify-content:center;
 }
+.page-notification-settings-content {
+	width:100%;
+}
 .page-notification-action-btns {
 	min-height:100%;
 	font-size:1.5rem;
@@ -1053,8 +1061,21 @@ so we need this container around it :/
 .page-notification-close-btn:active {
 	background-color:var(--clr-close-btn-hover-bg);
 }
+.page-notification.page-notification-settings .page-notification-action-btns {
+	/*
+	account for the 1px transparent border that's present on the page notification settings
+	which is necessary for the user-attention functionality to look as intended
+	*/
+	position:relative;
+	top:-1px;
+	right:-1px;
+}
+.page-notification.page-notification-settings .page-notification-action-btns .page-notification-blank-btn:last-child {
+	position:relative;
+	bottom:-2px;
+}
 .page-notification.page-notification-settings .page-notification-close-btn {
-	margin-bottom:64px;
+	margin-bottom:12rem;
 }
 .page-notification-title,
 .page-notification-message {
@@ -1093,6 +1114,9 @@ so we need this container around it :/
 }
 .page-notification-enable-list > .toggle-slider:not(:last-child) {
 	margin-bottom:calc(var(--glbl-padding) / 4);
+}
+.page-notification-timeout-settings {
+	margin-top:calc(var(--glbl-padding) / 2);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1200,6 +1224,10 @@ BEGIN medium and large display adjustments (mobile is default)
 	.page-notification:focus .page-notification-action-btns > *,
 	.page-notification:active .page-notification-action-btns > * {
 		padding:calc(var(--glbl-padding) / 2);
+	}
+	
+	.page-notification.page-notification-settings .page-notification-close-btn {
+		margin-bottom:8rem;
 	}
 	
 	/* ---------------------------------------------------------------------------
