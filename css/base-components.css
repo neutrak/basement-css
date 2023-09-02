@@ -1121,7 +1121,6 @@ so we need this container around it :/
 	background-color:var(--clr-close-btn-bg);
 	transition:all var(--glbl-transition-time,0.5s) ease;
 	border:none;
-/*	margin-left:calc(var(--glbl-padding,1.5rem) / 4); */
 	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
 }
 .clear-input-field:hover,

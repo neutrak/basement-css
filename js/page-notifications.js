@@ -130,6 +130,7 @@ function bsmnt_handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{
 //		NOTE: mouseover and/or mouseenter events should invalidate this
 //		NOTE: we will animate a progress bar to make the duration of notifications apparent to the user
 //		NOTE: passing a value of null or 0 will make the notification stay on the screen indefinitely (until the user manually dismisses it)
+//		NOTE: user configuration can influence min and max time of notifications and over-ride arguments to this function
 //return:
 //	none
 //side-effects:
@@ -418,7 +419,7 @@ function bsmnt_gen_page_notification_timeout_settings(){
 	//get already existing local settings, if there are any
 	let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
 	
-	//TODO: configuration options
+	//configuration options
 	//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
 	//		<div>
 	//			<input type="number" step="1" min="0" name="page-notification-min-time">
@@ -440,7 +441,6 @@ function bsmnt_gen_page_notification_timeout_settings(){
 			min_time_elem.setAttribute('min','0');
 			min_time_elem.setAttribute('name','page-notification-min-time');
 			min_time_elem.setAttribute('placeholder','Minimum notification seconds');
-			min_time_elem.classList.add('page-notification-timeout-input');
 			if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
 				min_time_elem.value=local_notification_settings['page-notification-min-time'];
 			}
@@ -452,12 +452,35 @@ function bsmnt_gen_page_notification_timeout_settings(){
 				
 				//if a valid nonzero min time was not specified
 				if((min_time<=0) || (min_time==='')){
+					if(min_time!==''){
+						bsmnt_send_page_notification(
+							'Min timeout time invalid',
+							'Min timeout time must be greater than 0s; values which are not positive will be ignored',
+							'warning',
+						);
+					}
+					
 					//then this setting should no longer be present at all
 					if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
 						delete local_notification_settings['page-notification-min-time']
 					}
 				//if a valid nonzero min time WAS specified, then save it
 				}else{
+					//if max_time is already specified and min_time>max_time
+					//then let the user know that we're going to prefer the min time over the max time
+					//and ignore the max time setting
+					let max_time=(local_notification_settings.hasOwnProperty('page-notification-max-time'))?(local_notification_settings['page-notification-max-time']):null;
+					if((max_time!==null) && (min_time-0)>(max_time-0)){
+						
+						//we want to notify the user of something, and we are in a notification system
+						//so um, send them a notification; how handy!
+						bsmnt_send_page_notification(
+							'Max timeout time invalid',
+							'Max timeout time must be greater than the configured minimum timeout time ('+min_time+'s)',
+							'warning',
+						);
+					}
+					
 					//the -0 here just converts the type to a number
 					local_notification_settings['page-notification-min-time']=min_time-0;
 				}
@@ -508,7 +531,6 @@ function bsmnt_gen_page_notification_timeout_settings(){
 			max_time_elem.setAttribute('min','0');
 			max_time_elem.setAttribute('name','page-notification-max-time');
 			max_time_elem.setAttribute('placeholder','Maximum notification seconds');
-			max_time_elem.classList.add('page-notification-time-input');
 			if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
 				max_time_elem.value=local_notification_settings['page-notification-max-time'];
 			}
@@ -520,15 +542,34 @@ function bsmnt_gen_page_notification_timeout_settings(){
 				
 				//if a valid nonzero max time was not specified
 				if((max_time<=0) || (max_time==='')){
+					if(max_time!==''){
+						bsmnt_send_page_notification(
+							'Max timeout time invalid',
+							'Max timeout time must be greater than 0s; values which are not positive will be ignored',
+							'warning',
+						);
+					}
+					
 					//then this setting should no longer be present at all
 					if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
 						delete local_notification_settings['page-notification-max-time']
 					}
-				//if a valid nonzero min time WAS specified, then save it
+				//if a valid nonzero max time WAS specified, then save it
 				}else{
-					//TODO: if min_time is already specified and min_time>max_time
+					//if min_time is already specified and min_time>max_time
 					//then set this input as invalid because the associated max_time value will be IGNORED
 					//and the user should be informed of that fact
+					let min_time=(local_notification_settings.hasOwnProperty('page-notification-min-time'))?(local_notification_settings['page-notification-min-time']):null;
+					if((min_time!==null) && (min_time-0)>(max_time-0)){
+						
+						//we want to notify the user of something, and we are in a notification system
+						//so um, send them a notification; how handy!
+						bsmnt_send_page_notification(
+							'Max timeout time invalid',
+							'Max timeout time must be greater than the configured minimum timeout time ('+min_time+'s)',
+							'warning',
+						);
+					}
 					
 					//the -0 here just converts the type to a number
 					local_notification_settings['page-notification-max-time']=max_time-0;
@@ -611,18 +652,7 @@ function bsmnt_show_page_notification_settings(){
 		notification_settings_elem.setAttribute('draggable',true);
 		setTimeout(() => {
 			notification_settings_elem.classList.remove('fade-in');
-			//NOTE: we want to WAIT to get the user's attention until AFTER the fadein has completed
-/*			notification_settings_elem.classList.add('user-attention'); */
 		},ANIMATION_DURATION_MS);
-/*
-		//NOTE: user-attention animation pulses 2x then stops
-		//so we have to wait 2 animation cycles before removing the class
-		//and we DO need to remove it so we can re-add it later and have it animate
-		//in case the user clicks the cog again while settings is already open
-		setTimeout(() => {
-			notification_settings_elem.classList.remove('user-attention');
-		},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT+1)));
-*/
 		
 			//intentional indentation to match generated html's nesting level
 			let settings_content_elem=document.createElement('DIV');
