@@ -59,12 +59,11 @@ body {
 	--clr-notification-info-font:black;
 	--clr-popout-outer-shadow:var(--clr-dropdown-shadow);
 	--clr-popout-inner-shadow:rgba(255,255,255,0.5);
-/*	--clr-notification-settings-bg:#b0d4dc; */
 	--clr-notification-settings-bg:#ced9dc;
 	--clr-user-attention-shadow-bg:#0b779f;
 	
 	--hdr-height:3rem;
-
+	
 	--dropdown-menu-link-vert-padding:1rem;
 	--dropdown-menu-link-horiz-padding:0.5rem;
 	--dropdown-border-radius:0.5rem;
@@ -567,7 +566,7 @@ input[type=checkbox].submenu-toggle:checked ~ label.submenu-toggle-label.toggle-
 }
 
 .dropdown-menu-cont.halign-l {
-	/* left alignment is default so no styles are needed here; this is just for completeness */
+	/* left alignment is default so no styles are needed here */
 }
 .dropdown-menu-cont.halign-r {
 	right:0px;
@@ -819,7 +818,6 @@ form .toggle-slider {
 }
 
 .user-attention {
-/*	transition:all var(--glbl-transition-time) ease; */
 	animation:pulse var(--glbl-transition-time) ease;
 	animation-iteration-count:2;
 }
@@ -834,7 +832,6 @@ so we need this container around it :/
 	margin-top:var(--hdr-height);
 	left:50%;
 	transform:translateX(-50%);
-/*	z-index:0; */
 	height:calc(100% - var(--hdr-height));
 	overflow-y:auto;
 	/*
@@ -861,7 +858,6 @@ so we need this container around it :/
 	height:auto;
 	pointer-events:auto;
 	width:var(--glbl-max-width); /* mobile */
-/*	width:calc(var(--glbl-max-width) / 2); (desktop sizes only; defined later in the desktop-specific section) */
 	padding: var(--glbl-padding) calc(var(--glbl-padding) * 2);
 	left:50%;
 	transform:translateX(-50%);
@@ -885,7 +881,6 @@ so we need this container around it :/
 .page-notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
-/*	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow), inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow); */
 	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow);
 	border-radius: var(--glbl-hover-title-border-radius);
 	background-color:var(--clr-form-card-bg);
@@ -944,16 +939,13 @@ so we need this container around it :/
 	border:1px solid transparent;
 }
 .page-notification .progress-bar {
-/*	content:' '; */
 	position:absolute;
 	height:calc(0.5rem + var(--progress-bar-height));
 	width:100%;
 	bottom:calc(0.5rem - var(--progress-bar-height));
 	left:50%;
 	transform:translateX(-50%);
-/*	transition:all 5s ease; */
 	border-radius:0px 0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius);
-/*	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow); */
 	z-index:-1;
 	background-color:var(--clr-form-card-bg);
 }
@@ -994,7 +986,6 @@ so we need this container around it :/
 	margin:calc(0px - var(--glbl-padding)) 0px;
 /*	margin:calc(0px - (var(--glbl-padding) / 2)) 0px; */
 	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
-/*	box-shadow:inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow); */
 	border:none;
 	display:flex;
 	flex-direction:column;
@@ -1030,7 +1021,6 @@ so we need this container around it :/
 .page-notification-action-btns > *:hover,
 .page-notification-action-btns > *:focus,
 .page-notification-action-btns > *:active {
-/*	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow), inset 0.25rem 0.25rem 1rem var(--clr-popout-inner-shadow); */
 	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow);
 	z-index:1;
 }
@@ -1156,7 +1146,6 @@ BEGIN animation definitions
 		border:1px solid transparent;
 	}
 	100% {
-/*		box-shadow:0rem 0.5rem 0.5rem var(--clr-notification-info-bg); */
 		box-shadow:0rem 0.5rem 0.5rem var(--clr-user-attention-shadow-bg);
 		border:1px solid var(--clr-user-attention-shadow-bg);
 	}
@@ -1214,20 +1203,11 @@ BEGIN medium and large display adjustments (mobile is default)
 		/*
 		NOTE: close button is HIDDEN until user hovers over notification
 		*/
-/*
-		width:0px;
-		overflow:hidden;
-		padding:0px;
-*/
 		opacity:0;
 	}
 	.page-notification:hover .page-notification-action-btns,
 	.page-notification:focus .page-notification-action-btns,
 	.page-notification:active .page-notification-action-btns {
-/*
-		width:32px;
-		overflow:visible;
-*/
 		opacity:1;
 	}
 	

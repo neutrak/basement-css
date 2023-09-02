@@ -2,7 +2,7 @@
 
 //NOTE: In HTML, this depends on
 //	<script type='text/javascript' src='./constants.js'></script>
-//	being present FIRST
+//	being present on the page FIRST
 //	so that constants are defined
 
 //this is the event handler that runs when a page notification starts being dragged
@@ -423,11 +423,11 @@ function bsmnt_gen_page_notification_timeout_settings(){
 	//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
 	//		<div>
 	//			<input type="number" step="1" min="0" name="page-notification-min-time">
-	//			<button type="button" class="clear-input-field" data-for="page-notification-min-time">&times;</button>
+	//			<button type="button" class="clear-input-field">&times;</button>
 	//		</div>
 	//		<div>
 	//			<input type="number" step="1" min="0" name="page-notification-max-time">
-	//			<button type="button" class="clear-input-field" data-for="page-notification-max-time">&times;</button>
+	//			<button type="button" class="clear-input-field">&times;</button>
 	//		</div>
 	
 		//intentional indentation to match html nesting level
@@ -451,11 +451,11 @@ function bsmnt_gen_page_notification_timeout_settings(){
 				let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
 				
 				//if a valid nonzero min time was not specified
-				if((min_time<=0) || (min_time==='')){
+				if((min_time<0) || (min_time==='')){
 					if(min_time!==''){
 						bsmnt_send_page_notification(
 							'Min timeout time invalid',
-							'Min timeout time must be greater than 0s; values which are not positive will be ignored',
+							'Min timeout time must be greater than or equal to 0s; values which are negative will be ignored',
 							'warning',
 						);
 					}
@@ -519,7 +519,7 @@ function bsmnt_gen_page_notification_timeout_settings(){
 			min_time_cont.appendChild(min_time_clear_btn);
 		
 		timeout_notifications_cont.appendChild(min_time_cont);
-	
+		
 		//intentional indentation to match html nesting level
 		let max_time_cont=document.createElement('DIV');
 		max_time_cont.classList.add('timeout-input-cont');
