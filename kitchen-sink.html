@@ -16,9 +16,14 @@
 	-->
 	<script type='text/javascript' src='js/constants.js'></script>
 	<script type='text/javascript' src='js/page-notifications.js'></script>
+	<script type='text/javascript' src='js/basement-init.js'></script>
 	
 	<script type='text/javascript'>
 	//this function flips the menu bar between top and bottom alignment options
+	//this is primarily for demonstration and testing purposes
+	//you're expected when building a site to commit to one location and alignment for your menubar
+	//and put in the css classes accordingly
+	//however on this kitchen sink page we want to show you all possible ways the menu can appear
 	function menubar_vertical_alignment_toggle(){
 		var navbar=document.getElementById('navbar');
 		if(navbar!==null){
@@ -38,7 +43,12 @@
 			document.getElementById('iconbar-bottom-center').classList.toggle('nav-cont-offset');
 		}
 	}
+	
 	//this function flips the left-right association between the menu and toggle sections in the menu bar
+	//this is primarily for demonstration and testing purposes
+	//you're expected when building a site to commit to one location and alignment for your menubar
+	//and put in the css classes accordingly
+	//however on this kitchen sink page we want to show you all possible ways the menu can appear
 	function menubar_horizontal_alignment_toggle() {
 		var navbar=document.getElementById('navbar');
 		if(navbar!==null){
@@ -74,90 +84,9 @@
 		}
 	}
 	
-	function banner_display_toggle() {
-		var banner_elems=document.getElementsByClassName('banner');
-		for(var idx=0;idx<banner_elems.length;idx++){
-			banner_elems[idx].classList.toggle('hidden');
-		}
-	}
-	
-	function set_iconbar_shown(iconbar_id,show) {
-		var iconbar=document.getElementById(iconbar_id);
-		if(iconbar!==null){
-			if(show) {
-				iconbar.classList.remove('hidden');
-			}else{
-				iconbar.classList.add('hidden');
-			}
-		}
-	}
-	
-	function open_menu(menu_id){
-		let menu_toggle=document.getElementById(menu_id);
-		if(menu_toggle!==null){
-			menu_toggle.checked=true;
-		}
-	}
-
-	function close_menu(menu_id){
-		let menu_toggle=document.getElementById(menu_id);
-		if(menu_toggle!==null){
-			menu_toggle.checked=false;
-		}
-	}
-
-	function on_body_click(event) {
-		let menu_toggles=document.getElementsByClassName('hdr-dropdown-toggle');
-		for(let toggle_idx=0;toggle_idx<menu_toggles.length;toggle_idx++){
-			let menu_id=menu_toggles[toggle_idx].id;
-			
-			let menu_toggle=document.getElementById(menu_id);
-			//if the main menu is currently open
-			if(menu_toggle!==null && menu_toggle.checked){
-				//check if this click event was within the menu
-				let is_menu_click=false;
-				let elem=event.target;
-				while(elem.parentNode!==null){
-					//if this click was within some kind of header menu (but not necessarily the one we're checking)
-					if(elem.classList.contains('hdr-nav-menu')){
-						//if the toggle is a sibling somewhere within that
-						if(elem.querySelector('#'+menu_id)!==null){
-							//then this click occurred somewhere within the menu we're considering
-							is_menu_click=true;
-							break;
-						}
-					}
-					elem=elem.parentNode;
-				}
-				//if this click event was not within the menu itself
-				if(!is_menu_click){
-					//close the menu
-					close_menu(menu_id);
-				}
-			}
-		}
-	}
-	
-	//prevent default dragover behaviour so that drag to dismiss notifications works as expected
-	document.addEventListener('dragover', (ev) => {
-		ev.preventDefault();
-	});
-	
-	//TODO: make this a window.addEventListener('load',...) if possible
-	//and move the yes-js toggling and whatever else makes sense
-	//into a separate onload event listener within floor.js
-	//instead of defining it all inline in the page and making users of this library re-define it in their own code
-	
-	//this un-hides js-specific elements on page load
-	//which by default are hidden, since for clients that don't support javascript we don't display them
-	window.onload=function () {
-		var js_elems=document.getElementsByClassName('yes-js');
-		//NOTE: because elements get removed from the js_elems list once we remove the yes-js class
-		//this is a check for while js_elems exist rather than a for loop with an index of the element
-		while(js_elems.length>0){
-			js_elems[0].classList.remove('yes-js');
-		}
-		
+	//this function initializes the html input state
+	//for this particular html page
+	window.addEventListener('load',function (ev) {
 		//initialize the alignment toggles to be unchecked, for consistency between page reloads
 		document.getElementById('header-vertical-alignment-toggle').checked=false;
 		document.getElementById('header-horizontal-alignment-toggle').checked=false;
@@ -168,10 +97,7 @@
 		document.getElementById('toggle-iconbar-bottom-center').checked=true;
 		document.getElementById('toggle-iconbar-left-center').checked=false;
 		document.getElementById('toggle-iconbar-right-center').checked=false;
-		
-		//close the menu when the user clicks elsewhere
-		document.body.addEventListener('click',on_body_click);
-	}
+	});
 	</script>
 </head>
 <body>
@@ -324,7 +250,7 @@
 				<div class='hover-title-cont yes-js'>
 					<div class='toggle-slider'>
 						<!-- this toggle flips the alert banner on or off -->
-						<input type='checkbox' id='banner-display-toggle' onchange="banner_display_toggle();">
+						<input type='checkbox' id='banner-display-toggle' onchange="bsmnt_banner_display_toggle();">
 						<label class='toggle-label' for='banner-display-toggle'></label>
 					</div>
 					<div class='hover-title below halign-r arrow-nopadding'>
@@ -449,7 +375,7 @@
 						
 						<div class='toggle-slider'>
 							<input type='checkbox' id='toggle-iconbar-top-center'
-								onchange='set_iconbar_shown("iconbar-top-center",event.currentTarget.checked)'
+								onchange='bsmnt_set_iconbar_shown("iconbar-top-center",event.currentTarget.checked)'
 							>
 							<label class='toggle-label' for='toggle-iconbar-top-center'></label>
 							<label class='toggle-label-checked' for='toggle-iconbar-top-center'>Top center iconbar is visible</label>
@@ -458,7 +384,7 @@
 						<br />
 						<div class='toggle-slider'>
 							<input type='checkbox' id='toggle-iconbar-bottom-center'
-								onchange='set_iconbar_shown("iconbar-bottom-center",event.currentTarget.checked)'
+								onchange='bsmnt_set_iconbar_shown("iconbar-bottom-center",event.currentTarget.checked)'
 							>
 							<label class='toggle-label' for='toggle-iconbar-bottom-center'></label>
 							<label class='toggle-label-checked' for='toggle-iconbar-bottom-center'>Bottom center iconbar is visible</label>
@@ -467,7 +393,7 @@
 						<br />
 						<div class='toggle-slider'>
 							<input type='checkbox' id='toggle-iconbar-left-center'
-								onchange='set_iconbar_shown("iconbar-left-center",event.currentTarget.checked)'
+								onchange='bsmnt_set_iconbar_shown("iconbar-left-center",event.currentTarget.checked)'
 							>
 							<label class='toggle-label' for='toggle-iconbar-left-center'></label>
 							<label class='toggle-label-checked' for='toggle-iconbar-left-center'>Left center iconbar is visible</label>
@@ -476,7 +402,7 @@
 						<br />
 						<div class='toggle-slider'>
 							<input type='checkbox' id='toggle-iconbar-right-center'
-								onchange='set_iconbar_shown("iconbar-right-center",event.currentTarget.checked)'
+								onchange='bsmnt_set_iconbar_shown("iconbar-right-center",event.currentTarget.checked)'
 							>
 							<label class='toggle-label' for='toggle-iconbar-right-center'></label>
 							<label class='toggle-label-checked' for='toggle-iconbar-right-center'>Right center iconbar is visible</label>
