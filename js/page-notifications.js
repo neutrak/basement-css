@@ -138,23 +138,43 @@ function bsmnt_handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{
 //	unless user-specified settings disabled this notification type (in which case nothing occurs)
 function bsmnt_send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {},display_time_ms=5000){
 	//get local page notification settings, if there are any
-	let local_notification_settings=localStorage.getItem('page-notification-settings');
-	if(local_notification_settings!==null){
-		local_notification_settings=JSON.parse(local_notification_settings);
-		
-		//if a setting was found for this notification type
-		if(local_notification_settings.hasOwnProperty('page-notification-setting-enable-'+css_classes)){
-			//if this type of notification is disabled
-			if(!local_notification_settings['page-notification-setting-enable-'+css_classes]){
-				//then do nothing; this notification is disabled!
-//				console.log('bsmnt_send_page_notification not sending a notification of type '+css_classes+' because that notification type is disabled by local settings!'); //debug
-				return;
-			}
+	let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+	
+	//if an enable/disable setting was found for this notification type
+	if(local_notification_settings.hasOwnProperty('page-notification-setting-enable-'+css_classes)){
+		//if this type of notification is disabled
+		if(!local_notification_settings['page-notification-setting-enable-'+css_classes]){
+			//then do nothing; this notification is disabled!
+//			console.log('bsmnt_send_page_notification not sending a notification of type '+css_classes+' because that notification type is disabled by local settings!'); //debug
+			return;
 		}
 	}
 	
 	//if we got here and didn't return then this notification is either implicitly or explicitly enabled
 	//so we're good to now show it anywhere it was requested to be visible
+	
+	//enforce min time if specified
+	let min_time=null;
+	if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
+		min_time=local_notification_settings['page-notification-min-time'];
+		if((min_time!==null) && (min_time>0)){
+			if((display_time_ms)<(min_time*MS_PER_SEC)){
+				display_time_ms=(min_time*MS_PER_SEC);
+			}
+		}
+	}
+	
+	//enforce max time if specified
+	let max_time=null;
+	if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
+		max_time=local_notification_settings['page-notification-max-time'];
+		//NOTE: if min_time>max_time then max_time is IGNORED
+		if((max_time!==null) && (max_time>0) && ((min_time===null) || (min_time<max_time))){
+			if((display_time_ms)>(max_time*MS_PER_SEC)){
+				display_time_ms=(max_time*MS_PER_SEC);
+			}
+		}
+	}
 	
 	let notification_stacks=document.querySelectorAll('.page-notification-stack');
 	for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
@@ -269,6 +289,28 @@ function bsmnt_send_page_notification(page_notification_title,page_notification_
 	}
 }
 
+//this function gets the page notification settings from localstorage
+//args:
+//	settings_key: the key within localStorage to access
+//return:
+//	returns the existing setting object as a javascript object, if an existing setting was found
+//	returns an empty object if no existing settings were found
+//side-effects:
+//	none
+function bsmnt_get_local_settings(settings_key='page-notification-settings'){
+	//get already existing local settings, if there are any
+	let local_notification_settings=localStorage.getItem(settings_key);
+	if(local_notification_settings!==null){
+		//we store local settings in json format
+		local_notification_settings=JSON.parse(local_notification_settings);
+	//if there are no existing local settings
+	}else{
+		//then create a new empty object which keys can be added to
+		local_notification_settings={};
+	}
+	return local_notification_settings;
+}
+
 //this function generates the enable/disable notification settings html
 //args:
 //	none
@@ -305,10 +347,7 @@ function bsmnt_gen_page_notification_enable_settings(){
 	];
 	
 	//get already existing local settings, if there are any
-	let local_notification_settings=localStorage.getItem('page-notification-settings');
-	if(local_notification_settings!==null){
-		local_notification_settings=JSON.parse(local_notification_settings);
-	}
+	let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
 	
 	//for each notification type
 	for(let type_idx=0;type_idx<notification_types.length;type_idx++){
@@ -324,12 +363,7 @@ function bsmnt_gen_page_notification_enable_settings(){
 			//on change immediately save the setting to apply it for future notifications
 			toggle_chkbox.addEventListener('change',(ev) => {
 				//get already existing local settings, if there are any
-				let local_notification_settings=localStorage.getItem('page-notification-settings');
-				if(local_notification_settings!==null){
-					local_notification_settings=JSON.parse(local_notification_settings);
-				}else{
-					local_notification_settings={};
-				}
+				let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
 				
 				//store the setting that was actually changed
 				local_notification_settings[toggle_chkbox.id]=ev.target.checked;
@@ -338,7 +372,7 @@ function bsmnt_gen_page_notification_enable_settings(){
 				localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
 			});
 			
-			if(local_notification_settings!==null){
+			if(local_notification_settings.hasOwnProperty(toggle_chkbox.id)){
 				toggle_chkbox.checked=local_notification_settings[toggle_chkbox.id];
 			}else{
 				toggle_chkbox.checked=notification_types[type_idx].dflt_is_checked;
@@ -368,6 +402,100 @@ function bsmnt_gen_page_notification_enable_settings(){
 	}
 	
 	return toggle_notifications_cont;
+}
+
+//this function generates the timeout notification settings html
+//args:
+//	none
+//return:
+//	returns an HTML element (DIV) which contains the page notification timeout settings
+//side-effects:
+//	none
+function bsmnt_gen_page_notification_timeout_settings(){
+	let timeout_notifications_cont=document.createElement('DIV');
+	timeout_notifications_cont.classList.add('page-notification-timeout-settings');
+	
+	//get already existing local settings, if there are any
+	let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+	
+	//TODO: configuration options
+	//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
+	//		<input type="number" step="1" min="0" name="page-notification-min-time">
+	//			<button type="button" class="clear-input-field" data-for="page-notification-min-time">&times;</button>
+	//		<input type="number" step="1" min="0" name="page-notification-max-time">
+	//			<button type="button" class="clear-input-field" data-for="page-notification-max-time">&times;</button>
+	
+	let min_time_elem=document.createElement('INPUT');
+	min_time_elem.setAttribute('type','number');
+	min_time_elem.setAttribute('step','1');
+	min_time_elem.setAttribute('min','0');
+	min_time_elem.setAttribute('name','page-notification-min-time');
+	min_time_elem.setAttribute('placeholder','Minimum notification time');
+	min_time_elem.classList.add('page-notification-time-input');
+	if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
+		min_time_elem.value=local_notification_settings['page-notification-min-time'];
+	}
+	min_time_elem.addEventListener('change',(ev) => {
+		let min_time=ev.target.value;
+		
+		//get already existing local settings, if there are any
+		let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+		
+		//if a valid nonzero min time was not specified
+		if((min_time<=0) || (min_time==='')){
+			//then this setting should no longer be present at all
+			if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
+				delete local_notification_settings['page-notification-min-time']
+			}
+		//if a valid nonzero min time WAS specified, then save it
+		}else{
+			//the -0 here just converts the type to a number
+			local_notification_settings['page-notification-min-time']=min_time-0;
+		}
+		
+		//save the result in localStorage (which persists between page loads)
+		localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
+	});
+	timeout_notifications_cont.appendChild(min_time_elem);
+	
+	let max_time_elem=document.createElement('INPUT');
+	max_time_elem.setAttribute('type','number');
+	max_time_elem.setAttribute('step','1');
+	max_time_elem.setAttribute('min','0');
+	max_time_elem.setAttribute('name','page-notification-max-time');
+	max_time_elem.setAttribute('placeholder','Max notification time');
+	max_time_elem.classList.add('page-notification-time-input');
+	if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
+		max_time_elem.value=local_notification_settings['page-notification-max-time'];
+	}
+	max_time_elem.addEventListener('change',(ev) => {
+		let max_time=ev.target.value;
+		
+		//get already existing local settings, if there are any
+		let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+		
+		//if a valid nonzero max time was not specified
+		if((max_time<=0) || (max_time==='')){
+			//then this setting should no longer be present at all
+			if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
+				delete local_notification_settings['page-notification-max-time']
+			}
+		//if a valid nonzero min time WAS specified, then save it
+		}else{
+			//TODO: if min_time is already specified and min_time>max_time
+			//then set this input as invalid because the associated max_time value will be IGNORED
+			//and the user should be informed of that fact
+			
+			//the -0 here just converts the type to a number
+			local_notification_settings['page-notification-max-time']=max_time-0;
+		}
+		
+		//save the result in localStorage (which persists between page loads)
+		localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
+	});
+	timeout_notifications_cont.appendChild(max_time_elem);
+	
+	return timeout_notifications_cont;
 }
 
 //this function shows the global page notification settings
@@ -438,12 +566,10 @@ function bsmnt_show_page_notification_settings(){
 			let toggle_notifications_cont=bsmnt_gen_page_notification_enable_settings();
 			settings_content_elem.appendChild(toggle_notifications_cont);
 			
-			//TODO: configuration options
-			//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
-			//		<input type="number" step="1" min="0" name="page-notification-min-time">
-			//			<button type="button" class="clear-input-field" data-for="page-notification-min-time">&times;</button>
-			//		<input type="number" step="1" min="0" name="page-notification-max-time">
-			//			<button type="button" class="clear-input-field" data-for="page-notification-max-time">&times;</button>
+			//configuration options
+			//	min and max times in seconds for timed notifications to stay on the screen
+			let timeout_notifications_cont=bsmnt_gen_page_notification_timeout_settings();
+			settings_content_elem.appendChild(timeout_notifications_cont);
 			
 			notification_settings_elem.appendChild(settings_content_elem);
 			
