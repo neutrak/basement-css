@@ -1053,6 +1053,9 @@ so we need this container around it :/
 .page-notification-close-btn:active {
 	background-color:var(--clr-close-btn-hover-bg);
 }
+.page-notification.page-notification-settings .page-notification-close-btn {
+	margin-bottom:64px;
+}
 .page-notification-title,
 .page-notification-message {
 	margin-top:0px;
