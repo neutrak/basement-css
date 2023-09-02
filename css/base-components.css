@@ -1117,6 +1117,18 @@ so we need this container around it :/
 .timeout-input-cont:not(:last-child) {
 	margin-bottom:calc(var(--glbl-padding) / 4);
 }
+.clear-input-field {
+	background-color:var(--clr-close-btn-bg);
+	transition:all var(--glbl-transition-time,0.5s) ease;
+	border:none;
+/*	margin-left:calc(var(--glbl-padding,1.5rem) / 4); */
+	border-radius:0px var(--glbl-hover-title-border-radius) var(--glbl-hover-title-border-radius) 0px;
+}
+.clear-input-field:hover,
+.clear-input-field:focus
+.clear-input-field:active {
+	background-color:var(--clr-close-btn-hover-bg);
+}
 
 /* ---------------------------------------------------------------------------
 END global component styles

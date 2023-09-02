@@ -472,6 +472,23 @@ function bsmnt_gen_page_notification_timeout_settings(){
 			min_time_clear_btn.classList.add('clear-input-field');
 			min_time_clear_btn.innerHTML='&times;';
 			min_time_clear_btn.addEventListener('click',(ev) => {
+				//if the min time input element is ALREADY cleared out
+				if(min_time_elem.value===''){
+					//bring it to the user's attention
+					
+					//NOTE: this shouldn't be necessary because of where we place the clear buttons
+					//but is done just for good measure to the input field is in view
+					min_time_elem.scrollIntoView();
+					
+					//pulse at the user to attract their attention
+					min_time_elem.classList.add('user-attention');
+					setTimeout(() => {
+						//then stop doing that so as not to be annoying
+						min_time_elem.classList.remove('user-attention');
+					},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT)));
+					return;
+				}
+				
 				min_time_elem.value='';
 				let chng_evnt=new Event('change');
 				min_time_elem.dispatchEvent(chng_evnt);
@@ -527,6 +544,23 @@ function bsmnt_gen_page_notification_timeout_settings(){
 			max_time_clear_btn.classList.add('clear-input-field');
 			max_time_clear_btn.innerHTML='&times;';
 			max_time_clear_btn.addEventListener('click',(ev) => {
+				//if the min time input element is ALREADY cleared out
+				if(max_time_elem.value===''){
+					//bring it to the user's attention
+					
+					//NOTE: this shouldn't be necessary because of where we place the clear buttons
+					//but is done just for good measure to the input field is in view
+					max_time_elem.scrollIntoView();
+					
+					//pulse at the user to attract their attention
+					max_time_elem.classList.add('user-attention');
+					setTimeout(() => {
+						//then stop doing that so as not to be annoying
+						max_time_elem.classList.remove('user-attention');
+					},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT)));
+					return;
+				}
+				
 				max_time_elem.value='';
 				let chng_evnt=new Event('change');
 				max_time_elem.dispatchEvent(chng_evnt);
