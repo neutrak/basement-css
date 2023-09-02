@@ -1109,6 +1109,14 @@ so we need this container around it :/
 .page-notification-timeout-settings {
 	margin-top:calc(var(--glbl-padding) / 2);
 }
+.timeout-input-cont {
+	display:flex;
+	align-items:stretch;
+	justify-content:space-between;
+}
+.timeout-input-cont:not(:last-child) {
+	margin-bottom:calc(var(--glbl-padding) / 4);
+}
 
 /* ---------------------------------------------------------------------------
 END global component styles

@@ -420,80 +420,120 @@ function bsmnt_gen_page_notification_timeout_settings(){
 	
 	//TODO: configuration options
 	//	min and max times in seconds for timed notifications to stay on the screen (once timed notifications are supported)
-	//		<input type="number" step="1" min="0" name="page-notification-min-time">
+	//		<div>
+	//			<input type="number" step="1" min="0" name="page-notification-min-time">
 	//			<button type="button" class="clear-input-field" data-for="page-notification-min-time">&times;</button>
-	//		<input type="number" step="1" min="0" name="page-notification-max-time">
+	//		</div>
+	//		<div>
+	//			<input type="number" step="1" min="0" name="page-notification-max-time">
 	//			<button type="button" class="clear-input-field" data-for="page-notification-max-time">&times;</button>
+	//		</div>
 	
-	let min_time_elem=document.createElement('INPUT');
-	min_time_elem.setAttribute('type','number');
-	min_time_elem.setAttribute('step','1');
-	min_time_elem.setAttribute('min','0');
-	min_time_elem.setAttribute('name','page-notification-min-time');
-	min_time_elem.setAttribute('placeholder','Minimum notification time');
-	min_time_elem.classList.add('page-notification-time-input');
-	if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
-		min_time_elem.value=local_notification_settings['page-notification-min-time'];
-	}
-	min_time_elem.addEventListener('change',(ev) => {
-		let min_time=ev.target.value;
-		
-		//get already existing local settings, if there are any
-		let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
-		
-		//if a valid nonzero min time was not specified
-		if((min_time<=0) || (min_time==='')){
-			//then this setting should no longer be present at all
-			if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
-				delete local_notification_settings['page-notification-min-time']
-			}
-		//if a valid nonzero min time WAS specified, then save it
-		}else{
-			//the -0 here just converts the type to a number
-			local_notification_settings['page-notification-min-time']=min_time-0;
-		}
-		
-		//save the result in localStorage (which persists between page loads)
-		localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
-	});
-	timeout_notifications_cont.appendChild(min_time_elem);
-	
-	let max_time_elem=document.createElement('INPUT');
-	max_time_elem.setAttribute('type','number');
-	max_time_elem.setAttribute('step','1');
-	max_time_elem.setAttribute('min','0');
-	max_time_elem.setAttribute('name','page-notification-max-time');
-	max_time_elem.setAttribute('placeholder','Maximum notification time');
-	max_time_elem.classList.add('page-notification-time-input');
-	if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
-		max_time_elem.value=local_notification_settings['page-notification-max-time'];
-	}
-	max_time_elem.addEventListener('change',(ev) => {
-		let max_time=ev.target.value;
-		
-		//get already existing local settings, if there are any
-		let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
-		
-		//if a valid nonzero max time was not specified
-		if((max_time<=0) || (max_time==='')){
-			//then this setting should no longer be present at all
-			if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
-				delete local_notification_settings['page-notification-max-time']
-			}
-		//if a valid nonzero min time WAS specified, then save it
-		}else{
-			//TODO: if min_time is already specified and min_time>max_time
-			//then set this input as invalid because the associated max_time value will be IGNORED
-			//and the user should be informed of that fact
+		//intentional indentation to match html nesting level
+		let min_time_cont=document.createElement('DIV');
+		min_time_cont.classList.add('timeout-input-cont');
 			
-			//the -0 here just converts the type to a number
-			local_notification_settings['page-notification-max-time']=max_time-0;
-		}
+			//intentional indentation to match html nesting level
+			let min_time_elem=document.createElement('INPUT');
+			min_time_elem.setAttribute('type','number');
+			min_time_elem.setAttribute('step','1');
+			min_time_elem.setAttribute('min','0');
+			min_time_elem.setAttribute('name','page-notification-min-time');
+			min_time_elem.setAttribute('placeholder','Minimum notification seconds');
+			min_time_elem.classList.add('page-notification-timeout-input');
+			if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
+				min_time_elem.value=local_notification_settings['page-notification-min-time'];
+			}
+			min_time_elem.addEventListener('change',(ev) => {
+				let min_time=ev.target.value;
+				
+				//get already existing local settings, if there are any
+				let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+				
+				//if a valid nonzero min time was not specified
+				if((min_time<=0) || (min_time==='')){
+					//then this setting should no longer be present at all
+					if(local_notification_settings.hasOwnProperty('page-notification-min-time')){
+						delete local_notification_settings['page-notification-min-time']
+					}
+				//if a valid nonzero min time WAS specified, then save it
+				}else{
+					//the -0 here just converts the type to a number
+					local_notification_settings['page-notification-min-time']=min_time-0;
+				}
+				
+				//save the result in localStorage (which persists between page loads)
+				localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
+			});
+			min_time_cont.appendChild(min_time_elem);
+			
+			let min_time_clear_btn=document.createElement('BUTTON');
+			min_time_clear_btn.setAttribute('type','button');
+			min_time_clear_btn.classList.add('clear-input-field');
+			min_time_clear_btn.innerHTML='&times;';
+			min_time_clear_btn.addEventListener('click',(ev) => {
+				min_time_elem.value='';
+				let chng_evnt=new Event('change');
+				min_time_elem.dispatchEvent(chng_evnt);
+			});
+			min_time_cont.appendChild(min_time_clear_btn);
 		
-		//save the result in localStorage (which persists between page loads)
-		localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
-	});
-	timeout_notifications_cont.appendChild(max_time_elem);
+		timeout_notifications_cont.appendChild(min_time_cont);
+	
+		//intentional indentation to match html nesting level
+		let max_time_cont=document.createElement('DIV');
+		max_time_cont.classList.add('timeout-input-cont');
+		
+			//intentional indentation to match html nesting level
+			let max_time_elem=document.createElement('INPUT');
+			max_time_elem.setAttribute('type','number');
+			max_time_elem.setAttribute('step','1');
+			max_time_elem.setAttribute('min','0');
+			max_time_elem.setAttribute('name','page-notification-max-time');
+			max_time_elem.setAttribute('placeholder','Maximum notification seconds');
+			max_time_elem.classList.add('page-notification-time-input');
+			if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
+				max_time_elem.value=local_notification_settings['page-notification-max-time'];
+			}
+			max_time_elem.addEventListener('change',(ev) => {
+				let max_time=ev.target.value;
+				
+				//get already existing local settings, if there are any
+				let local_notification_settings=bsmnt_get_local_settings('page-notification-settings');
+				
+				//if a valid nonzero max time was not specified
+				if((max_time<=0) || (max_time==='')){
+					//then this setting should no longer be present at all
+					if(local_notification_settings.hasOwnProperty('page-notification-max-time')){
+						delete local_notification_settings['page-notification-max-time']
+					}
+				//if a valid nonzero min time WAS specified, then save it
+				}else{
+					//TODO: if min_time is already specified and min_time>max_time
+					//then set this input as invalid because the associated max_time value will be IGNORED
+					//and the user should be informed of that fact
+					
+					//the -0 here just converts the type to a number
+					local_notification_settings['page-notification-max-time']=max_time-0;
+				}
+				
+				//save the result in localStorage (which persists between page loads)
+				localStorage.setItem('page-notification-settings',JSON.stringify(local_notification_settings));
+			});
+			max_time_cont.appendChild(max_time_elem);
+			
+			let max_time_clear_btn=document.createElement('BUTTON');
+			max_time_clear_btn.setAttribute('type','button');
+			max_time_clear_btn.classList.add('clear-input-field');
+			max_time_clear_btn.innerHTML='&times;';
+			max_time_clear_btn.addEventListener('click',(ev) => {
+				max_time_elem.value='';
+				let chng_evnt=new Event('change');
+				max_time_elem.dispatchEvent(chng_evnt);
+			});
+			max_time_cont.appendChild(max_time_clear_btn);
+		
+		timeout_notifications_cont.appendChild(max_time_cont);
 	
 	return timeout_notifications_cont;
 }
