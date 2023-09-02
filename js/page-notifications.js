@@ -1,17 +1,15 @@
-//floor.js, a javascript library for when you want an experience above that of a basement
+//page-notification.js, the basement functions to provide page notification functionality
+
+//NOTE: In HTML, this depends on
+//	<script type='text/javascript' src='./constants.js'></script>
+//	being present FIRST
+//	so that constants are defined
 
 //TODO: clean up code in this file in the following manner:
-//	move constants to a separate constants.js file for better re-use
-//	rename this file page-notifictions.js and update the associated <script> in kitchen-sink.html
 //	rename all functions for consistency and to start with the bsmnt_ prefix
 //	remove any debug statements
 //	write unit tests if/where possible
 //		(maybe not based on the functions in this file, which seem closely tied to the DOM)
-
-const ANIMATION_DURATION_MS=500;
-const DISMISS_MOVE_THRESHOLD_PX=40;
-const USER_ATTENTION_PULSE_COUNT=2;
-const MS_PER_SEC=1000;
 
 //this is the event handler that runs when a page notification starts being dragged
 //args:
@@ -20,8 +18,7 @@ const MS_PER_SEC=1000;
 //	returns false always
 //side-effects:
 //	stores drag state in the window object for later reference
-function handle_page_notification_dragstart(ev){
-//	console.log('handle_page_notification_dragstart got notification drag start event ',ev); //debug
+function bsmnt_handle_page_notification_dragstart(ev){
 	
 	window.active_notification_drag={
 		client_x:ev.clientX,
@@ -41,8 +38,7 @@ function handle_page_notification_dragstart(ev){
 //	returns false always
 //side-effects:
 //	potentially dismisses the notification, if the drag distance was greater than DISMISS_MOVE_THRESHOLD_PX
-function handle_page_notification_dragend(ev,on_dismiss_callback=(ev)=>{}){
-//	console.log('handle_page_notification_dragend got notification drag end event ',ev); //debug
+function bsmnt_handle_page_notification_dragend(ev,on_dismiss_callback=(ev)=>{}){
 	
 	let is_dismissing=false;
 	let dismiss_direction_class='fade-out-right';
@@ -71,8 +67,6 @@ function handle_page_notification_dragend(ev,on_dismiss_callback=(ev)=>{}){
 	if(is_dismissing){
 		//run the callback
 		on_dismiss_callback(ev);
-		
-//		console.log('handle_page_notification_dragend dismissing notification ev.target=',ev.target,' existing_offset=',existing_offset); //debug
 		
 		//set position so nothing moves suddenly or unexpectedly
 		ev.target.style.left=existing_offset.x+transform_offset.x+'px';
@@ -107,7 +101,7 @@ function handle_page_notification_dragend(ev,on_dismiss_callback=(ev)=>{}){
 //	returns false always
 //side-effects:
 //	dismisses the associated page notification
-function handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
+function bsmnt_handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
 	//run the callback
 	on_dismiss_callback(ev);
 	
@@ -148,7 +142,7 @@ function handle_page_notification_close_btn(ev,on_dismiss_callback=(ev)=>{}){
 //	adds a <div class='page-notification fade-in' draggable='true'></div> and associated content to the DOM
 //	within each container <div class='page-notification-stack'></div> that the page's html defines
 //	unless user-specified settings disabled this notification type (in which case nothing occurs)
-function send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {},display_time_ms=5000){
+function bsmnt_send_page_notification(page_notification_title,page_notification_message,css_classes='',on_activate_callback=(ev) => {},on_dismiss_callback=(ev) => {},display_time_ms=5000){
 	//get local page notification settings, if there are any
 	let local_notification_settings=localStorage.getItem('page-notification-settings');
 	if(local_notification_settings!==null){
@@ -159,7 +153,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 			//if this type of notification is disabled
 			if(!local_notification_settings['page-notification-setting-enable-'+css_classes]){
 				//then do nothing; this notification is disabled!
-				console.log('send_page_notification not sending a notification of type '+css_classes+' because that notification type is disabled by local settings!'); //debug
+//				console.log('bsmnt_send_page_notification not sending a notification of type '+css_classes+' because that notification type is disabled by local settings!'); //debug
 				return;
 			}
 		}
@@ -215,7 +209,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 				close_btn_elem.innerHTML='&times;';
 				//add event listener for on close click
 				close_btn_elem.addEventListener('click',(ev) => {
-					return handle_page_notification_close_btn(ev,on_dismiss_callback);
+					return bsmnt_handle_page_notification_close_btn(ev,on_dismiss_callback);
 				});
 				new_notification_action_btns.appendChild(close_btn_elem);
 				
@@ -227,7 +221,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 				config_btn_elem.innerHTML='<img class="page-notification-icon" src="images/gear.svg">';
 				//add event listener for configuration options
 				config_btn_elem.addEventListener('click',(ev) => {
-					show_page_notification_settings();
+					bsmnt_show_page_notification_settings();
 				});
 				new_notification_action_btns.appendChild(config_btn_elem);
 			
@@ -236,10 +230,10 @@ function send_page_notification(page_notification_title,page_notification_messag
 		//add event listeners for drag-to-dismiss functionality
 		//these are applied to the notification element
 		new_notification.addEventListener('dragstart',(ev) => {
-			return handle_page_notification_dragstart(ev);
+			return bsmnt_handle_page_notification_dragstart(ev);
 		});
 		new_notification.addEventListener('dragend',(ev) => {
-			return handle_page_notification_dragend(ev,on_dismiss_callback);
+			return bsmnt_handle_page_notification_dragend(ev,on_dismiss_callback);
 		});
 		
 		/*
@@ -288,7 +282,7 @@ function send_page_notification(page_notification_title,page_notification_messag
 //	returns an HTML element (DIV) which contains the enable/disable settings for all the notification types
 //side-effects:
 //	none
-function gen_page_notification_enable_settings(){
+function bsmnt_gen_page_notification_enable_settings(){
 	//define the types of notifications that the user can configure
 	//NOTE: this list is ORDERED which is why it's not an object with css classes as keys
 	let toggle_notifications_cont=document.createElement('DIV');
@@ -390,7 +384,7 @@ function gen_page_notification_enable_settings(){
 //side-effects:
 //	shows the page notification dialog in the page notification stack
 //	if this dialog is not already present
-function show_page_notification_settings(){
+function bsmnt_show_page_notification_settings(){
 	let notification_stacks=document.querySelectorAll('.page-notification-stack');
 	for(let stack_idx=0;stack_idx<notification_stacks.length;stack_idx++){
 		
@@ -399,8 +393,15 @@ function show_page_notification_settings(){
 		if(existing_notification_settings.length>0){
 			//do highlight it though just to focus the user's attention
 			for(let setting_idx=0;setting_idx<existing_notification_settings.length;setting_idx++){
+				//in order to bring something to the user's attention
+				//the thing we're focusing attention on must be visible on the user's screen
+				//so scroll it into view in case it's not already
+				existing_notification_settings[setting_idx].scrollIntoView();
+				
+				//pulse at the user to attract their attention
 				existing_notification_settings[setting_idx].classList.add('user-attention');
 				setTimeout(() => {
+					//then stop doing that so as not to be annoying
 					existing_notification_settings[setting_idx].classList.remove('user-attention');
 				},(ANIMATION_DURATION_MS*(USER_ATTENTION_PULSE_COUNT)));
 			}
@@ -440,7 +441,7 @@ function show_page_notification_settings(){
 			
 			//configuration options
 			//	select notifications to show (checkbox for each type: error, warning, success, info)
-			let toggle_notifications_cont=gen_page_notification_enable_settings();
+			let toggle_notifications_cont=bsmnt_gen_page_notification_enable_settings();
 			settings_content_elem.appendChild(toggle_notifications_cont);
 			
 			//TODO: configuration options
@@ -462,7 +463,7 @@ function show_page_notification_settings(){
 				close_btn_elem.innerHTML='&times;';
 				//add event listener for on close click
 				close_btn_elem.addEventListener('click',(ev) => {
-					return handle_page_notification_close_btn(ev);
+					return bsmnt_handle_page_notification_close_btn(ev);
 				});
 				settings_action_btns.appendChild(close_btn_elem);
 				
@@ -476,10 +477,10 @@ function show_page_notification_settings(){
 		
 		//add event listeners for drag-to-dismiss functionality
 		notification_settings_elem.addEventListener('dragstart',(ev) => {
-			return handle_page_notification_dragstart(ev);
+			return bsmnt_handle_page_notification_dragstart(ev);
 		});
 		notification_settings_elem.addEventListener('dragend',(ev) => {
-			return handle_page_notification_dragend(ev);
+			return bsmnt_handle_page_notification_dragend(ev);
 		});
 		
 		//insert the settings elem at the top of the notification stack

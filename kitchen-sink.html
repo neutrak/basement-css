@@ -10,7 +10,12 @@
 	<link rel='stylesheet' href='css/color-monochrome-grayscale.css' />
 	<title>Basement CSS library - Kitchen Sink</title>
 	
-	<script type='text/javascript' src='js/floor.js'></script>
+	<!--
+	TODO: provide a means to concatenate javascript files together for load-time optimization
+	as it's good to minimize the round trip count for latency, even though size is the same
+	-->
+	<script type='text/javascript' src='js/constants.js'></script>
+	<script type='text/javascript' src='js/page-notifications.js'></script>
 	
 	<script type='text/javascript'>
 	//this function flips the menu bar between top and bottom alignment options
@@ -499,7 +504,7 @@
 						event.preventDefault();
 						event.stopPropagation();
 						
-						send_page_notification(
+						bsmnt_send_page_notification(
 							event.target.querySelector("input[name=title]").value,
 							event.target.querySelector("input[name=message]").value,
 							event.target.querySelector("select[name=css-classes]").value,
@@ -543,7 +548,7 @@
 					<button
 						type='button'
 						class='btn'
-						onclick='show_page_notification_settings()'
+						onclick='bsmnt_show_page_notification_settings()'
 					>
 						View notification settings
 					</button>
