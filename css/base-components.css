@@ -999,7 +999,7 @@ so we need this container around it :/
 	display:flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:center;
+	justify-content:space-between;
 	transition:all var(--glbl-transition-time) ease;
 	color:var(--clr-close-btn-font);
 	/*
@@ -1019,7 +1019,7 @@ so we need this container around it :/
 /*	height:100%; */
 	height:50%; /* (100% / <number of elements>) */
 	width:100%;
-	padding:calc(var(--glbl-padding) / 2);
+	padding:calc(var(--glbl-padding) / 4);
 	font-size:1.5rem;
 	display:flex;
 	align-items:center;
@@ -1037,16 +1037,10 @@ so we need this container around it :/
 .page-notification.page-notification-settings .page-notification-action-btns {
 	box-shadow:none;
 }
-.page-notification-action-btns > .page-notification-blank-btn {
-	cursor:auto;
-	background-color:transparent;
-	box-shadow:none;
-	z-index:auto;
-}
 .page-notification-action-btns > *:first-child {
 	border-top-right-radius:var(--glbl-hover-title-border-radius);
 }
-.page-notification-action-btns > *:last-child {
+.page-notification-action-btns > *:last-child:not(:first-child) {
 	border-bottom-right-radius:var(--glbl-hover-title-border-radius);
 }
 .page-notification-icon {
@@ -1069,13 +1063,10 @@ so we need this container around it :/
 	position:relative;
 	top:-1px;
 	right:-1px;
+	justify-content:flex-start;
 }
-.page-notification.page-notification-settings .page-notification-action-btns .page-notification-blank-btn:last-child {
-	position:relative;
-	bottom:-2px;
-}
-.page-notification.page-notification-settings .page-notification-close-btn {
-	margin-bottom:12rem;
+.page-notification.page-notification-settings .page-notification-close-btn  {
+	height:auto;
 }
 .page-notification-title,
 .page-notification-message {
@@ -1219,15 +1210,6 @@ BEGIN medium and large display adjustments (mobile is default)
 		overflow:visible;
 */
 		opacity:1;
-	}
-	.page-notification:hover .page-notification-action-btns > *,
-	.page-notification:focus .page-notification-action-btns > *,
-	.page-notification:active .page-notification-action-btns > * {
-		padding:calc(var(--glbl-padding) / 2);
-	}
-	
-	.page-notification.page-notification-settings .page-notification-close-btn {
-		margin-bottom:8rem;
 	}
 	
 	/* ---------------------------------------------------------------------------

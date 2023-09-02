@@ -586,12 +586,6 @@ function bsmnt_show_page_notification_settings(){
 					return bsmnt_handle_page_notification_close_btn(ev);
 				});
 				settings_action_btns.appendChild(close_btn_elem);
-				
-				//blank button; a placeholder for layout purposes that actually does nothing
-				let blank_btn_elem=document.createElement('BUTTON');
-				blank_btn_elem.setAttribute('type','button');
-				blank_btn_elem.classList.add('page-notification-blank-btn');
-				settings_action_btns.appendChild(blank_btn_elem);
 			
 			notification_settings_elem.appendChild(settings_action_btns);
 		
