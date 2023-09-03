@@ -2,6 +2,29 @@
 //and at the bottom of this file is an initialization which runs
 //any time users have javascript enabled and this file and its dependencies are included
 
+//this function gets the a settings object from localstorage
+//for example page notification settings (settings_key='notify-settings')
+//args:
+//	settings_key: the key within localStorage to access
+//return:
+//	returns the existing setting object as a javascript object, if an existing setting was found
+//	returns an empty object if no existing settings were found
+//side-effects:
+//	none
+function bsmnt_get_local_settings(settings_key='notify-settings'){
+	//get already existing local settings, if there are any
+	let local_settings=localStorage.getItem(settings_key);
+	if(local_settings!==null){
+		//we store local settings in json format
+		local_settings=JSON.parse(local_settings);
+	//if there are no existing local settings
+	}else{
+		//then create a new empty object which keys can be added to
+		local_settings={};
+	}
+	return local_settings;
+}
+
 //this function toggles the banner display on or off
 //args:
 //	none
@@ -72,7 +95,7 @@ function bsmnt_close_menu(menu_id){
 //	none
 //side-effects:
 //	closes any open menus that this click is outside of
-function bsmnt_handle_body_click(ev) {
+function bsmnt_hndl_body_click(ev) {
 	let menu_toggles=document.getElementsByClassName('hdr-dropdown-toggle');
 	for(let toggle_idx=0;toggle_idx<menu_toggles.length;toggle_idx++){
 		let menu_id=menu_toggles[toggle_idx].id;
@@ -122,7 +145,7 @@ window.addEventListener('load',function (ev) {
 	}
 	
 	//close the menu when the user clicks elsewhere
-	document.body.addEventListener('click',bsmnt_handle_body_click);
+	document.body.addEventListener('click',bsmnt_hndl_body_click);
 	
 	//prevent default dragover behaviour so that drag to dismiss notifications works as expected
 	//at least so long as you leave them with the drag-outabble area

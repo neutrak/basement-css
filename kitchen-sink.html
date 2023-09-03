@@ -15,8 +15,8 @@
 	as it's good to minimize the round trip count for latency, even though size is the same
 	-->
 	<script type='text/javascript' src='js/constants.js'></script>
-	<script type='text/javascript' src='js/page-notifications.js'></script>
-	<script type='text/javascript' src='js/basement-init.js'></script>
+	<script type='text/javascript' src='js/notify.js'></script>
+	<script type='text/javascript' src='js/init.js'></script>
 	
 	<script type='text/javascript'>
 	//this function flips the menu bar between top and bottom alignment options
@@ -118,7 +118,7 @@
 	NOTE: we need two css containers so that we can set overflow-y:auto; overflow-x:visible;
 	which is not natively supported in CSS
 	-->
-	<div class='page-notification-stack-cont yes-js'><div class='page-notification-stack'></div></div>
+	<div class='notify-stack-cont yes-js'><div class='notify-stack'></div></div>
 	<div class='grid-container fixed-bar-height'>
 		<div class='grid'>
 			<div class='cell small-6 medium-9 hdr-menu-cell'>
@@ -430,10 +430,13 @@
 						event.preventDefault();
 						event.stopPropagation();
 						
-						bsmnt_send_page_notification(
+						bsmnt_notify(
 							event.target.querySelector("input[name=title]").value,
 							event.target.querySelector("input[name=message]").value,
 							event.target.querySelector("select[name=css-classes]").value,
+							((["",null,undefined].includes(event.target.querySelector("input[name=display-time-s]").value))?null:
+								((event.target.querySelector("input[name=display-time-s]").value<=0)?0:
+									(event.target.querySelector("input[name=display-time-s]").value*MS_PER_SEC))),
 							(ev) => {
 //								alert("Page notification was activated (clicked)"); //debug
 								console.log("Page notification was activated (clicked)"); //debug
@@ -441,16 +444,13 @@
 							(ev) => {
 								console.log("Page notification was dismissed"); //debug
 							},
-							((["",null,undefined].includes(event.target.querySelector("input[name=display-time-s]").value))?null:
-								((event.target.querySelector("input[name=display-time-s]").value<=0)?0:
-									(event.target.querySelector("input[name=display-time-s]").value*MS_PER_SEC)))
 						);
 						return false;
 					'>
 						<div class='grid grid-padding'>
 							<div class='cell medium-3'>
-								<label for='page-notification-css-classes'>Type</label>
-								<select id='page-notification-css-classes' name='css-classes'>
+								<label for='notify-css-classes'>Type</label>
+								<select id='notify-css-classes' name='css-classes'>
 									<option value='success'>Success</option>
 									<option value='warning'>Warning</option>
 									<option value='error'>Error</option>
@@ -458,16 +458,16 @@
 								</select>
 							</div>
 							<div class='cell medium-3'>
-								<label for='page-notification-title'>Title</label>
-								<input id='page-notification-title' type='text' name='title' placeholder='Page Notification Title'>
+								<label for='notification-title'>Title</label>
+								<input id='notification-title' type='text' name='title' placeholder='Page Notification Title'>
 							</div>
 							<div class='cell medium-3'>
-								<label for='page-notification-message'>Message</label>
-								<input id='page-notification-message' type='text' name='message' placeholder='Page Notification Message'>
+								<label for='notification-message'>Message</label>
+								<input id='notification-message' type='text' name='message' placeholder='Page Notification Message'>
 							</div>
 							<div class='cell medium-3'>
-								<label for='page-notification-display-time-ms'>Display time in seconds</label>
-								<input id='page-notification-display-time-ms' type='number' name='display-time-s' min='0' step='0.001' placeholder='Display time in seconds (default 5s)' value='5'>
+								<label for='notify-display-time-ms'>Display time in seconds</label>
+								<input id='notify-display-time-ms' type='number' name='display-time-s' min='0' step='0.001' placeholder='Display time in seconds (default 5s)' value='5'>
 							</div>
 						</div>
 						
@@ -481,7 +481,7 @@
 					<button
 						type='button'
 						class='btn'
-						onclick='bsmnt_show_page_notification_settings()'
+						onclick='bsmnt_show_notify_settings()'
 					>
 						View notification settings
 					</button>

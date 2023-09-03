@@ -48,7 +48,7 @@ body {
 	--clr-close-btn-font:black;
 	--clr-close-btn-bg:rgba(159,95,95,1);
 	--clr-close-btn-hover-bg:rgba(228,26,26,1);
-	--clr-page-notification-stack-bg:white;
+	--clr-notify-stack-bg:white;
 	--clr-notification-success-bg:rgba(25,135,84,1);
 	--clr-notification-success-font:white;
 	--clr-notification-error-bg:rgba(220,53,69,1);
@@ -823,10 +823,10 @@ form .toggle-slider {
 }
 
 /*
-NOTE: .page-notification-stack cannot have overflow-y:auto;overflow-x:visible;
+NOTE: .notify-stack cannot have overflow-y:auto;overflow-x:visible;
 so we need this container around it :/
 */
-.page-notification-stack-cont {
+.notify-stack-cont {
 	width:100%;
 	position:fixed;
 	margin-top:var(--hdr-height);
@@ -837,23 +837,23 @@ so we need this container around it :/
 	/*
 	this container is only for overflow uses
 	so it shouldn't get any pointer events or show any scrollbars
-	NOTE: this means the page-notification-stack MUST have pointer-events:auto set
+	NOTE: this means the notify-stack MUST have pointer-events:auto set
 	otherwise no pointer events will reach the notifications!
 	*/
 	pointer-events:none;
 	scrollbar-width:none;
 }
-.banner:not(:empty):not(.hidden) ~ .page-notification-stack-cont {
+.banner:not(:empty):not(.hidden) ~ .notify-stack-cont {
 	height:calc(100% - (var(--hdr-height) * 2));
 }
-.bottombar .page-notification-stack-cont {
+.bottombar .notify-stack-cont {
 	bottom:var(--hdr-height);
 	margin-top:0px;
 }
-.bottombar .banner:not(:empty):not(.hidden) ~ .page-notification-stack-cont {
+.bottombar .banner:not(:empty):not(.hidden) ~ .notify-stack-cont {
 	bottom:calc(var(--hdr-height) * 2);
 }
-.page-notification-stack {
+.notify-stack {
 	position:relative;
 	height:auto;
 	pointer-events:auto;
@@ -862,10 +862,10 @@ so we need this container around it :/
 	left:50%;
 	transform:translateX(-50%);
 }
-.page-notification-stack:empty {
+.notify-stack:empty {
 	display:none;
 }
-.page-notification-stack::before {
+.notify-stack::before {
 	content:' ';
 	position:absolute;
 	top:0px;
@@ -873,12 +873,12 @@ so we need this container around it :/
 	width:100%;
 	height:100%;
 	filter:blur(3px);
-	background-color:var(--clr-page-notification-stack-bg);
+	background-color:var(--clr-notify-stack-bg);
 	background:radial-gradient(#ffffff,rgba(255,255,255,0.5) 90%,transparent 100%);
 	z-index:-1;
 }
 /* TODO: test drag-to-dismiss-notification on real mobile device */
-.page-notification {
+.notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
 	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow);
@@ -895,50 +895,54 @@ so we need this container around it :/
 	opacity:0.9; /* mobile */
 	touch-action:none;
 }
-.page-notification:hover,
-.page-notification:focus,
-.page-notification:active {
+.notification:hover,
+.notification:focus,
+.notification:active {
 	opacity:1; /* mobile */
 }
-.page-notification.fade-in {
+.notification.fade-in {
 	animation:notification-fade-in 0.5s;
 	animation-iteration-count:1;
 }
-.page-notification.fade-out {
+.notification.fade-out {
 	opacity:0;
 	pointer-events:none;
 }
-.page-notification.fade-out.fade-out-left {
+.notification.fade-out.fade-out-left {
 	transform:translateX(-150%);
 }
-.page-notification.fade-out.fade-out-right {
+.notification.fade-out.fade-out-right {
 	transform:translateX(150%);
 }
-.page-notification:not(:last-child) {
+.notification:not(:last-child) {
 	margin-bottom:var(--glbl-padding);
 }
-.page-notification.success {
+.notification.success {
 	color:var(--clr-notification-success-font);
 	background-color:var(--clr-notification-success-bg);
 }
-.page-notification.error {
+.notification.error {
 	color:var(--clr-notification-error-font);
 	background-color:var(--clr-notification-error-bg);
 }
-.page-notification.warning {
+.notification.warning {
 	color:var(--clr-notification-warning-font);
 	background-color:var(--clr-notification-warning-bg);
 }
-.page-notification.info {
+.notification.info {
 	color:var(--clr-notification-info-font);
 	background-color:var(--clr-notification-info-bg);
 }
-.page-notification.page-notification-settings {
+.notification.notify-settings {
 	cursor:auto;
 	background-color:var(--clr-notification-settings-bg,#b0d4dc);
 	border:1px solid transparent;
 }
-.page-notification .progress-bar {
+/*
+TODO: generalize this progress-bar styling to be potentially used for other progress bars
+I think some changes would need to be made and there would need to still be some notification-specific styling
+*/
+.notification .progress-bar {
 	position:absolute;
 	height:calc(0.5rem + var(--progress-bar-height));
 	width:100%;
@@ -949,23 +953,23 @@ so we need this container around it :/
 	z-index:-1;
 	background-color:var(--clr-form-card-bg);
 }
-.page-notification.success .progress-bar {
+.notification.success .progress-bar {
 /*	color:var(--clr-notification-success-font); */
 	background-color:var(--clr-notification-success-bg);
 }
-.page-notification.error .progress-bar {
+.notification.error .progress-bar {
 /*	color:var(--clr-notification-error-font); */
 	background-color:var(--clr-notification-error-bg);
 }
-.page-notification.warning .progress-bar {
+.notification.warning .progress-bar {
 /*	color:var(--clr-notification-warning-font); */
 	background-color:var(--clr-notification-warning-bg);
 }
-.page-notification.info .progress-bar {
+.notification.info .progress-bar {
 /*	color:var(--clr-notification-info-font); */
 	background-color:var(--clr-notification-info-bg);
 }
-.page-notification-content {
+.notify-content {
 	width:100%;
 	margin:calc(0px - var(--glbl-padding)) 0px calc(0px - var(--glbl-padding)) calc(0px - var(--glbl-padding));
 /*	margin:calc(0px - (var(--glbl-padding) / 2)) 0px calc(0px - (var(--glbl-padding) / 2)) calc(0px - (var(--glbl-padding) / 2)); */
@@ -976,10 +980,10 @@ so we need this container around it :/
 	align-items:flex-start;
 	justify-content:center;
 }
-.page-notification-settings-content {
+.notify-settings-content {
 	width:100%;
 }
-.page-notification-action-btns {
+.notify-action-btns {
 	min-height:100%;
 	font-size:1.5rem;
 	font-weight:bold;
@@ -1004,7 +1008,7 @@ so we need this container around it :/
 	opacity:1;
 
 }
-.page-notification-action-btns > * {
+.notify-action-btns > * {
 	border:none;
 	/* TODO: generalize height setting so it works correctly regardless of the number of items within the container */
 /*	height:100%; */
@@ -1018,34 +1022,34 @@ so we need this container around it :/
 	transition:all var(--glbl-transition-time) ease;
 	cursor:pointer;
 }
-.page-notification-action-btns > *:hover,
-.page-notification-action-btns > *:focus,
-.page-notification-action-btns > *:active {
+.notify-action-btns > *:hover,
+.notify-action-btns > *:focus,
+.notify-action-btns > *:active {
 	box-shadow:0rem 0.5rem 0.5rem var(--clr-popout-outer-shadow);
 	z-index:1;
 }
-.page-notification.page-notification-settings .page-notification-action-btns {
+.notification.notify-settings .notify-action-btns {
 	box-shadow:none;
 }
-.page-notification-action-btns > *:first-child {
+.notify-action-btns > *:first-child {
 	border-top-right-radius:var(--glbl-hover-title-border-radius);
 }
-.page-notification-action-btns > *:last-child:not(:first-child) {
+.notify-action-btns > *:last-child:not(:first-child) {
 	border-bottom-right-radius:var(--glbl-hover-title-border-radius);
 }
-.page-notification-icon {
+.notify-icon {
 	height:16px;
 	width:16px;
 }
-.page-notification-close-btn {
+.notify-close-btn {
 	background-color:var(--clr-close-btn-bg);
 }
-.page-notification-close-btn:hover,
-.page-notification-close-btn:focus,
-.page-notification-close-btn:active {
+.notify-close-btn:hover,
+.notify-close-btn:focus,
+.notify-close-btn:active {
 	background-color:var(--clr-close-btn-hover-bg);
 }
-.page-notification.page-notification-settings .page-notification-action-btns {
+.notification.notify-settings .notify-action-btns {
 	/*
 	account for the 1px transparent border that's present on the page notification settings
 	which is necessary for the user-attention functionality to look as intended
@@ -1055,48 +1059,48 @@ so we need this container around it :/
 	right:-1px;
 	justify-content:flex-start;
 }
-.page-notification.page-notification-settings .page-notification-close-btn  {
+.notification.notify-settings .notify-close-btn  {
 	height:auto;
 }
-.page-notification-title,
-.page-notification-message {
+.notification-title,
+.notification-message {
 	margin-top:0px;
 	margin-bottom:0px;
 }
-.page-notification-title {
+.notification-title {
 	font-size:1.1rem;
 }
-.page-notification.success .page-notification-title,
-.page-notification.success .page-notification-message {
+.notification.success .notification-title,
+.notification.success .notification-message {
 	color:var(--clr-notification-success-font);
 }
-.page-notification.error .page-notification-title,
-.page-notification.error .page-notification-message {
+.notification.error .notification-title,
+.notification.error .notification-message {
 	color:var(--clr-notification-error-font);
 }
-.page-notification.warning .page-notification-title,
-.page-notification.warning .page-notification-message {
+.notification.warning .notification-title,
+.notification.warning .notification-message {
 	color:var(--clr-notification-warning-font);
 }
-.page-notification.info .page-notification-title,
-.page-notification.info .page-notification-message {
+.notification.info .notification-title,
+.notification.info .notification-message {
 	color:var(--clr-notification-info-font);
 }
 
-.page-notification-enable-list {
+.notify-enable-list {
 	padding-top:calc(var(--glbl-padding) / 2);
 }
-.page-notification-enable-list > .toggle-slider {
+.notify-enable-list > .toggle-slider {
 	width:100%;
 	height:auto;
 	display:flex;
 	align-items:stretch;
 	justify-content:flex-start;
 }
-.page-notification-enable-list > .toggle-slider:not(:last-child) {
+.notify-enable-list > .toggle-slider:not(:last-child) {
 	margin-bottom:calc(var(--glbl-padding) / 4);
 }
-.page-notification-timeout-settings {
+.notify-timeout-settings {
 	margin-top:calc(var(--glbl-padding) / 2);
 }
 .timeout-input-cont {
@@ -1188,26 +1192,26 @@ BEGIN medium and large display adjustments (mobile is default)
 	.dropdown-toggle-label, .topbar-link, .bottombar-link {
 		padding:0rem var(--glbl-padding);
 	}
-	.page-notification-stack {
+	.notify-stack {
 		width:calc(var(--glbl-max-width) / 2);
 	}
-	.page-notification {
+	.notification {
 		opacity:0.75;
 	}
-	.page-notification:hover,
-	.page-notification:focus,
-	.page-notification:active {
+	.notification:hover,
+	.notification:focus,
+	.notification:active {
 		opacity:0.95;
 	}
-	.page-notification-action-btns {
+	.notify-action-btns {
 		/*
 		NOTE: close button is HIDDEN until user hovers over notification
 		*/
 		opacity:0;
 	}
-	.page-notification:hover .page-notification-action-btns,
-	.page-notification:focus .page-notification-action-btns,
-	.page-notification:active .page-notification-action-btns {
+	.notification:hover .notify-action-btns,
+	.notification:focus .notify-action-btns,
+	.notification:active .notify-action-btns {
 		opacity:1;
 	}
 	
