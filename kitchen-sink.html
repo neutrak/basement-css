@@ -441,11 +441,14 @@
 							(ev) => {
 								console.log("Page notification was dismissed"); //debug
 							},
+							((["",null,undefined].includes(event.target.querySelector("input[name=display-time-s]").value))?null:
+								((event.target.querySelector("input[name=display-time-s]").value<=0)?0:
+									(event.target.querySelector("input[name=display-time-s]").value*MS_PER_SEC)))
 						);
 						return false;
 					'>
 						<div class='grid grid-padding'>
-							<div class='cell medium-4'>
+							<div class='cell medium-3'>
 								<label for='page-notification-css-classes'>Type</label>
 								<select id='page-notification-css-classes' name='css-classes'>
 									<option value='success'>Success</option>
@@ -454,13 +457,17 @@
 									<option value='info'>Info</option>
 								</select>
 							</div>
-							<div class='cell medium-4'>
+							<div class='cell medium-3'>
 								<label for='page-notification-title'>Title</label>
 								<input id='page-notification-title' type='text' name='title' placeholder='Page Notification Title'>
 							</div>
-							<div class='cell medium-4'>
+							<div class='cell medium-3'>
 								<label for='page-notification-message'>Message</label>
 								<input id='page-notification-message' type='text' name='message' placeholder='Page Notification Message'>
+							</div>
+							<div class='cell medium-3'>
+								<label for='page-notification-display-time-ms'>Display time in seconds</label>
+								<input id='page-notification-display-time-ms' type='number' name='display-time-s' min='0' step='0.001' placeholder='Display time in seconds (default 5s)' value='5'>
 							</div>
 						</div>
 						
