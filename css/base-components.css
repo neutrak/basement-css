@@ -877,7 +877,6 @@ so we need this container around it :/
 	background:radial-gradient(#ffffff,rgba(255,255,255,0.5) 90%,transparent 100%);
 	z-index:-1;
 }
-/* TODO: test drag-to-dismiss-notification on real mobile device */
 .notification {
 	padding:var(--glbl-padding) 0px var(--glbl-padding) var(--glbl-padding);
 /*	padding:calc(var(--glbl-padding) / 2) 0px calc(var(--glbl-padding) / 2) calc(var(--glbl-padding) / 2); */
@@ -893,6 +892,14 @@ so we need this container around it :/
 	position:relative;
 	cursor:pointer;
 	opacity:0.9; /* mobile */
+	/*
+	NOTE: this touch-action setting /should/ make draggable elements work correctly on mobile devices
+	however due to limitations of my testing environment I can't verify that at this time
+	but I don't have any further action to take even if it doesn't work
+	since we're already showing the close and setting buttons and have click-cancels-timeout behaviour
+	I'm considering this "done" regardless of whether touch-action works
+	until/unless someone lets me know a better and more widely supported solution
+	*/
 	touch-action:none;
 }
 .notification:hover,
