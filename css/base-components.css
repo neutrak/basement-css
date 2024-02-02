@@ -8,6 +8,7 @@ body {
 	--glbl-font-semibold:500;
 	--glbl-font-bold:700;
 	--glbl-font-vbold:900;
+	--glbl-font-size-input:1rem; /* used for form inputs, textareas */
 	--glbl-menu-arrow-height:0.75rem;
 	--glbl-toggle-slider-height:16px;
 	--glbl-hover-title-border-radius:0.5rem;
@@ -747,6 +748,13 @@ input:not([type=checkbox]) {
 	border-radius:0px;
 	border:1px solid var(--clr-btn-bg);
 	transition:all var(--glbl-transition-time) ease;
+}
+form input:not([type=checkbox]):not([type=submit]),
+form select,
+form textarea,
+input:not([type=checkbox]):not([type=submit]) {
+	font-size:var(--glbl-font-size-input);
+	font-family:inherit;
 }
 form select {
 	min-height:32px;
