@@ -894,6 +894,7 @@ so we need this container around it :/
 	opacity:0.9; /* mobile */
 	/*
 	NOTE: this touch-action setting /should/ make draggable elements work correctly on mobile devices
+	per https://github.com/taye/interact.js/issues/564
 	however due to limitations of my testing environment I can't verify that at this time
 	but I don't have any further action to take even if it doesn't work
 	since we're already showing the close and setting buttons and have click-cancels-timeout behaviour
