@@ -508,6 +508,34 @@
 								<div class='cell small-12 medium-6'>
 									<input type='email' name='email' placeholder='Email Address' required='true'>
 								</div>
+								<!--
+								TODO: add a date or date-and-time input field
+								NOTE: browser built-in input type=date auto-converts timezones so that can cause unexpected behaviour when timezones are different from what was expected
+								this will require javascript just because what we're trying to do can't be done with pure html and css :/
+								this should be built with the following overall architecture:
+									an input type=text field for the date
+									an input type=text field for the time, if shown
+									an autocomplete button that appears when a valid date and time is detected
+									as data is input into the text fields, checks date against the following formats and tries to match it by the first format found:
+										((%A|%a), )?1?%Y-%m-%d
+										%B %d(st|nd|rd|th)?, %Y
+										%m/%d/%Y
+										%d/%m/%Y
+									as data is input into the text fields, checks time against the following formats and tries to match it by the first format found:
+										%H:%M:%S
+										%H:%M
+										%H
+										%I:%M:%S %p
+										%I:%M %p
+										%l:%M:%S %p
+										%l:%M %p
+										%I %p
+										%l %p
+									internally stores an ISO8601 format string representing the date or datetime value precisely
+										this can be stored as a data- attribute on the input field container
+									when a valid date and time is detected using the above format priority, the autocomplete option appears
+										when this button is hit, the current contents of the text fields are replaced with the internal values in ISO8601 format for standardized reading
+								-->
 								<div class='cell small-12 medium-6'>
 									<select name='inquiry_type' placeholder='Inquiry Type' required='true'>
 										<option value='general'>General Inquiry</option>
